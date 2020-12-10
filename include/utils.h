@@ -77,39 +77,19 @@ const int dj[] = { 1,0,-1,0 };
 
 
 //二分搜索
-bool isOK(vector<ll>& v, int index, int key, bool flag)
+ll bs(vector<ll>& v)
 {
-	if (flag) {
-
-		if (v[index] >= key)
-			return true;
-		else
-			return false;
-	}
-	else {
-		if (v[index] > key)
-			return true;
-		else
-			return false;
-	}
-}
-
-ll bs(vector<ll>& v, ll key, bool flag)
-{
-	int ng = -1;	//「index = 0」が条件を満たすこともあるので、初期値は -1
-	int ok = v.size(); // 「index = a.size()-1」が条件を満たさないこともあるので、初期値は a.size()
-
-	/* ok と ng のどちらが大きいかわからないことを考慮 */
-	while (abs(ok - ng) > 1)
+	int low = 0;
+	int high = v.size();
+	while (low<high)
 	{
-		int mid = (ok + ng) / 2;
-
-		if (isOK(v, mid, key, flag))
-			ok = mid;
+		int mid = (high + low) / 2;
+		if (true)
+			high = mid;
 		else
-			ng = mid;
+			low = mid+1;
 	}
-	return ok;
+	return low;
 }
 
 
