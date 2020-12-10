@@ -22,7 +22,6 @@ struct TreeNode {
 	TreeNode(int x) : val(x), left(NULL), right(NULL) {}
 	TreeNode(int x, TreeNode* left, TreeNode* right) : val(x), left(left), right(right) {}
 };
-// TreeNode* root;
 // TreeNode* maketreenode(vector<int>v) {
 // 	TreeNode* p;
 // 	if (v[0] == null)return nullptr;

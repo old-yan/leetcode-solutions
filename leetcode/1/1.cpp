@@ -18,7 +18,7 @@ public:
 int main(){
     Solution sol;
 
-    vi  nums{2,7,11,15};
+    vi nums{2,7,11,15};
     DBGV(nums);
     int target=9;
     DBG(target);

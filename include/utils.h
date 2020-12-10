@@ -28,6 +28,7 @@ using pq = priority_queue<T>;
 #define FORR(i, m, n) for (size_t i = m; i >= n; i--)
 #define DBG(a) cout << #a << " : " << a << "\n";
 #define DBGV(a) cout << #a << " : ";for(auto b:a)cout << b << ' ';cout << endl;
+#define DBGL(a) cout << #a;for(auto b=a;b;b=b->next)cout<<' '<<b->val;cout<<endl;
 #define ALL(v) v.begin(), v.end()
 
 #define pb push_back
@@ -59,7 +60,16 @@ bool chmin(T& a, const T& b)
 	}
 	return 0;
 }
-
+ListNode* makelistnode(vector<int>v) {
+	if (v.empty())return nullptr;
+	ListNode* p = new ListNode(-1);
+	ListNode* q = p;
+	for (int b : v) {
+		q->next = new ListNode(b);
+		q = q->next;
+	}
+	return p->next;
+}
 
 //图问题，二维矩阵问题
 const int di[] = { 0,-1,0,1 };
