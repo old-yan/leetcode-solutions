@@ -6,9 +6,7 @@ public:
         int i,j,n=s.size(),ans=0;
         unordered_set<int>S;
         for(i=j=0;i<n;i++){
-            while(j<n&&!S.count(s[j])){
-                S.insert(s[j++]);
-            }
+            while(j<n&&!S.count(s[j]))S.insert(s[j++]);
             chmax(ans,j-i);
             S.erase(s[i]);
         }
