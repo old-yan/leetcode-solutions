@@ -75,6 +75,58 @@ ListNode* makelistnode(vector<int>v) {
 const int di[] = { 0,-1,0,1 };
 const int dj[] = { 1,0,-1,0 };
 
+// 数字转字符串
+string i2s(ll x){
+	if(!x)return "0";
+	if(x<0)return "-"+i2s(-x);
+	char c[20]={0};
+	int idx=0;
+	while(x){
+		c[idx++]='0'+x%10;
+		x/=10;
+	}
+	reverse(c,c+idx);
+	return c;
+}
+string i2s(ll x,int radix){
+	if(!x)return "0";
+	if(x<0)return "-"+i2s(-x,radix);
+	char c[64]={0};
+	int idx=0;
+	while(x){
+		c[idx++]='0'+x%radix;
+		x/=radix;
+	}
+	reverse(c,c+idx);
+	return c;
+}
+
+// 字符串转数字
+ll s2i(string s){
+	int signal=1,idx=0;
+	ll val=0;
+	if(s[0]=='-'){
+		signal=-1;
+		idx++;
+	}
+	while(idx<s.size()){
+		val=val*10+s[idx++]-'0';
+	}
+	return signal*val;
+}
+ll s2i(string s,int radix){
+	int signal=1,idx=0;
+	ll val=0;
+	if(s[0]=='-'){
+		signal=-1;
+		idx++;
+	}
+	while(idx<s.size()){
+		val=val*radix+s[idx++]-'0';
+	}
+	return signal*val;
+}
+
 
 //二分搜索
 ll bs(vector<ll>& v)
