@@ -26,8 +26,9 @@ using pq = priority_queue<T>;
 #define REPR(i, n) for (size_t i = n; i >= 0; i--)
 #define FOR(i, m, n) for (size_t i = m; i < n; i++)
 #define FORR(i, m, n) for (size_t i = m; i >= n; i--)
-#define DBG(a) cout << #a << " : " << a << "\n";
+#define DBGVV(a) cout << #a << " : \n";for(int i=0;i<a.size();i++){DBG(i)DBGV(a[i])};
 #define DBGV(a) cout << #a << " : ";for(auto b:a)cout << b << ' ';cout << endl;
+#define DBG(a) cout << #a << " : " << a << "\n";
 #define DBGL(a) cout << #a;for(auto b=a;b;b=b->next)cout<<' '<<b->val;cout<<endl;
 #define ALL(v) v.begin(), v.end()
 
@@ -129,7 +130,7 @@ ll s2i(string s,int radix){
 
 
 //二分搜索
-ll bs(vector<ll>& v)
+int bs(vi& v)
 {
 	int low = 0;
 	int high = v.size();
@@ -178,13 +179,36 @@ bool isprime(ll n)
 }
 
 //前缀和
-vector<ll> presum(vector<ll>&a)
+vi presum(vi&a)
 {
-	vector<ll> v(a.size() + 1);
+	vi v(a.size() + 1);
 	v[0] = 0;
 	REP(i, a.size())v[i + 1] = v[i] + a[i];
 	return v;
 }
+
+//下一个不同处
+template<class T>
+vi next_different(vector<T>&a){
+	vi v(a.size());
+	for(int i=0,j;i<a.size();){
+		for(j=i+1;j<a.size()&&a[j]==a[i];j++);
+		while(i<j)v[i++]=j;
+	}
+	return v;
+}
+
+//上一个不同处
+template<class T>
+vi prev_different(vector<T>&a){
+	vi v(a.size());
+	for(int i=a.size()-1,j;i>=0;){
+		for(j=i-1;j>=0&&a[j]==a[i];j--);
+		while(i>j)v[i--]=j;
+	}
+	return v;
+}
+
 
 //链表转数组
 vector<ListNode*> listtoarr(ListNode* p) {
