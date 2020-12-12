@@ -22,11 +22,11 @@ using pq = priority_queue<T>;
 #define MOD 1000000007LL
 
 
-#define REP(i, n) for (size_t i = 0; i < n; i++)
-#define REPR(i, n) for (size_t i = n; i >= 0; i--)
-#define FOR(i, m, n) for (size_t i = m; i < n; i++)
-#define FORR(i, m, n) for (size_t i = m; i >= n; i--)
-#define DBGVV(a) cout << #a << " : \n";for(int i=0;i<a.size();i++){DBG(i)DBGV(a[i])};
+#define REP(i, n) for (ll i = 0; i < n; i++)
+#define REPR(i, n) for (ll i = n; i >= 0; i--)
+#define FOR(i, m, n) for (ll i = m; i < n; i++)
+#define FORR(i, m, n) for (ll i = m; i >= n; i--)
+#define DBGVV(a) cout << #a << " : \n";for(ll i=0;i<a.size();i++){DBG(i)DBGV(a[i])};
 #define DBGV(a) cout << #a << " : ";for(auto b:a)cout << b << ' ';cout << endl;
 #define DBG(a) cout << #a << " : " << a << "\n";
 #define DBGL(a) cout << #a;for(auto b=a;b;b=b->next)cout<<' '<<b->val;cout<<endl;
@@ -129,7 +129,7 @@ ll s2i(string s,int radix){
 }
 
 
-//二分搜索
+//二分搜索模板，在此基础上改写
 int bs(vi& v)
 {
 	int low = 0;
@@ -209,6 +209,17 @@ vi prev_different(vector<T>&a){
 	return v;
 }
 
+//获取每个元素的排名
+template<class T>
+vi getrank(vector<T>&a){
+	int n=a.size();
+	int idx[n];
+	REP(i,n)idx[i]=i;
+	sort(idx,idx+n,[&](int x,int y)->bool{return a[x]<a[y];});
+	vi rnk(n);
+	REP(i,n)rnk[idx[i]]=i;
+	return rnk;
+}
 
 //链表转数组
 vector<ListNode*> listtoarr(ListNode* p) {
