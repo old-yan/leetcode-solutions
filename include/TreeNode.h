@@ -5,6 +5,7 @@
 #include <string>
 #include <cstring>
 #include <algorithm>
+#include <bitset>
 #include <vector>
 #include <list>
 #include <queue>
