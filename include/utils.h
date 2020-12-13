@@ -168,6 +168,12 @@ ll lcm(ll a, ll b)
 	return a / _gcd * b;
 }
 
+//阶乘
+ll factorial(ll a){
+	if(a)return factorial(a-1)*a;
+	else return 1;
+}
+
 //判质
 bool isprime(ll n)
 {
