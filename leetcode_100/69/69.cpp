@@ -2,20 +2,17 @@
 
 class Solution {
     int firstbigger(ll x){
-        ll low = 0;
-        ll high = x+1;
-        while (low<high)
-        {
+        ll low = 0,high = x+1;
+        while (low<high){
             ll mid = (high + low) / 2;
-            if (mid*mid>x)
-                high = mid;
-            else
-                low = mid+1;
+            if (mid*mid>x)high = mid;
+            else low = mid+1;
         }
         return low;
     }
 public:
     int mySqrt(int x) {
+        //return sqrt(x);
         return firstbigger(x)-1;
     }
 };

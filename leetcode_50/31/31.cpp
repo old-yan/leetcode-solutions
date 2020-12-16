@@ -3,6 +3,7 @@
 class Solution {
 public:
     void nextPermutation(vector<int>& nums) {
+        //next_permutation(ALL(nums));return;
         if(nums.size()<2)return;
         int i,j;
         for(i=nums.size()-2;i>=0;i--)if(nums[i]<nums[i+1])break;

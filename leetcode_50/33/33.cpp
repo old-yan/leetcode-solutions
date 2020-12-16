@@ -2,29 +2,20 @@
 
 class Solution {
     int bs(vi& v){
-        if(v[0]<v.back())return 0;
-        int low = 0;
-        int high = v.size()-1;
-        while (low<high)
-        {
+        int low = 0,high = v.size()-1;
+        while (low<high){
             int mid = (high + low) / 2;
-            if (v[mid]<v.back())
-                high = mid;
-            else
-                low = mid+1;
+            if (v[mid]<v.back())high = mid;
+            else low = mid+1;
         }
         return low;
     }
     int bs2(vi& v,int start,int end,int target){
-        int low = start;
-        int high = end;
-        while (low<high)
-        {
+        int low = start,high = end;
+        while (low<high){
             int mid = (high + low) / 2;
-            if (v[mid]>=target)
-                high = mid;
-            else
-                low = mid+1;
+            if (v[mid]>=target)high = mid;
+            else low = mid+1;
         }
         if(v[low]==target)return low;
         else return -1;

@@ -3,15 +3,11 @@
 class Solution {
     double bs(vi&nums1, vi&nums2, ll sum)
     {
-        int low = 0;
-        int high = nums1.size();
-        while (low<high)
-        {
+        int low = 0,high = nums1.size();
+        while (low<high){
             int mid = (high + low) / 2;
-            if (mid>=sum-1||(sum-mid-2<nums2.size()&&nums2[sum-mid-2]<=nums1[mid]))
-                high = mid;
-            else
-                low = mid+1;
+            if (mid>=sum-1||(sum-mid-2<nums2.size()&&nums2[sum-mid-2]<=nums1[mid]))high = mid;
+            else low = mid+1;
         }
         if(low==nums1.size())return nums2[sum-low-1];
         else if(sum-low-1==nums2.size())return nums1[low];

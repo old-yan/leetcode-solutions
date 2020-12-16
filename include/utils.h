@@ -1,6 +1,7 @@
 #pragma once
 #include "ListNode.h"
 #include "TreeNode.h"
+#include "Node.h"
 using namespace std;
 
 
@@ -30,6 +31,8 @@ using pq = priority_queue<T>;
 #define DBGV(a) cout << #a << " : ";for(auto b:a)cout << b << ' ';cout << endl;
 #define DBG(a) cout << #a << " : " << a << "\n";
 #define DBGL(a) cout << #a;for(auto b=a;b;b=b->next)cout<<' '<<b->val;cout<<endl;
+#define DBGT(a) cout << #a <<endl;showtreenode(a);
+#define DBGN(a) cout << #a <<endl;shownode(a);
 #define ALL(v) v.begin(), v.end()
 
 #define pb push_back
@@ -130,17 +133,12 @@ ll s2i(string s,int radix){
 
 
 //二分搜索模板，在此基础上改写
-int bs(vi& v)
-{
-	int low = 0;
-	int high = v.size();
-	while (low<high)
-	{
+int bs(vi& v){
+	int low = 0,high = v.size();
+	while (low<high){
 		int mid = (high + low) / 2;
-		if (true)
-			high = mid;
-		else
-			low = mid+1;
+		if (true)high = mid;
+		else low = mid+1;
 	}
 	return low;
 }

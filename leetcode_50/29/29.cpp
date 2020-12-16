@@ -4,6 +4,7 @@ class Solution {
 public:
     int divide(int _dividend, int _divisor) {
         if(_dividend==INT_MIN&&_divisor==-1)return INT_MAX;
+        //return _dividend/_divisor;
         int signal=1;
         if(_dividend<0)signal*=-1;
         if(_divisor<0)signal*=-1;

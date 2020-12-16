@@ -3,6 +3,7 @@
 class Solution {
 public:
     double myPow(double x, int n) {
+        //return pow(x,n);
         if(n==INT_MIN)return 1/myPow(x,INT_MAX)/x;
         if(n<0)return 1/myPow(x,-n);
         if(n==0)return 1;
