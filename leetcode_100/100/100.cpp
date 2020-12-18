@@ -13,9 +13,9 @@ int main()
     cout<<boolalpha;
     Solution sol;
 
-    TreeNode*p=maketreenode("1,2,3");
+    TreeNode*p=new TreeNode("1,2,3");
     DBGT(p);
-    TreeNode*q=maketreenode("1,2,3");
+    TreeNode*q=new TreeNode("1,2,3");
     DBGT(q);
     auto ans=sol.isSameTree(p,q);
     DBG(ans);

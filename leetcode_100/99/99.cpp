@@ -55,7 +55,7 @@ int main()
     cout<<boolalpha;
     Solution sol;
 
-    TreeNode*root=maketreenode("[68,41,null,-85,null,-73,-49,-98,null,null,null,-124]");
+    TreeNode*root=new TreeNode("[68,41,null,-85,null,-73,-49,-98,null,null,null,-124]");
     DBGT(root);
     sol.recoverTree(root);
     DBGT(root);

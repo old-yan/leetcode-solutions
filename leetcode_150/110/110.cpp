@@ -18,7 +18,7 @@ int main()
     cout<<boolalpha;
     Solution sol;
 
-    TreeNode*root=maketreenode("1,2,2,3,3,null,null,4,4");
+    TreeNode*root=new TreeNode("1,2,2,3,3,null,null,4,4");
     DBGT(root);
     auto ans=sol.isBalanced(root);
     DBG(ans);

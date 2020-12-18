@@ -3,12 +3,13 @@
 class Solution {
 public:
     ListNode* rotateRight(ListNode* head, int k) {
+        if(!head)return nullptr;
         auto v=listtoarr(head);
-        vi v2;
+        vector<ListNode*> v2;
         k%=v.size();
-        FOR(i,v.size()-k,v.size())v2.pb(v[i]->val);
-        FOR(i,0,v.size()-k)v2.pb(v[i]->val);
-        return makelistnode(v2);
+        FOR(i,v.size()-k,v.size())v2.pb(v[i]);
+        FOR(i,0,v.size()-k)v2.pb(v[i]);
+        return arrtolist(v2);
     }
 };
 

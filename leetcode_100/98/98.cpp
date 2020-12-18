@@ -18,7 +18,7 @@ int main()
     cout<<boolalpha;
     Solution sol;
 
-    TreeNode*root=maketreenode("5,1,4,null,null,3,6");
+    TreeNode*root=new TreeNode("5,1,4,null,null,3,6");
     DBGT(root);
     auto ans=sol.isValidBST(root);
     DBG(ans);

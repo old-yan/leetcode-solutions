@@ -5,9 +5,7 @@ public:
     ListNode* removeNthFromEnd(ListNode* head, int n) {
         auto v=listtoarr(head);
         v.erase(v.begin()+v.size()-n);
-        vi num;
-        for(auto a:v)num.pb(a->val);
-        return makelistnode(num);
+        return arrtolist(v);
     }
 };
 

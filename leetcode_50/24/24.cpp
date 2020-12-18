@@ -10,11 +10,7 @@ public:
                 swap(v[i],v[i+1]);
             }
         }
-        FOR(i,1,v.size()){
-            v[i-1]->next=v[i];
-        }
-        v.back()->next=nullptr;
-        return v[0];
+        return arrtolist(v);
     }
 };
 

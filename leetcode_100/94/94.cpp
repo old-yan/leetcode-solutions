@@ -19,7 +19,7 @@ int main()
     cout<<boolalpha;
     Solution sol;
 
-    TreeNode*root=maketreenode("1,null,2");
+    TreeNode*root=new TreeNode("1,null,2");
     DBGT(root);
     auto ans=sol.inorderTraversal(root);
     DBGV(ans);

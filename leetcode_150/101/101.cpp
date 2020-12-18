@@ -18,7 +18,7 @@ int main()
     cout<<boolalpha;
     Solution sol;
 
-    TreeNode*root=maketreenode("1,2,2,3,4,4,3");
+    TreeNode*root=new TreeNode("1,2,2,3,4,4,3");
     DBGT(root);
     auto ans=sol.isSymmetric(root);
     DBG(ans);

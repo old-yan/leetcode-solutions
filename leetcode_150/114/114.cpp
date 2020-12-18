@@ -27,7 +27,7 @@ int main()
     cout<<boolalpha;
     Solution sol;
 
-    TreeNode*root=maketreenode("1,2,5,3,4,null,6");
+    TreeNode*root=new TreeNode("1,2,5,3,4,null,6");
     DBGT(root);
     sol.flatten(root);
     DBGT(root);

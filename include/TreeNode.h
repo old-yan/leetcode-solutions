@@ -17,13 +17,6 @@
 #include <unordered_set>
 using namespace std;
 
-struct TreeNode {
-	int val;
-	TreeNode* left;
-	TreeNode* right;
-	TreeNode(int x) : val(x), left(NULL), right(NULL) {}
-	TreeNode(int x, TreeNode* left, TreeNode* right) : val(x), left(left), right(right) {}
-};
 pair<bool,int> readtreenode(string&s,int &i){
 	if(s[i]=='n'){
 		i+=4;
@@ -42,45 +35,52 @@ pair<bool,int> readtreenode(string&s,int &i){
 		return make_pair(true,val*signal);
 	}
 }
-TreeNode* maketreenode(string s) {
-	if(s[0]=='['&&s.back()==']')s=s.substr(1,s.size()-2);
-	else if(s[0]=='[')s=s.substr(1,s.size()-1);
-	else if(s.back()==']')s.pop_back();
-	TreeNode* p;
-	int i=0;
-	pair<bool,int>pp=readtreenode(s,i);
-	if (!pp.first)return nullptr;
-	else p = new TreeNode(pp.second);
-	queue<TreeNode*>Q;
-	Q.push(p);
-	while (Q.size()) {
-		TreeNode* q = Q.front();
-		Q.pop();
-		if (s[i]) {
-			pp=readtreenode(s,i);
-			if (!pp.first)q->left = nullptr;
-			else {
-				q->left = new TreeNode(pp.second);
-				Q.push(q->left);
+struct TreeNode {
+	int val;
+	TreeNode* left;
+	TreeNode* right;
+	TreeNode() : val(0), left(NULL), right(NULL) {}
+	TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+	TreeNode(int x, TreeNode* _left, TreeNode* _right) : val(x), left(_left), right(_right) {}
+	TreeNode(string s){
+		if(s[0]=='['&&s.back()==']')s=s.substr(1,s.size()-2);
+		else if(s[0]=='[')s=s.substr(1,s.size()-1);
+		else if(s.back()==']')s.pop_back();
+		int i=0;
+		val=0,left=nullptr,right=nullptr;
+		pair<bool,int>pp=readtreenode(s,i);
+		if (!pp.first)return;
+		val=pp.first;
+		queue<TreeNode*>Q;
+		Q.push(this);
+		while (Q.size()) {
+			TreeNode* q = Q.front();
+			Q.pop();
+			if (s[i]) {
+				pp=readtreenode(s,i);
+				if (!pp.first)q->left = nullptr;
+				else {
+					q->left = new TreeNode(pp.second);
+					Q.push(q->left);
+				}
 			}
-		}
-		else q->left = nullptr;
-		if (s[i]) {
-			pp=readtreenode(s,i);
-			if (!pp.first)q->right = nullptr;
-			else {
-				q->right = new TreeNode(pp.second);
-				Q.push(q->right);
+			else q->left = nullptr;
+			if (s[i]) {
+				pp=readtreenode(s,i);
+				if (!pp.first)q->right = nullptr;
+				else {
+					q->right = new TreeNode(pp.second);
+					Q.push(q->right);
+				}
 			}
+			else q->right = nullptr;
 		}
-		else q->right = nullptr;
 	}
-	return p;
-}
-void showtreenode(TreeNode*root){
+};
+ostream&operator<<(ostream&out,TreeNode*root){
 	if(!root){
-		cout<<"empty tree node\n";
-		return;
+		out<<"empty treenode\n";
+		return out;
 	}
 	int maxdepth=0;
 	{
@@ -157,15 +157,15 @@ void showtreenode(TreeNode*root){
 	}
 	unordered_map<char,string>M{{'=',"═"},{'/',"╔"},{'\\',"╗"}};
 	for(int i=0;i<maxdepth;i++){
-		cout<<' ';
+		out<<"\n ";
 		for(int j=0;j<res[i].size();j++){
 			if(res[i][j]=='='){
-				if(M.count(res[i][j+1]))cout<<M[res[i][j]];
-				else cout<<' ';
+				if(M.count(res[i][j+1]))out<<M[res[i][j]];
+				else out<<' ';
 			}
-			else if(M.count(res[i][j]))cout<<M[res[i][j]];
-			else cout<<res[i][j];
+			else if(M.count(res[i][j]))out<<M[res[i][j]];
+			else out<<res[i][j];
 		}
-		cout<<endl;
 	}
+	return out;
 }

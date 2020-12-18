@@ -1,6 +1,7 @@
 #include "utils.h"
 
 class Solution {
+    #define Node NextNode//提交时注释本行
     void fun(Node*p,Node*right){
         if(!right){
             if(p->right)fun(p->right,nullptr);
@@ -36,7 +37,7 @@ int main()
     cout<<boolalpha;
     Solution sol;
 
-    Node*root=makenode("[1,2,3,4,5,null,6,7,null,null,null,null,8]");
+    NextNode*root=new NextNode("[1,2,3,4,5,null,6,7,null,null,null,null,8]");
     DBGN(root);
     auto ans=sol.connect(root);
     DBGN(ans);

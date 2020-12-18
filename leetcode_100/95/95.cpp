@@ -42,11 +42,9 @@ int main()
     cout<<boolalpha;
     Solution sol;
 
-    int n=8;
+    int n=3;
     auto ans=sol.generateTrees(n);
-    for(auto a:ans){
-        DBGT(a);
-    }
+    DBGV(ans);
 
     system("pause");
     return 0;

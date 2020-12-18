@@ -22,7 +22,7 @@ int main()
     cout<<boolalpha;
     Solution sol;
 
-    TreeNode*root=maketreenode("5,4,8,11,null,13,4,7,2,null,null,null,1");
+    TreeNode*root=new TreeNode("5,4,8,11,null,13,4,7,2,null,null,null,1");
     DBGT(root);
     auto ans=sol.hasPathSum(root,22);
     DBG(ans);

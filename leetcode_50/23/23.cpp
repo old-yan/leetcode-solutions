@@ -6,14 +6,14 @@ public:
         auto comp=[&](ListNode*x,ListNode*y){return x->val>y->val;};
         priority_queue<ListNode*,vector<ListNode*>,decltype(comp)>Q(comp);
         for(ListNode*a:lists)if(a)Q.push(a);
-        vi ans;
+        vector<ListNode*>v;
         while(Q.size()){
             auto a=Q.top();
             Q.pop();
-            ans.pb(a->val);
+            v.pb(a);
             if(a->next)Q.push(a->next);
         }
-        return makelistnode(ans);
+        return arrtolist(v);
     }
 };
 

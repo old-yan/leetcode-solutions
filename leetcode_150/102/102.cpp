@@ -28,7 +28,7 @@ int main()
     cout<<boolalpha;
     Solution sol;
 
-    TreeNode*root=maketreenode("3,9,20,null,null,15,7");
+    TreeNode*root=new TreeNode("3,9,20,null,null,15,7");
     DBGT(root);
     auto ans=sol.levelOrder(root);
     DBGVV(ans);

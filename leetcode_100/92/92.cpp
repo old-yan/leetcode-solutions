@@ -5,9 +5,7 @@ public:
     ListNode* reverseBetween(ListNode* head, int m, int n) {
         auto v=listtoarr(head);
         reverse(v.begin()+m-1,v.begin()+n);
-        vi nums;
-        for(auto a:v)nums.pb(a->val);
-        return makelistnode(nums);
+        return arrtolist(v);
     }
 };
 

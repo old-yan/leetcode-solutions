@@ -1,7 +1,9 @@
 #pragma once
 #include "ListNode.h"
 #include "TreeNode.h"
-#include "Node.h"
+#include "NextNode.h"
+#include "Graph.h"
+#include "RandomNode.h"
 using namespace std;
 
 
@@ -29,10 +31,10 @@ using pq = priority_queue<T>;
 #define FORR(i, m, n) for (ll i = m; i >= n; i--)
 #define DBGVV(a) cout << #a << " : \n";for(ll i=0;i<a.size();i++){DBG(i)DBGV(a[i])};
 #define DBGV(a) cout << #a << " : ";for(auto b:a)cout << b << ' ';cout << endl;
-#define DBG(a) cout << #a << " : " << a << "\n";
+#define DBG(a) cout << #a << " : " << a << endl;
 #define DBGL(a) cout << #a;for(auto b=a;b;b=b->next)cout<<' '<<b->val;cout<<endl;
-#define DBGT(a) cout << #a <<endl;showtreenode(a);
-#define DBGN(a) cout << #a <<endl;shownode(a);
+#define DBGT(a) cout << #a << " : \n" << a << endl;
+#define DBGN(a) cout << #a << " : \n" << a << endl;
 #define ALL(v) v.begin(), v.end()
 
 #define pb push_back
@@ -233,4 +235,14 @@ vector<ListNode*> listtoarr(ListNode* p) {
 		p = p->next;
 	}
 	return v;
+}
+
+//数组转链表
+ListNode* arrtolist(vector<ListNode*>&arr){
+	if(arr.empty())return nullptr;
+	REP(i,arr.size()){
+		if(i+1<arr.size())arr[i]->next=arr[i+1];
+		else arr[i]->next=nullptr;
+	}
+	return arr[0];
 }

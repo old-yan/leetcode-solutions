@@ -17,17 +17,7 @@
 #include <unordered_set>
 using namespace std;
 
-struct Node {
-    int val;
-    Node* left;
-    Node* right;
-    Node* next;
-    Node() : val(0), left(NULL), right(NULL), next(NULL) {}
-    Node(int _val) : val(_val), left(NULL), right(NULL), next(NULL) {}
-    Node(int _val, Node* _left, Node* _right, Node* _next)
-        : val(_val), left(_left), right(_right), next(_next) {}
-};
-pair<bool,int> readnode(string&s,int &i){
+pair<bool,int> readnextnode(string&s,int &i){
 	if(s[i]=='n'){
 		i+=4;
 		if(s[i])i++;
@@ -45,49 +35,57 @@ pair<bool,int> readnode(string&s,int &i){
 		return make_pair(true,val*signal);
 	}
 }
-Node* makenode(string s) {
-	if(s[0]=='['&&s.back()==']')s=s.substr(1,s.size()-2);
-	else if(s[0]=='[')s=s.substr(1,s.size()-1);
-	else if(s.back()==']')s.pop_back();
-	Node* p;
-	int i=0;
-	pair<bool,int>pp=readnode(s,i);
-	if (!pp.first)return nullptr;
-	else p = new Node(pp.second);
-	queue<Node*>Q;
-	Q.push(p);
-	while (Q.size()) {
-		Node* q = Q.front();
-		Q.pop();
-		if (s[i]) {
-			pp=readnode(s,i);
-			if (!pp.first)q->left = nullptr;
-			else {
-				q->left = new Node(pp.second);
-				Q.push(q->left);
+struct NextNode {
+    int val;
+    NextNode* left;
+    NextNode* right;
+    NextNode* next;
+    NextNode() : val(0), left(NULL), right(NULL), next(NULL) {}
+    NextNode(int _val) : val(_val), left(NULL), right(NULL), next(NULL) {}
+    NextNode(int _val, NextNode* _left, NextNode* _right, NextNode* _next)
+        : val(_val), left(_left), right(_right), next(_next) {}
+	NextNode(string s){
+		if(s[0]=='['&&s.back()==']')s=s.substr(1,s.size()-2);
+		else if(s[0]=='[')s=s.substr(1,s.size()-1);
+		else if(s.back()==']')s.pop_back();
+		int i=0;
+		pair<bool,int>pp=readnextnode(s,i);
+		if (!pp.first)return;
+		val=0,left=nullptr,right=nullptr,next=nullptr;
+		queue<NextNode*>Q;
+		Q.push(this);
+		while (Q.size()) {
+			NextNode* q = Q.front();
+			Q.pop();
+			if (s[i]) {
+				pp=readnextnode(s,i);
+				if (!pp.first)q->left = nullptr;
+				else {
+					q->left = new NextNode(pp.second);
+					Q.push(q->left);
+				}
 			}
-		}
-		else q->left = nullptr;
-		if (s[i]) {
-			pp=readnode(s,i);
-			if (!pp.first)q->right = nullptr;
-			else {
-				q->right = new Node(pp.second);
-				Q.push(q->right);
+			else q->left = nullptr;
+			if (s[i]) {
+				pp=readnextnode(s,i);
+				if (!pp.first)q->right = nullptr;
+				else {
+					q->right = new NextNode(pp.second);
+					Q.push(q->right);
+				}
 			}
+			else q->right = nullptr;
 		}
-		else q->right = nullptr;
 	}
-	return p;
-}
-void shownode(Node*root){
+};
+ostream&operator<<(ostream&out,NextNode*root){
 	if(!root){
-		cout<<"empty node\n";
-		return;
+		out<<"empty nextnode\n";
+		return out;
 	}
 	int maxdepth=0;
 	{
-		queue<Node*>Q;
+		queue<NextNode*>Q;
 		int depth=0;
 		Q.push(root);
 		while(Q.size()){
@@ -108,7 +106,7 @@ void shownode(Node*root){
 			s[i].resize(((1<<maxdepth)-1)*width);
 			for(char&c:s[i])c=' ';
 		}
-		queue<pair<pair<Node*,int>,int>>Q;
+		queue<pair<pair<NextNode*,int>,int>>Q;
 		int row=0,arm=(1<<maxdepth)/4;
 		Q.push(make_pair(make_pair(root,((1<<maxdepth)-1)/2),0));
 		while(Q.size()){
@@ -162,15 +160,15 @@ void shownode(Node*root){
 	}
 	unordered_map<char,string>M{{'=',"═"},{'/',"╔"},{'\\',"╗"}};
 	for(int i=0;i<maxdepth;i++){
-		cout<<' ';
+		out<<"\n ";
 		for(int j=0;j<res[i].size();j++){
 			if(res[i][j]=='='){
-				if(M.count(res[i][j+1]))cout<<M[res[i][j]];
-				else cout<<' ';
+				if(M.count(res[i][j+1]))out<<M[res[i][j]];
+				else out<<' ';
 			}
-			else if(M.count(res[i][j]))cout<<M[res[i][j]];
-			else cout<<res[i][j];
+			else if(M.count(res[i][j]))out<<M[res[i][j]];
+			else out<<res[i][j];
 		}
-		cout<<endl;
 	}
+	return out;
 }

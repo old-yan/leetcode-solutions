@@ -4,13 +4,13 @@ class Solution {
 public:
     ListNode* partition(ListNode* head, int x) {
         auto v=listtoarr(head);
-        vi v1,v2;
+        vector<ListNode*>v1,v2;
         for(auto a:v){
-            if(a->val<x)v1.pb(a->val);
-            else v2.pb(a->val);
+            if(a->val<x)v1.pb(a);
+            else v2.pb(a);
         }
-        for(int b:v2)v1.pb(b);
-        return makelistnode(v1);
+        for(auto a:v2)v1.pb(a);
+        return arrtolist(v1);
     }
 };
 

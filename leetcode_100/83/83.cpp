@@ -4,14 +4,14 @@ class Solution {
 public:
     ListNode* deleteDuplicates(ListNode* head) {
         auto v=listtoarr(head);
-        vi nums;
+        vector<ListNode*>v2;
         unordered_set<int>S;
         for(auto a:v){
             if(S.insert(a->val).second){
-                nums.pb(a->val);
+                v2.pb(a);
             }
         }
-        return makelistnode(nums);
+        return arrtolist(v2);
     }
 };
 

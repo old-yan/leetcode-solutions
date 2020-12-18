@@ -5,19 +5,19 @@ public:
     ListNode* mergeTwoLists(ListNode* l1, ListNode* l2) {
         auto v1=listtoarr(l1);
         auto v2=listtoarr(l2);
-        vi v;
+        vector<ListNode*>v;
         int i,j;
         for(i=0,j=0;i<v1.size()&&j<v2.size();){
-            if(v1[i]->val<v2[j]->val)v.pb(v1[i++]->val);
-            else v.pb(v2[j++]->val);
+            if(v1[i]->val<v2[j]->val)v.pb(v1[i++]);
+            else v.pb(v2[j++]);
         }
         while(i<v1.size()){
-            v.pb(v1[i++]->val);
+            v.pb(v1[i++]);
         }
         while(j<v2.size()){
-            v.pb(v2[j++]->val);
+            v.pb(v2[j++]);
         }
-        return makelistnode(v);
+        return arrtolist(v);
     }
 };
 
