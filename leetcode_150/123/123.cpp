@@ -5,22 +5,22 @@ public:
     int maxProfit(vector<int>& prices) {
         int n=prices.size();
         if(!n)return 0;
-        int dp[2][2][n];
+        ll dp[2][2][n];
         REP(i,n){
             if(!i){
-                dp[0][0][i]=-INF;
+                dp[0][0][i]=INT_MIN;
                 dp[0][1][i]=-prices[i];
-                dp[1][0][i]=-INF;
-                dp[1][1][i]=-INF;
+                dp[1][0][i]=INT_MIN;
+                dp[1][1][i]=INT_MIN;
             }
             else{
                 dp[0][0][i]=max(dp[0][0][i-1],dp[0][1][i-1]+prices[i]);
-                dp[0][1][i]=max(dp[0][1][i-1],-prices[i]);
+                dp[0][1][i]=max(dp[0][1][i-1],(ll)-prices[i]);
                 dp[1][0][i]=max(dp[1][0][i-1],dp[1][1][i-1]+prices[i]);
                 dp[1][1][i]=max(dp[1][1][i-1],dp[0][0][i-1]-prices[i]);
             }
         }
-        return max(max(0,dp[1][0][n-1]),dp[0][0][n-1]);
+        return max(max((ll)0,dp[1][0][n-1]),dp[0][0][n-1]);
     }
 };
 

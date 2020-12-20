@@ -2,7 +2,7 @@
 
 class Solution {
     vi next,prev,copy;
-    int mindis=INF,ans,target;
+    int mindis=INT_MAX,ans,target;
     void dfs(int i){
         int cursum=copy[i];
         int l=i+1,r=copy.size()-1;

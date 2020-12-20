@@ -19,11 +19,8 @@ using pq = priority_queue<T>;
 //using Graph = vector<vector<ll>>;
 
 #define EPS (1e-7)
-#define INF (1e9)
-#define INFLL (9223372036854775807LL)
 #define PI (acos(-1))
 #define MOD 1000000007LL
-
 
 #define REP(i, n) for (ll i = 0; i < n; i++)
 #define REPR(i, n) for (ll i = n; i >= 0; i--)
@@ -41,32 +38,29 @@ using pq = priority_queue<T>;
 #define mp make_pair
 #define lb lower_bound
 #define ub upper_bound
-#define FST first
-#define SND second
 
 
-//取最大取最小
+// 取最大
 template <class T>
-bool chmax(T& a, const T& b)
-{
-	if (a < b)
-	{
+bool chmax(T& a, const T& b){
+	if (a < b){
 		a = b;
 		return 1;
 	}
-	return 0;
+	else return 0;
 }
+// 取最小
 template <class T>
-bool chmin(T& a, const T& b)
-{
-	if (b < a)
-	{
+bool chmin(T& a, const T& b){
+	if (b < a){
 		a = b;
 		return 1;
 	}
-	return 0;
+	else return 0;
 }
-ListNode* makelistnode(vector<int>v) {
+
+// 从整数数组构造链表
+ListNode* makelistnode(vi v) {
 	if (v.empty())return nullptr;
 	ListNode* p = new ListNode(-1);
 	ListNode* q = p;
@@ -77,7 +71,7 @@ ListNode* makelistnode(vector<int>v) {
 	return p->next;
 }
 
-//图问题，二维矩阵问题
+// 图问题，二维矩阵问题
 const int di[] = { 0,-1,0,1 };
 const int dj[] = { 1,0,-1,0 };
 
@@ -94,6 +88,7 @@ string i2s(ll x){
 	reverse(c,c+idx);
 	return c;
 }
+// 数字转字符串，指定进制
 string i2s(ll x,int radix){
 	if(!x)return "0";
 	if(x<0)return "-"+i2s(-x,radix);
@@ -115,11 +110,10 @@ ll s2i(string s){
 		signal=-1;
 		idx++;
 	}
-	while(idx<s.size()){
-		val=val*10+s[idx++]-'0';
-	}
+	while(idx<s.size())val=val*10+s[idx++]-'0';
 	return signal*val;
 }
+// 字符串转数字，指定进制
 ll s2i(string s,int radix){
 	int signal=1,idx=0;
 	ll val=0;
@@ -127,33 +121,16 @@ ll s2i(string s,int radix){
 		signal=-1;
 		idx++;
 	}
-	while(idx<s.size()){
-		val=val*radix+s[idx++]-'0';
-	}
+	while(idx<s.size())val=val*radix+s[idx++]-'0';
 	return signal*val;
 }
 
 
-//二分搜索模板，在此基础上改写
-int bs(vi& v){
-	int low = 0,high = v.size();
-	while (low<high){
-		int mid = (high + low) / 2;
-		if (true)high = mid;
-		else low = mid+1;
-	}
-	return low;
-}
-
-
 //最大公约数
-ll gcd(ll a, ll b)
-{
-	a = abs(a);
-	b = abs(b);
+ll gcd(ll a, ll b){
+	a = abs(a);b = abs(b);
 	if (a < b)swap(a, b);
-	while (b)
-	{
+	while (b){
 		ll temp = a % b;
 		a = b;
 		b = temp;
@@ -162,21 +139,19 @@ ll gcd(ll a, ll b)
 }
 
 //最小公倍数
-ll lcm(ll a, ll b)
-{
-	ll _gcd = gcd(a, b);
+ll lcm(ll a, ll b){
+	ll _gcd=gcd(a,b);
 	return a / _gcd * b;
 }
 
 //阶乘
 ll factorial(ll a){
-	if(a)return factorial(a-1)*a;
+	if(a>0)return factorial(a-1)*a;
 	else return 1;
 }
 
 //判质
-bool isprime(ll n)
-{
+bool isprime(ll n){
 	if(n<2)return false;
 	if(n==2)return true;
 	if(n%2==0)return false;
@@ -185,10 +160,8 @@ bool isprime(ll n)
 }
 
 //前缀和
-vi presum(vi&a)
-{
-	vi v(a.size() + 1);
-	v[0] = 0;
+vi presum(vi&a){
+	vi v(a.size() + 1,0);
 	REP(i, a.size())v[i + 1] = v[i] + a[i];
 	return v;
 }
@@ -208,7 +181,7 @@ vi next_different(vector<T>&a){
 template<class T>
 vi prev_different(vector<T>&a){
 	vi v(a.size());
-	for(int i=a.size()-1,j;i>=0;){
+	for(int i=int(a.size())-1,j;i>=0;){
 		for(j=i-1;j>=0&&a[j]==a[i];j--);
 		while(i>j)v[i--]=j;
 	}
@@ -218,16 +191,15 @@ vi prev_different(vector<T>&a){
 //获取每个元素的排名
 template<class T>
 vi getrank(vector<T>&a){
-	int n=a.size();
-	int idx[n];
-	REP(i,n)idx[i]=i;
-	sort(idx,idx+n,[&](int x,int y)->bool{return a[x]<a[y];});
-	vi rnk(n);
-	REP(i,n)rnk[idx[i]]=i;
+	int idx[a.size()];
+	REP(i,a.size())idx[i]=i;
+	sort(idx,idx+a.size(),[&](int x,int y)->bool{return a[x]<a[y];});
+	vi rnk(a.size());
+	REP(i,a.size())rnk[idx[i]]=i;
 	return rnk;
 }
 
-//链表转数组
+//链表转结点数组
 vector<ListNode*> listtoarr(ListNode* p) {
 	vector<ListNode*>v;
 	while (p) {
@@ -237,7 +209,7 @@ vector<ListNode*> listtoarr(ListNode* p) {
 	return v;
 }
 
-//数组转链表
+//结点数组转链表
 ListNode* arrtolist(vector<ListNode*>&arr){
 	if(arr.empty())return nullptr;
 	REP(i,arr.size()){
