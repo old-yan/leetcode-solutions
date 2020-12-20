@@ -5,9 +5,8 @@ public:
     vector<int> twoSum(vector<int>& nums, int target) {
         unordered_map<int,int>M;
         REP(i,nums.size()){
-            auto find=M.find(target-nums[i]);
-            if(find!=M.end()){
-                return {find->second,int(i)};
+            if(M.count(target-nums[i])){
+                return {M[target-nums[i]],int(i)};
             }
             M[nums[i]]=i;
         }
