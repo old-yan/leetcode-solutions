@@ -16,6 +16,7 @@
 #include <unordered_map>
 #include <unordered_set>
 #include <iomanip>
+#include <numeric>
 using namespace std;
 
 struct RandomNode{

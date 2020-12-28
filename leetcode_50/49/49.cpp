@@ -6,7 +6,7 @@ public:
         vector<string>copy=strs;
         for(string&s:copy)sort(ALL(s));
         int idx[copy.size()];
-        REP(i,copy.size())idx[i]=i;
+        iota(idx,idx+copy.size(),0);
         sort(idx,idx+copy.size(),[&](int x,int y)->bool{return copy[x]<copy[y];});
         vector<vector<string>>ans;
         for(int i=0,j;i<copy.size();i=j){

@@ -15,6 +15,8 @@
 #include <set>
 #include <unordered_map>
 #include <unordered_set>
+#include <iomanip>
+#include <numeric>
 using namespace std;
 
 pair<bool,int> readtreenode(string&s,int &i){
@@ -50,7 +52,7 @@ struct TreeNode {
 		val=0,left=nullptr,right=nullptr;
 		pair<bool,int>pp=readtreenode(s,i);
 		if (!pp.first)return;
-		val=pp.first;
+		val=pp.second;
 		queue<TreeNode*>Q;
 		Q.push(this);
 		while (Q.size()) {

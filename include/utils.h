@@ -4,8 +4,10 @@
 #include "NextNode.h"
 #include "Graph.h"
 #include "RandomNode.h"
+#include "Union.h"
+#include "Trie.h"
 using namespace std;
-
+#define LOCAL_DEBUG
 
 typedef long long ll;
 using vi = vector<int>;
@@ -26,12 +28,21 @@ using pq = priority_queue<T>;
 #define REPR(i, n) for (ll i = n; i >= 0; i--)
 #define FOR(i, m, n) for (ll i = m; i < n; i++)
 #define FORR(i, m, n) for (ll i = m; i >= n; i--)
+#ifdef LOCAL_DEBUG
 #define DBGVV(a) cout << #a << " : \n";for(ll i=0;i<a.size();i++){DBG(i)DBGV(a[i])};
 #define DBGV(a) cout << #a << " : ";for(auto b:a)cout << b << ' ';cout << endl;
 #define DBG(a) cout << #a << " : " << a << endl;
 #define DBGL(a) cout << #a;for(auto b=a;b;b=b->next)cout<<' '<<b->val;cout<<endl;
 #define DBGT(a) cout << #a << " : \n" << a << endl;
 #define DBGN(a) cout << #a << " : \n" << a << endl;
+#else
+#define DBGVV(a)
+#define DBGV(a)
+#define DBG(a)
+#define DBGL(a)
+#define DBGT(a)
+#define DBGN(a)
+#endif
 #define ALL(v) v.begin(), v.end()
 
 #define pb push_back
@@ -192,7 +203,7 @@ vi prev_different(vector<T>&a){
 template<class T>
 vi getrank(vector<T>&a){
 	int idx[a.size()];
-	REP(i,a.size())idx[i]=i;
+	iota(idx,idx+a.size(),0);
 	sort(idx,idx+a.size(),[&](int x,int y)->bool{return a[x]<a[y];});
 	vi rnk(a.size());
 	REP(i,a.size())rnk[idx[i]]=i;
@@ -217,4 +228,45 @@ ListNode* arrtolist(vector<ListNode*>&arr){
 		else arr[i]->next=nullptr;
 	}
 	return arr[0];
+}
+
+//求KMP算法的next数组
+vi getnext(string&needle){
+	vi next(needle.size());
+	for(int i=0,j=-1;i<needle.size();i++){
+		if(!i)next[i]=j;
+		else{
+			while(j>=0&&needle[i-1]!=needle[j])j=next[j];
+			next[i]=++j>=0&&needle[i]==needle[j]?next[j]:j;
+		}
+	}
+	return next;
+}
+
+//求马拉车算法的臂长数组
+vi getarm(string&s){
+	string s2="^#";
+    for(char c:s){s2+=c;s2+="#";}
+    s2+='$';
+	int middle,maxright=0;
+	vi arm(s2.size(),0);
+	FOR(i,1,s2.size()-1){
+		if(i<=maxright){
+			int opp=middle*2-i;
+			if(opp-arm[opp]==middle*2-maxright){
+				int l=i-arm[opp],r=i+arm[opp];
+				while(l>0&&r<s2.size()&&s2[l-1]==s2[r+1]){l--,r++;}
+				arm[i]=r-i;
+				if(chmax(maxright,r))middle=i;
+			}
+			else arm[i]=min(arm[opp],maxright-int(i));
+		}
+		else{
+			int l=i,r=i;
+			while(l>0&&r<s2.size()&&s2[l-1]==s2[r+1]){l--,r++;}
+			arm[i]=r-i;
+			if(chmax(maxright,r))middle=i;
+		}
+	}
+	return arm;
 }

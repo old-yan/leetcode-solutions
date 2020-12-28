@@ -15,6 +15,8 @@
 #include <set>
 #include <unordered_map>
 #include <unordered_set>
+#include <iomanip>
+#include <numeric>
 using namespace std;
 
 pair<bool,int> readnextnode(string&s,int &i){
