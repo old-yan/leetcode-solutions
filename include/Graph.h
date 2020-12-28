@@ -24,7 +24,6 @@ struct GraphNode{
     vector<GraphNode*>neighbors;
     GraphNode(int _val):val(_val){}
 };
-
 struct Graph {
     int m;
     vector<GraphNode*>vertices;
@@ -64,7 +63,6 @@ struct Graph {
         vertices.resize(m);
     }
 };
-
 ostream&operator<<(ostream&out,GraphNode*p){
     Graph g(p);
     if(!g.m){
@@ -86,7 +84,6 @@ ostream&operator<<(ostream&out,GraphNode*p){
     }
     return out;
 }
-
 ostream&operator<<(ostream&out,Graph*g){
     if(!g->m){
         out<<"empty graph\n";

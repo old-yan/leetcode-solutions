@@ -12,7 +12,7 @@ public:
             right[A[1]].pb(A[2]);
         }
         vvi ans;
-        mset<int>pool{0};
+        multiset<int>pool{0};
         int now_height=0;
         for(int a:points){
             for(int b:left[a]){

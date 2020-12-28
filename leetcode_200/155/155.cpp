@@ -1,7 +1,7 @@
 #include "utils.h"
 
 class MinStack {
-    mset<int>data;
+    multiset<int>data;
     stack<int>S;
 public:
     MinStack() {}

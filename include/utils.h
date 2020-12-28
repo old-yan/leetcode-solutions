@@ -12,18 +12,10 @@ using namespace std;
 typedef long long ll;
 using vi = vector<int>;
 using vvi = vector<vector<int>>;
-template <class T1, class T2>
-using mmap = multimap<T1, T2>;
-template <class T>
-using mset = multiset<T>;
-template <class T>
-using pq = priority_queue<T>;
 //using Graph = vector<vector<ll>>;
-
 #define EPS (1e-7)
 #define PI (acos(-1))
 #define MOD 1000000007LL
-
 #define REP(i, n) for (ll i = 0; i < n; i++)
 #define REPR(i, n) for (ll i = n; i >= 0; i--)
 #define FOR(i, m, n) for (ll i = m; i < n; i++)
@@ -44,12 +36,7 @@ using pq = priority_queue<T>;
 #define DBGN(a)
 #endif
 #define ALL(v) v.begin(), v.end()
-
 #define pb push_back
-#define mp make_pair
-#define lb lower_bound
-#define ub upper_bound
-
 
 // 取最大
 template <class T>
@@ -246,7 +233,10 @@ vi getnext(string&needle){
 //求马拉车算法的臂长数组
 vi getarm(string&s){
 	string s2="^#";
-    for(char c:s){s2+=c;s2+="#";}
+    for(char c:s){
+		s2+=c;
+		s2+="#";
+	}
     s2+='$';
 	int middle,maxright=0;
 	vi arm(s2.size(),0);
