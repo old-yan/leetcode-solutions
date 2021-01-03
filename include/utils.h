@@ -6,6 +6,7 @@
 #include "RandomNode.h"
 #include "Union.h"
 #include "Trie.h"
+#include "zkwTree.h"
 using namespace std;
 #define LOCAL_DEBUG
 
@@ -148,6 +149,15 @@ ll factorial(ll a){
 	else return 1;
 }
 
+//组合数
+ll combination(ll m, ll n){
+	static ll f[20]={0};
+	if(!f[0]){
+		for(int i=0;i<20;i++)f[i]=i?f[i-1]*i:1;
+	}
+	return f[m]/f[n]/f[m-n];
+}
+
 //判质
 bool isprime(ll n){
 	if(n<2)return false;
@@ -158,8 +168,8 @@ bool isprime(ll n){
 }
 
 //前缀和
-vi presum(vi&a){
-	vi v(a.size() + 1,0);
+vector<ll> presum(vi&a){
+	vector<ll> v(a.size() + 1,0);
 	REP(i, a.size())v[i + 1] = v[i] + a[i];
 	return v;
 }
@@ -186,7 +196,7 @@ vi prev_different(vector<T>&a){
 	return v;
 }
 
-//获取每个元素的排名
+//获取每个元素的排名(无并列)
 template<class T>
 vi getrank(vector<T>&a){
 	int idx[a.size()];
@@ -194,6 +204,20 @@ vi getrank(vector<T>&a){
 	sort(idx,idx+a.size(),[&](int x,int y)->bool{return a[x]<a[y];});
 	vi rnk(a.size());
 	REP(i,a.size())rnk[idx[i]]=i;
+	return rnk;
+}
+
+//获取每个元素的排名(算并列)，离散化
+template<class T>
+vi getrank2(vector<T>&a){
+	int idx[a.size()];
+	iota(idx,idx+a.size(),0);
+	sort(idx,idx+a.size(),[&](int x,int y)->bool{return a[x]<a[y];});
+	vi rnk(a.size());
+	for(int i=0,j,k=0;i<a.size();k++){
+		for(j=i+1;j<a.size()&&a[idx[j]]==a[idx[i]];j++);
+		while(i<j)rnk[idx[i++]]=k;
+	}
 	return rnk;
 }
 
@@ -259,4 +283,13 @@ vi getarm(string&s){
 		}
 	}
 	return arm;
+}
+
+//判断是否对称
+template<class iterator>
+bool isPolindromic(iterator begin,iterator end){
+	while(begin<end){
+		if(*begin++!=*--end)return false;
+	}
+	return true;
 }

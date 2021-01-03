@@ -32,6 +32,10 @@ public:
         size=new int[n];
         fill(size,size+n,1);
     }
+    ~Union(){
+        delete []find;
+        delete []size;
+    }
     int Find(int i){
         if(find[i]==i)return i;
         else return find[i]=Find(find[i]);

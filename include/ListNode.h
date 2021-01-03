@@ -24,4 +24,5 @@ struct ListNode {
 	ListNode* next;
 	ListNode() :val(-1), next(NULL) {}
 	ListNode(int x) : val(x), next(NULL) {}
+	ListNode(int x,ListNode*_next):val(x),next(_next){}
 };
