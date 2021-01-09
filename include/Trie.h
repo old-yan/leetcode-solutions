@@ -18,6 +18,7 @@
 #include <iomanip>
 #include <numeric>
 using namespace std;
+#define OLDYAN_TRIE
 
 //动态字典树
 class DynamicTrie {
@@ -100,12 +101,9 @@ public:
             memset((*this)[size],0,size*TRIEN*sizeof(int));
             size<<=1;
             data[d]=first;
-            pool.reset(first);
         }
-        else{
-            idx=first;
-            pool.reset(first);
-        }
+        else idx=first;
+        pool.reset(first);
     }
     void Free(int&idx){
         pool.set(idx);
@@ -115,7 +113,7 @@ public:
         int res=0;
         if(i==word.size()){
             if(!(*this)[cur][26]){
-                (*this)[cur][26]=_signal+1;
+                (*this)[cur][26]=_signal;
                 ++res;
             }
         }
@@ -129,7 +127,7 @@ public:
         return res;
     }
     void insert(string&word,int _signal=1) {
-        insert(0,word,0,_signal);
+        insert(0,word,0,_signal+1);
     }
     int search(string&word) {
         int cur=0;
@@ -150,6 +148,46 @@ public:
             cur=(*this)[cur][prefix[i]-'a'];
         }
         return true;
+    }
+    #undef TRIEN
+};
+
+//二叉字典树
+class BiTrie {
+    #define TRIEN 2
+public:
+    int*data,used,default_val;
+    BiTrie(int size=1,int _default_val=0):used(1),default_val(_default_val){
+        int count=1,j=1;
+        for(int i=0;i<32;i++){
+            j=min(j*2,size);
+            count+=j;
+        }
+        data=(int*)malloc(count*TRIEN*sizeof(int));
+        memset(data,0,count*TRIEN*sizeof(int));
+    }
+    ~BiTrie(){free(data);}
+    void insert(int num){
+        int cur=0;
+        for(int i=31;i>=0;i--){
+            int&next=data[cur*TRIEN+((num>>i)&1)];
+            if(!next)next=used++;
+            cur=next;
+        }
+    }
+    int searchMax(int num) {
+        if(used==1)return default_val;
+        int cur=0,maxSame=0;
+        for(int i=31;i>=0;i--){
+            maxSame<<=1;
+            int next=data[cur*TRIEN+((num>>i)&1)];
+            if(next){
+                cur=next;
+                maxSame++;
+            }
+            else cur=data[cur*TRIEN+!((num>>i)&1)];
+        }
+        return maxSame;
     }
     #undef TRIEN
 };

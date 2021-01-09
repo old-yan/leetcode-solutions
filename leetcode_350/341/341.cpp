@@ -1,22 +1,9 @@
 #include "utils.h"
 
-class NestedInteger {
-    vector<NestedInteger>data;
-    int idx;
-    int val;
-    bool signal;
-public:
-    NestedInteger(int num):val(num),signal(true){}
-    NestedInteger(vector<NestedInteger>_data):data(_data),idx(0),signal(false){}
-    bool isInteger() const{return signal;}
-    int getInteger() const{return val;}
-    const vector<NestedInteger> &getList() const{return data;}
-};
-
 class NestedIterator {
     stack<const NestedInteger*>S;
 public:
-    NestedIterator(vector<NestedInteger>&nestedList){
+    NestedIterator(const vector<NestedInteger>&nestedList){
         for(auto it=nestedList.rbegin();it!=nestedList.rend();++it){
             S.push(&(*it));
         }
@@ -49,8 +36,9 @@ int main()
 {
     cout<<boolalpha;
 
-    vector<NestedInteger>nestedList{1,NestedInteger({4,{6}})};
-    NestedIterator*obj=new NestedIterator(nestedList);
+    NestedInteger ni=makenestedinteger("[1,[4,[6]]]").getList();
+    DBG(ni);
+    NestedIterator*obj=new NestedIterator(ni.getList());
     while(obj->hasNext()){
         DBG(obj->next());
     }

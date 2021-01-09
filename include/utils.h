@@ -7,6 +7,10 @@
 #include "Union.h"
 #include "Trie.h"
 #include "zkwTree.h"
+#include "NestedInteger.h"
+#include "QuadTree.h"
+#include "MultiTreeNode.h"
+#include "DuLinkList.h"
 using namespace std;
 #define LOCAL_DEBUG
 
@@ -59,6 +63,7 @@ bool chmin(T& a, const T& b){
 }
 
 // 从整数数组构造链表
+#ifdef OLDYAN_LISTNODE
 ListNode* makelistnode(vi v) {
 	if (v.empty())return nullptr;
 	ListNode* p = new ListNode(-1);
@@ -69,6 +74,62 @@ ListNode* makelistnode(vi v) {
 	}
 	return p->next;
 }
+#endif
+
+// 从字符串构造整形嵌套列表
+#ifdef OLDYAN_NESTEDINTEGER
+NestedInteger makenestedinteger(string s){
+	stack<vector<NestedInteger>*>S;
+	bool hasnumber=false,minus=false;
+	int val=0;
+	vector<NestedInteger>*last=nullptr;
+	for(char c:s){
+		if(c=='['){
+			S.push(new vector<NestedInteger>);
+		}
+		else if(c==','||c==']'){
+			if(hasnumber){
+				hasnumber=false;
+				if(minus){
+					minus=false;
+					val*=-1;
+				}
+				S.top()->emplace_back(val);
+				val=0;
+			}
+			else{
+				if(last){
+					auto p=NestedInteger();
+					for(auto a:*last)p.add(a);
+					S.top()->emplace_back(p);
+					delete last;
+					last=nullptr;
+				}
+			}
+			if(c==']'){
+				last=S.top();
+				S.pop();
+			}
+		}
+		else{
+			hasnumber=true;
+			if(c=='-')minus=true;
+			else{
+				val=val*10+(c-'0');
+			}
+		}
+	}
+	if(hasnumber)return NestedInteger(minus?-val:val);
+	else{
+		auto p=NestedInteger();
+		if(last){
+			for(auto a:*last)p.add(a);
+			delete last;
+		}
+		return p;
+	}
+}
+#endif
 
 // 图问题，二维矩阵问题
 const int di[] = { 0,-1,0,1 };
@@ -125,7 +186,7 @@ ll s2i(string s,int radix){
 }
 
 
-//最大公约数
+// 最大公约数
 ll gcd(ll a, ll b){
 	a = abs(a);b = abs(b);
 	if (a < b)swap(a, b);
@@ -137,19 +198,19 @@ ll gcd(ll a, ll b){
 	return a;
 }
 
-//最小公倍数
+// 最小公倍数
 ll lcm(ll a, ll b){
 	ll _gcd=gcd(a,b);
 	return a / _gcd * b;
 }
 
-//阶乘
+// 阶乘
 ll factorial(ll a){
 	if(a>0)return factorial(a-1)*a;
 	else return 1;
 }
 
-//组合数
+// 组合数
 ll combination(ll m, ll n){
 	static ll f[20]={0};
 	if(!f[0]){
@@ -158,7 +219,7 @@ ll combination(ll m, ll n){
 	return f[m]/f[n]/f[m-n];
 }
 
-//判质
+// 判质
 bool isprime(ll n){
 	if(n<2)return false;
 	if(n==2)return true;
@@ -167,14 +228,14 @@ bool isprime(ll n){
 	return true;
 }
 
-//前缀和
+// 前缀和
 vector<ll> presum(vi&a){
 	vector<ll> v(a.size() + 1,0);
 	REP(i, a.size())v[i + 1] = v[i] + a[i];
 	return v;
 }
 
-//下一个不同处
+// 下一个不同处
 template<class T>
 vi next_different(vector<T>&a){
 	vi v(a.size());
@@ -185,7 +246,7 @@ vi next_different(vector<T>&a){
 	return v;
 }
 
-//上一个不同处
+// 上一个不同处
 template<class T>
 vi prev_different(vector<T>&a){
 	vi v(a.size());
@@ -196,7 +257,7 @@ vi prev_different(vector<T>&a){
 	return v;
 }
 
-//获取每个元素的排名(无并列)
+// 获取每个元素的排名(无并列)
 template<class T>
 vi getrank(vector<T>&a){
 	int idx[a.size()];
@@ -207,7 +268,7 @@ vi getrank(vector<T>&a){
 	return rnk;
 }
 
-//获取每个元素的排名(算并列)，离散化
+// 获取每个元素的排名(算并列)，离散化
 template<class T>
 vi getrank2(vector<T>&a){
 	int idx[a.size()];
@@ -221,7 +282,8 @@ vi getrank2(vector<T>&a){
 	return rnk;
 }
 
-//链表转结点数组
+// 链表转结点数组
+#ifdef OLDYAN_LISTNODE
 vector<ListNode*> listtoarr(ListNode* p) {
 	vector<ListNode*>v;
 	while (p) {
@@ -230,8 +292,10 @@ vector<ListNode*> listtoarr(ListNode* p) {
 	}
 	return v;
 }
+#endif
 
-//结点数组转链表
+// 结点数组转链表
+#ifdef OLDYAN_LISTNODE
 ListNode* arrtolist(vector<ListNode*>&arr){
 	if(arr.empty())return nullptr;
 	REP(i,arr.size()){
@@ -240,8 +304,9 @@ ListNode* arrtolist(vector<ListNode*>&arr){
 	}
 	return arr[0];
 }
+#endif
 
-//求KMP算法的next数组
+// 求KMP算法的next数组
 vi getnext(string&needle){
 	vi next(needle.size());
 	for(int i=0,j=-1;i<needle.size();i++){
@@ -254,7 +319,7 @@ vi getnext(string&needle){
 	return next;
 }
 
-//求马拉车算法的臂长数组
+// 求马拉车算法的臂长数组
 vi getarm(string&s){
 	string s2="^#";
     for(char c:s){
@@ -285,7 +350,7 @@ vi getarm(string&s){
 	return arm;
 }
 
-//判断是否对称
+// 判断是否对称
 template<class iterator>
 bool isPolindromic(iterator begin,iterator end){
 	while(begin<end){

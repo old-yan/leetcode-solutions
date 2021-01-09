@@ -18,6 +18,7 @@
 #include <iomanip>
 #include <numeric>
 using namespace std;
+#define OLDYAN_NEXTNODE
 
 pair<bool,int> readnextnode(string&s,int &i){
 	if(s[i]=='n'){

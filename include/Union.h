@@ -18,6 +18,7 @@
 #include <iomanip>
 #include <numeric>
 using namespace std;
+#define OLDYAN_UNION
 
 //并查集
 class Union{

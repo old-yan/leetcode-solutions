@@ -18,6 +18,7 @@
 #include <iomanip>
 #include <numeric>
 using namespace std;
+#define OLDYAN_RANDOMNODE
 
 struct RandomNode{
     int val;
@@ -56,7 +57,6 @@ RandomNode*makerandomnode(string s){
 			i++;
 		}
 	}
-	cout<<v.size()<<' '<<v2.size();
 	for(int i=0;i<v.size();i++){
 		if(v2[i]>=0){
 			v[i]->random=v[v2[i]];

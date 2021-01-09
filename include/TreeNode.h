@@ -18,6 +18,7 @@
 #include <iomanip>
 #include <numeric>
 using namespace std;
+#define OLDYAN_TREENODE
 
 pair<bool,int> readtreenode(string&s,int &i){
 	if(s[i]=='n'){

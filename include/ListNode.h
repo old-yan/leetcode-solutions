@@ -18,6 +18,7 @@
 #include <iomanip>
 #include <numeric>
 using namespace std;
+#define OLDYAN_LISTNODE
 
 struct ListNode {
 	int val;

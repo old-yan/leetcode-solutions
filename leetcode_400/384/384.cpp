@@ -1,19 +1,21 @@
 #include "utils.h"
 
 class Solution {
+    vi nums;
+    vi*original;
 public:
-    Solution(vector<int>& nums) {
-
-    }
-    
-    /** Resets the array to its original configuration and return it. */
+    Solution(vector<int>&_nums):original(&_nums){}
     vector<int> reset() {
-
+        return *original;
     }
-    
-    /** Returns a random shuffling of the array. */
     vector<int> shuffle() {
-
+        zkwTree T(original->size(),1);
+        REP(i,original->size()){
+            int j=T.find_nth(rand()%(original->size()-i));
+            T.set(j,0);
+            nums[i]=(*original)[j];
+        }
+        return nums;
     }
 };
 

@@ -18,6 +18,7 @@
 #include <iomanip>
 #include <numeric>
 using namespace std;
+#define OLDYAN_ZKWTREE
 
 //最大值线段树
 class zkwMaxTree{
@@ -130,10 +131,14 @@ class zkwTree{
 public:
     int*data;
     int X;
-    zkwTree(int n=100005){
+    zkwTree(int n=100005,int _default_val=0){
         for(X=4;X<n;X<<=1);
         data=new int[X*2];
-        memset(data,0,X*2*sizeof(int));
+        memset(data+X,0,X*sizeof(int));
+        fill(data+X,data+X*2,_default_val);
+        for(int i=X-1;i;i--){
+            data[i]=data[i*2]+data[i*2+1];
+        }
     }
     zkwTree(vector<int>&nums){
         for(X=4;X<nums.size();X<<=1);
@@ -171,5 +176,19 @@ public:
             return res;
         }
         else return data[l+X];
+    }
+    int find_nth(int n){
+        if(n>=data[1])return -1;
+        int i=1;
+        while(i<X){
+            if(data[i*2]>=n+1){
+                i<<=1;
+            }
+            else{
+                n-=data[i*2];
+                i=i*2+1;
+            }
+        }
+        return i-X;
     }
 };
