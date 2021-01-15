@@ -111,23 +111,11 @@ public:
     }
     string getMaxKey() {
         if(M.empty())return "";
-        vector<string>v;
-        for(auto it:M){
-            if(it.second==tail->prev){
-                v.emplace_back(it.first);
-            }
-        }
-        return v[rand()%v.size()];
+        return tail->prev->v[rand()%tail->prev->v.size()];
     }
     string getMinKey() {
         if(M.empty())return "";
-        vector<string>v;
-        for(auto it:M){
-            if(it.second==head->next){
-                v.emplace_back(it.first);
-            }
-        }
-        return v[rand()%v.size()];
+        return head->next->v[rand()%head->next->v.size()];
     }
 };
 
@@ -136,8 +124,8 @@ int main()
     cout<<boolalpha;
 
     AllOne*obj=new AllOne();
-	obj->getMaxKey();
-	obj->getMinKey();
+	DBG(obj->getMaxKey());
+	DBG(obj->getMinKey());
 
     system("pause");
     return 0;
