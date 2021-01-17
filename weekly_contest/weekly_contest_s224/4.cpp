@@ -26,47 +26,64 @@ class Solution {
             pos d[2];
         };
     };
-    #define MAXSTEP 100
+    //最大搜索1000层，实际100层即可，老鼠100层内吃不到食物，则以后也吃不上了
+    #define MAXSTEP 1000
     //cpos,mpos,fpos分别表示猫/老鼠/食物的位置
     pos cpos,mpos,fpos;
     //cur表示当前状态
     state cur;
-    //dp数组用作记忆化，避免重复搜索
-    int dp[2][8][8][8][8][MAXSTEP+1];
+    //dp数组用作记忆化，避免重复搜索，由于dp数值取值范围较小，使用char类型就够用
+    char dp[2][8][8][8][8][MAXSTEP+1];
+    //猫视角的dfs，当前轮猫走
     int cat_dfs(state&e,int step){
-        int&cur=dp[0][e.c[0]][e.c[1]][e.c[2]][e.c[3]][step];
+        //用cur作为dp的引用，避免后续写起来繁琐
+        char&cur=dp[0][e.c[0]][e.c[1]][e.c[2]][e.c[3]][step];
+        //若以前来过，直接取值
         if(cur>=0)return cur;
+        //若到达搜索次数上限，猫和老鼠都没吃到食物，猫赢
         if(step==MAXSTEP)return cur=1;
+        //猫吃食物猫赢
         if(e.d[0]==fpos)return cur=1;
+        //老鼠吃食物猫输
         if(e.d[1]==fpos)return cur=0;
+        //old记录猫的原行号，start-end是猫可以跳的行号范围
         int old=e.c[0],start=up[0][e.c[0]][e.c[1]],end=down[0][e.c[0]][e.c[1]];
         for(e.c[0]=start;e.c[0]<=end;e.c[0]++){
+            //若猫可以走到老鼠位置，则猫赢
             if(e.d[0]==e.d[1]){
                 e.c[0]=old;
                 return cur=1;
             }
+            //若可以走到一个对老鼠不利的位置，则猫赢
             if(!iswall[e.c[0]][e.c[1]]&&!mouse_dfs(e,step+1)){
                 e.c[0]=old;
                 return cur=1;
             }
         }
+        //复原猫行号
         e.c[0]=old;
+        //old记录猫的原列号，start-end是猫可以跳的列号范围
         old=e.c[1],start=left[0][e.c[0]][e.c[1]],end=right[0][e.c[0]][e.c[1]];
         for(e.c[1]=start;e.c[1]<=end;e.c[1]++){
+            //若猫可以走到老鼠位置，则猫赢
             if(e.d[0]==e.d[1]){
                 e.c[1]=old;
                 return cur=1;
             }
+            //若可以走到一个对老鼠不利的位置，则猫赢
             if(!iswall[e.c[0]][e.c[1]]&&!mouse_dfs(e,step+1)){
                 e.c[1]=old;
                 return cur=1;
             }
         }
+        //复原猫列号
         e.c[1]=old;
+        //由于不管怎么走猫都赢不了，所以猫输
         return cur=0;
     }
+    //老鼠视角的dfs，当前轮老鼠走，和猫的dfs完全一致，翻过来思考即可
     int mouse_dfs(state&e,int step){
-        int&cur=dp[1][e.c[0]][e.c[1]][e.c[2]][e.c[3]][step];
+        char&cur=dp[1][e.c[0]][e.c[1]][e.c[2]][e.c[3]][step];
         if(cur>=0)return cur;
         if(step==MAXSTEP)return cur=0;
         if(e.d[0]==fpos)return cur=0;
