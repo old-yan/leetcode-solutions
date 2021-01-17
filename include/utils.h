@@ -1,12 +1,12 @@
 #pragma once
-#include "ListNode.h"
+// #include "ListNode.h"
 // 头文件太多会拖慢编译速度，平时没有必要都include进来，随便include几个常用的即可
-#include "TreeNode.h"
+// #include "TreeNode.h"
 // #include "NextNode.h"
 // #include "Graph.h"
 // #include "RandomNode.h"
 #include "Union.h"
-// #include "Trie.h"
+#include "Trie.h"
 #include "zkwTree.h"
 // #include "NestedInteger.h"
 // #include "QuadTree.h"
