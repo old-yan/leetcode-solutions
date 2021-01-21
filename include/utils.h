@@ -1,16 +1,16 @@
 #pragma once
-// #include "ListNode.h"
+#include "ListNode.h"
 // 头文件太多会拖慢编译速度，平时没有必要都include进来，随便include几个常用的即可
-// #include "TreeNode.h"
+#include "TreeNode.h"
 // #include "NextNode.h"
 // #include "Graph.h"
 // #include "RandomNode.h"
-#include "Union.h"
-#include "Trie.h"
-#include "zkwTree.h"
+// #include "Union.h"
+// #include "Trie.h"
+// #include "zkwTree.h"
 // #include "NestedInteger.h"
 // #include "QuadTree.h"
-// #include "MultiTreeNode.h"
+#include "MultiTreeNode.h"
 // #include "DuLinkList.h"
 using namespace std;
 #define LOCAL_DEBUG
@@ -65,7 +65,7 @@ bool chmin(T& a, const T& b){
 
 // 从整数数组构造链表
 #ifdef OLDYAN_LISTNODE
-ListNode* makelistnode(vi v) {
+ListNode* makelistnode(const vi&v) {
 	if (v.empty())return nullptr;
 	ListNode* p = new ListNode(-1);
 	ListNode* q = p;
@@ -79,7 +79,7 @@ ListNode* makelistnode(vi v) {
 
 // 从字符串构造整形嵌套列表
 #ifdef OLDYAN_NESTEDINTEGER
-NestedInteger makenestedinteger(string s){
+NestedInteger makenestedinteger(const string&s){
 	stack<vector<NestedInteger>*>S;
 	bool hasnumber=false,minus=false;
 	int val=0;
@@ -164,7 +164,7 @@ string i2s(ll x,int radix){
 }
 
 // 字符串转数字
-ll s2i(string s){
+ll s2i(const string&s){
 	int signal=1,idx=0;
 	ll val=0;
 	if(s[0]=='-'){
@@ -175,7 +175,7 @@ ll s2i(string s){
 	return signal*val;
 }
 // 字符串转数字，指定进制
-ll s2i(string s,int radix){
+ll s2i(const string&s,int radix){
 	int signal=1,idx=0;
 	ll val=0;
 	if(s[0]=='-'){
@@ -308,7 +308,7 @@ ListNode* arrtolist(vector<ListNode*>&arr){
 #endif
 
 // 求KMP算法的next数组
-vi getnext(string&needle){
+vi getnext(const string&needle){
 	vi next(needle.size());
 	for(int i=0,j=-1;i<needle.size();i++){
 		if(!i)next[i]=j;
@@ -321,7 +321,7 @@ vi getnext(string&needle){
 }
 
 // 求马拉车算法的臂长数组
-vi getarm(string&s){
+vi getarm(const string&s){
 	string s2="^#";
     for(char c:s){
 		s2+=c;
@@ -358,4 +358,22 @@ bool isPolindromic(iterator begin,iterator end){
 		if(*begin++!=*--end)return false;
 	}
 	return true;
+}
+
+//判断从cur到next再到query的拐弯方向
+//左拐返回2，右拐返回4，不变线的话前进返回1，后退小步返回-1，后退大步返回3
+//对cur与next重合、query与cur重合、query与next重合的情况无定义
+template<class T>
+int getDirection(T*cur,T*next,T*query){
+	T x1=*next-*cur;
+	T y1=*(next+1)-*(cur+1);
+	T x2=*query-*next;
+	T y2=*(query+1)-*(next+1);
+	T res=x1*y2-x2*y1;
+	if(res>0)return 2;
+	else if(res<0)return 4;
+	res=x1*x2+y1*y2;
+	if(res>0)return 1;
+	else if(abs(x2)<abs(x1)||abs(y2)<abs(y1))return -1;
+	else return 3;
 }

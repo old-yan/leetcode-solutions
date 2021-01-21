@@ -3,18 +3,12 @@
 //typedef DynamicTrie SOMETRIE;
 typedef StaticTrie SOMETRIE;
 //动态Trie树和静态Trie树，继承两者其一即可
-//为什么必须要重写虚函数：因为调用的时候是值传参，而父类中都是引用传参
+//为什么必须要重写虚函数：因为模板里的Trie的search方法返回的是int类型
 
-class Trie:public SOMETRIE{
+class Trie:public SomeTrie{
 public:
-	virtual void insert(string word){
-		SOMETRIE::insert(word);
-	}
-    virtual bool search(string word){
-        return SOMETRIE::search(word)>=0;
-    }
-	virtual bool startsWith(string word){
-        return SOMETRIE::startsWith(word);
+    bool search(string word){
+        return SomeTrie::search(word)>=0;
     }
 };
 

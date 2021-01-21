@@ -45,7 +45,7 @@ struct DuLinkList{
     DuLinkList*child;
 	DuLinkList() :val(-1),prev(nullptr),next(NULL),child(nullptr) {}
 	DuLinkList(int x) : val(x),prev(nullptr),next(nullptr),child(nullptr) {}
-    DuLinkList(string s):DuLinkList(){
+    DuLinkList(const string&s):DuLinkList(){
         if(s[0]=='['&&s.back()==']')s=s.substr(1,s.size()-2);
 		else if(s[0]=='[')s=s.substr(1,s.size()-1);
 		else if(s.back()==']')s.pop_back();

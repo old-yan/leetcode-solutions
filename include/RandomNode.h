@@ -28,7 +28,7 @@ struct RandomNode{
     RandomNode(int _val):val(_val),next(nullptr),random(nullptr) {}
 	RandomNode(int _val,RandomNode*_next,RandomNode*_random):val(_val),next(_next),random(_random) {}
 };
-RandomNode*makerandomnode(string s){
+RandomNode*makerandomnode(const string&s){
 	vector<RandomNode*>v;
 	vector<int>v2;
 	for(int i=0;i<s.size()&&s[i]!=']';){

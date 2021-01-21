@@ -35,7 +35,7 @@ public:
             if(child[i])delete child[i];
         }
     }
-    int insert(string&word,int i,int _signal) {
+    int insert(const string&word,int i,int _signal) {
         int res=0;
         if(i==word.size()){
             if(signal<0){
@@ -52,19 +52,19 @@ public:
         num_of_son+=res;
         return res;
     }
-    void insert(string&word,int _signal=1) {
+    void insert(const string&word,int _signal=1) {
         insert(word,0,_signal);
     }
-    int search(string&word,int i) {
+    int search(const string&word,int i) {
         if(i==word.size()){
             return signal;
         }
         else return child[word[i]-'a']?child[word[i]-'a']->search(word,i+1):-1;
     }
-    int search(string&word) {
+    int search(const string&word) {
         return search(word,0);
     }
-    bool startsWith(string&prefix) {
+    bool startsWith(const string&prefix) {
         auto p=this;
         for(char c:prefix){
             if(!p->child[c-'a']){
@@ -109,7 +109,7 @@ public:
         pool.set(idx);
         idx=0;
     }
-    int insert(int cur,string&word,int i,int _signal) {
+    int insert(int cur,const string&word,int i,int _signal) {
         int res=0;
         if(i==word.size()){
             if(!(*this)[cur][26]){
@@ -126,10 +126,10 @@ public:
         (*this)[cur][27]+=res;
         return res;
     }
-    void insert(string&word,int _signal=1) {
+    void insert(const string&word,int _signal=1) {
         insert(0,word,0,_signal+1);
     }
-    int search(string&word) {
+    int search(const string&word) {
         int cur=0;
         for(int i=0;i<word.size();i++){
             if(!(*this)[cur][word[i]-'a']){
@@ -139,7 +139,7 @@ public:
         }
         return (*this)[cur][26]-1;
     }
-    bool startsWith(string&prefix) {
+    bool startsWith(const string&prefix) {
         int cur=0;
         for(int i=0;i<prefix.size();i++){
             if(!(*this)[cur][prefix[i]-'a']){

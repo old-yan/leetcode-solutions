@@ -37,6 +37,11 @@ public:
         delete []find;
         delete []size;
     }
+    void reset(){
+        iota(find,find+n,0);
+        fill(size,size+n,1);
+        group=n;
+    }
     int Find(int i){
         if(find[i]==i)return i;
         else return find[i]=Find(find[i]);

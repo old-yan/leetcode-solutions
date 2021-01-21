@@ -47,7 +47,7 @@ struct NextNode {
     NextNode(int _val) : val(_val), left(NULL), right(NULL), next(NULL) {}
     NextNode(int _val, NextNode* _left, NextNode* _right, NextNode* _next)
         : val(_val), left(_left), right(_right), next(_next) {}
-	NextNode(string s){
+	NextNode(const string&s){
 		if(s[0]=='['&&s.back()==']')s=s.substr(1,s.size()-2);
 		else if(s[0]=='[')s=s.substr(1,s.size()-1);
 		else if(s.back()==']')s.pop_back();

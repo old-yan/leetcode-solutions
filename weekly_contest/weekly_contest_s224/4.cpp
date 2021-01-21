@@ -111,6 +111,8 @@ class Solution {
 public:
     bool canMouseWin(vector<string>& grid, int catJump, int mouseJump) {
         m=grid.size(),n=grid[0].size();
+        bitset<32>b;
+        auto a=b.set();
         //预处理，找出猫/老鼠/食物的位置
         for(int i=0;i<m;i++){
             for(int j=0;j<n;j++){

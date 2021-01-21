@@ -51,6 +51,58 @@ struct QuadTree{
         bottomLeft = _bottomLeft;
         bottomRight = _bottomRight;
     }
+    QuadTree(const string&s):QuadTree(){
+        if(s.size()==2)return;
+        QuadTree(s[4]-'0',s[2]-'0');
+        queue<QuadTree*>Q;
+        Q.emplace(this);
+        int i=7;
+        while(Q.size()){
+            auto p=Q.front();
+            Q.pop();
+            if(i>=s.size())break;
+            if(s[i]=='['){
+                p->topLeft=new QuadTree(s[i+3]-'0',s[i+1]-'0');
+                Q.emplace(p->topLeft);
+                i+=6;
+            }
+            else{
+                p->topLeft=nullptr;
+                i+=5;
+            }
+            if(i>=s.size())break;
+            if(s[i]=='['){
+                p->topRight=new QuadTree(s[i+3]-'0',s[i+1]-'0');
+                Q.emplace(p->topRight);
+                i+=6;
+            }
+            else{
+                p->topRight=nullptr;
+                i+=5;
+            }
+            if(i>=s.size())break;
+            if(s[i]=='['){
+                p->bottomLeft=new QuadTree(s[i+3]-'0',s[i+1]-'0');
+                Q.emplace(p->bottomLeft);
+                i+=6;
+            }
+            else{
+                p->bottomLeft=nullptr;
+                i+=5;
+            }
+            if(i>=s.size())break;
+            if(s[i]=='['){
+                p->bottomRight=new QuadTree(s[i+3]-'0',s[i+1]-'0');
+                Q.emplace(p->bottomRight);
+                i+=6;
+            }
+            else{
+                p->bottomRight=nullptr;
+                i+=5;
+            }
+        }
+        return;
+    }
 };
 ostream&operator<<(ostream&out,QuadTree*root){
 	if(!root){
