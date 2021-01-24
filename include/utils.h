@@ -7,7 +7,7 @@
 // #include "RandomNode.h"
 #include "Union.h"
 // #include "Trie.h"
-// #include "zkwTree.h"
+#include "zkwTree.h"
 // #include "NestedInteger.h"
 // #include "QuadTree.h"
 #include "MultiTreeNode.h"
@@ -228,7 +228,7 @@ ll combination(ll m, ll n, ll mod=1000000007){
 		auto getf=[](){
 			vector<ll>f(21);
 			for(int i=0;i<=20;i++)f[i]=i?f[i-1]*i:1;
-			return move(f);
+			return f;
 		};
 		static vector<ll>f=getf();
 		return f[m]/f[n]/f[m-n];
@@ -241,10 +241,23 @@ ll combination(ll m, ll n, ll mod=1000000007){
 		};
 		static vector<ll>f=getf();
 		ll res=1;
+		if(n>m/2)n=m-n;
 		for(int i=0;i<n;i++)res=res*(m-i)%MOD;
-		for(int i=0;i<n;i++)res=res*f[i+1]%MOD;
+		for(int i=1;i<=n;i++)res=res*f[i]%MOD;
 		return res;
 	}
+}
+
+//n较大时，排列组合打表
+vvi combinationTable(int m,int n){
+	vvi table(m,vi(n,0));
+	for(int j=1;j<n;j++){
+		for(int i=1;i<m;i++){
+			if(j==1)table[i][j]=i;
+			else table[i][j]=(table[i-1][j]+table[i-1][j-1])%MOD;
+		}
+	}
+	return table;
 }
 
 // 判质
@@ -257,20 +270,21 @@ bool isprime(ll n){
 }
 
 //质因数分解
-vi getFactor(ll n,ll maxPrime=10000){
-	static vector<int>primes;
-	if(primes.empty()){
-		primes.push_back(2);
-		bitset<200000>b;
-		for(int i=3;i<=maxPrime;i+=2){
-			if(!b[i]){
-				primes.push_back(i);
-				for(int j=i*3;j<=maxPrime;j+=i*2){
-					b.set(j);
-				}
+vi getprime(int range){
+	vi primes{2};
+	bitset<200000>b;
+	for(int i=3;i<=range;i+=2){
+		if(!b[i]){
+			primes.push_back(i);
+			for(int j=i*3;j<=range;j+=i*2){
+				b.set(j);
 			}
 		}
 	}
+	return primes;
+}
+vi getFactor(ll n,ll range=10000){
+	static vector<int>primes=getprime(range);
 	vector<int>ans;
 	for(int a:primes){
 		if(a*a>n)break;
