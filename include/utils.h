@@ -5,7 +5,7 @@
 // #include "NextNode.h"
 // #include "Graph.h"
 // #include "RandomNode.h"
-// #include "Union.h"
+#include "Union.h"
 // #include "Trie.h"
 // #include "zkwTree.h"
 // #include "NestedInteger.h"
@@ -211,13 +211,40 @@ ll factorial(ll a){
 	else return 1;
 }
 
+//求逆元
+void extgcd(ll a,ll b,ll& d,ll& x,ll& y){
+    if(!b){ d=a; x=1; y=0;}
+    else{ extgcd(b,a%b,d,y,x); y-=x*(a/b); }
+}
+ll inv(ll a,ll n=1000000007){
+    ll d,x,y;
+    extgcd(a,n,d,x,y);
+    return d==1?(x+n)%n:-1;
+}
+
 // 组合数
-ll combination(ll m, ll n){
-	static ll f[20]={0};
-	if(!f[0]){
-		for(int i=0;i<20;i++)f[i]=i?f[i-1]*i:1;
+ll combination(ll m, ll n, ll mod=1000000007){
+	if(m<=20){
+		auto getf=[](){
+			vector<ll>f(21);
+			for(int i=0;i<=20;i++)f[i]=i?f[i-1]*i:1;
+			return move(f);
+		};
+		static vector<ll>f=getf();
+		return f[m]/f[n]/f[m-n];
 	}
-	return f[m]/f[n]/f[m-n];
+	else{
+		auto getf=[&](){
+			vector<ll>f(21,0);
+			for(int i=1;i<=20;i++)f[i]=inv(i,mod);
+			return f;
+		};
+		static vector<ll>f=getf();
+		ll res=1;
+		for(int i=0;i<n;i++)res=res*(m-i)%MOD;
+		for(int i=0;i<n;i++)res=res*f[i+1]%MOD;
+		return res;
+	}
 }
 
 // 判质
@@ -227,6 +254,33 @@ bool isprime(ll n){
 	if(n%2==0)return false;
 	for(int i=3;i<=sqrt(n);i+=2)if(n%i==0)return false;
 	return true;
+}
+
+//质因数分解
+vi getFactor(ll n,ll maxPrime=10000){
+	static vector<int>primes;
+	if(primes.empty()){
+		primes.push_back(2);
+		bitset<200000>b;
+		for(int i=3;i<=maxPrime;i+=2){
+			if(!b[i]){
+				primes.push_back(i);
+				for(int j=i*3;j<=maxPrime;j+=i*2){
+					b.set(j);
+				}
+			}
+		}
+	}
+	vector<int>ans;
+	for(int a:primes){
+		if(a*a>n)break;
+		while(n%a==0){
+			n/=a;
+			ans.push_back(a);
+		}
+	}
+	if(n>1)ans.push_back(n);
+	return ans;
 }
 
 // 前缀和
