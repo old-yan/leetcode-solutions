@@ -9,7 +9,7 @@ public:
         REPR(i,rank.size()-1){
             int j=rank[i];
             if(j)ans[i]=T(0,j-1);
-            T.set(j,T[j]+1);
+            T.step(j);
         }
         return ans;
     }

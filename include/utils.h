@@ -212,17 +212,17 @@ ll factorial(ll a){
 }
 
 //求逆元
-void extgcd(ll a,ll b,ll& d,ll& x,ll& y){
-    if(!b){ d=a; x=1; y=0;}
-    else{ extgcd(b,a%b,d,y,x); y-=x*(a/b); }
+void extgcd(ll a,ll b,ll& x,ll& y){
+	if(!a){x=0,y=1;}
+	else{extgcd(b%a,a,y,x);x-=(b/a)*y;}
 }
-ll inv(ll a,ll n=1000000007){
-    ll d,x,y;
-    extgcd(a,n,d,x,y);
-    return d==1?(x+n)%n:-1;
+ll inv(ll a,ll mod=1000000007){
+    ll x,y;
+    extgcd(a,mod,x,y);
+    return (x+mod)%mod;
 }
 
-// 组合数
+//组合数
 ll combination(ll m, ll n, ll mod=1000000007){
 	if(m<=20){
 		auto getf=[](){
@@ -242,19 +242,19 @@ ll combination(ll m, ll n, ll mod=1000000007){
 		static vector<ll>f=getf();
 		ll res=1;
 		if(n>m/2)n=m-n;
-		for(int i=0;i<n;i++)res=res*(m-i)%MOD;
-		for(int i=1;i<=n;i++)res=res*f[i]%MOD;
+		for(int i=0;i<n;i++)res=res*(m-i)%mod;
+		for(int i=1;i<=n;i++)res=res*f[i]%mod;
 		return res;
 	}
 }
 
 //n较大时，排列组合打表
-vvi combinationTable(int m,int n){
+vvi combinationTable(int m,int n,int mod=1000000007){
 	vvi table(m,vi(n,0));
 	for(int j=1;j<n;j++){
 		for(int i=1;i<m;i++){
 			if(j==1)table[i][j]=i;
-			else table[i][j]=(table[i-1][j]+table[i-1][j-1])%MOD;
+			else table[i][j]=(table[i-1][j]+table[i-1][j-1])%mod;
 		}
 	}
 	return table;

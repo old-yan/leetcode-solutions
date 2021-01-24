@@ -158,6 +158,13 @@ public:
             i>>=1;
         }
     }
+    void step(int i){
+        i+=X;
+        while(i){
+            data[i]++;
+            i>>=1;
+        }
+    }
     int operator[](int i){
         return data[i+X];
     }

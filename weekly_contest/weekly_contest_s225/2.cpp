@@ -5,9 +5,9 @@ public:
     int minCharacters(string a, string b) {
         zkwTree T1(26),T2(26);
         //将字符串a的字母分布存入T1
-        for(char c:a)T1.set(c-'a',T1[c-'a']+1);
+        for(char c:a)T1.step(c-'a');
         //将字符串b的字母分布存入T2
-        for(char c:b)T2.set(c-'a',T2[c-'a']+1);
+        for(char c:b)T2.step(c-'a');
         int ans=INT_MAX;
         //遍历字母，计算将a、b全部变成某字母的步数
         REP(c,26){

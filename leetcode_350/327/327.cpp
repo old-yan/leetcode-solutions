@@ -11,13 +11,13 @@ public:
         }
         M[LLONG_MAX]=INT_MAX;
         zkwTree T(rank.size());
-        T.set(rank[0],T[rank[0]]+1);
+        T.step(rank[0]);
         int ans=0;
         FOR(i,1,rank.size()){   
             auto it=M.lower_bound(sum[i]-upper);
             auto it2=M.lower_bound(sum[i]-lower+1);
             ans+=T(it->second,it2->second-1);
-            T.set(rank[i],T[rank[i]]+1);
+            T.step(rank[i]);
         }
         return ans;
     }

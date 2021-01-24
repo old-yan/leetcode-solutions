@@ -20,7 +20,7 @@ public:
         REPR(i,nums.size()-1){
             ans+=T(0,M[half(nums[i])]);
             int j=M[nums[i]];
-            T.set(j,T[j]+1);
+            T.step(j);
         }
         return ans;
     }
