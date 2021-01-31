@@ -1,22 +1,7 @@
 #pragma once
-#include <iostream>
-#include <fstream>
-#include <tuple>
-#include <cmath>
-#include <string>
-#include <cstring>
-#include <algorithm>
-#include <bitset>
-#include <vector>
-#include <list>
 #include <queue>
 #include <stack>
-#include <map>
-#include <set>
-#include <unordered_map>
-#include <unordered_set>
 #include <iomanip>
-#include <numeric>
 using namespace std;
 #define OLDYAN_DULINKLIST
 
@@ -45,7 +30,7 @@ struct DuLinkList{
     DuLinkList*child;
 	DuLinkList() :val(-1),prev(nullptr),next(NULL),child(nullptr) {}
 	DuLinkList(int x) : val(x),prev(nullptr),next(nullptr),child(nullptr) {}
-    DuLinkList(const string&s):DuLinkList(){
+    DuLinkList(string&&s):DuLinkList(){
         if(s[0]=='['&&s.back()==']')s=s.substr(1,s.size()-2);
 		else if(s[0]=='[')s=s.substr(1,s.size()-1);
 		else if(s.back()==']')s.pop_back();

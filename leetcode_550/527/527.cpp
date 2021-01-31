@@ -16,12 +16,18 @@ int main()
 {
     cout<<boolalpha;
 
-    Solution*obj=new Solution([1,3);
-	obj->pickIndex();
-	obj->pickIndex();
-	obj->pickIndex();
-	obj->pickIndex();
-	obj->pickIndex();
+    vi w{1,3};
+    Solution*obj=new Solution(w);
+	DBG(obj->pickIndex());
+    DBG(obj->pickIndex());
+    DBG(obj->pickIndex());
+    DBG(obj->pickIndex());
+    DBG(obj->pickIndex());
+    DBG(obj->pickIndex());
+    DBG(obj->pickIndex());
+    DBG(obj->pickIndex());
+    DBG(obj->pickIndex());
+    DBG(obj->pickIndex());
 
     system("pause");
     return 0;

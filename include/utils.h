@@ -1,17 +1,30 @@
 #pragma once
-#include "ListNode.h"
-// 头文件太多会拖慢编译速度，平时没有必要都include进来，随便include几个常用的即可
-#include "TreeNode.h"
+#include <iostream>
+#include <memory.h>
+#include <cmath>
+#include <algorithm>
+#include <bitset>
+#include <list>
+#include <queue>
+#include <stack>
+#include <map>
+#include <set>
+#include <unordered_map>
+#include <unordered_set>
+// 头文件太多会拖慢编译速度，平时没有必要都include进来，可以include常用的，或者在主文件再include
+// #include "ListNode.h"
+// #include "TreeNode.h"
 // #include "NextNode.h"
 // #include "Graph.h"
 // #include "RandomNode.h"
-#include "Union.h"
+// #include "Union.h"
 // #include "Trie.h"
-#include "zkwTree.h"
+// #include "zkwTree.h"
 // #include "NestedInteger.h"
 // #include "QuadTree.h"
-#include "MultiTreeNode.h"
+// #include "MultiTreeNode.h"
 // #include "DuLinkList.h"
+// # include "Fraction.h"
 using namespace std;
 #define LOCAL_DEBUG
 
@@ -417,6 +430,11 @@ vi getarm(const string&s){
 		}
 	}
 	return arm;
+}
+
+//借助臂长数组查询对称情况
+bool query_polindromic(vi&arm,int l,int r){
+	return arm[l+r+2]>=r-l;
 }
 
 // 判断是否对称

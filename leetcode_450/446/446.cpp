@@ -13,7 +13,7 @@ public:
         unordered_map<ll,int>target[getid.size()];
         REP(i,A.size()){
             cout<<ans;
-            for(auto it:target[getid[A[i]]]){
+            for(auto&it:target[getid[A[i]]]){
                 ans+=it.second;
                 ll next=(ll)A[i]*2-it.first;
                 if(getid.count(next)){

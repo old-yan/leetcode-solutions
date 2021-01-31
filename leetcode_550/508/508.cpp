@@ -15,7 +15,7 @@ public:
         if(root)fun(root);
         vi ans;
         int anscount=0;
-        for(auto it:M){
+        for(auto&it:M){
             if(it.second>anscount){
                 ans={it.first};
                 anscount=it.second;

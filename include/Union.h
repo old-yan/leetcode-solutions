@@ -1,21 +1,6 @@
 #pragma once
-#include <iostream>
-#include <fstream>
-#include <tuple>
-#include <cmath>
-#include <string>
-#include <cstring>
-#include <algorithm>
-#include <bitset>
+#include <memory.h>
 #include <vector>
-#include <list>
-#include <queue>
-#include <stack>
-#include <map>
-#include <set>
-#include <unordered_map>
-#include <unordered_set>
-#include <iomanip>
 #include <numeric>
 using namespace std;
 #define OLDYAN_UNION
@@ -32,6 +17,12 @@ public:
         iota(find,find+n,0);
         size=new int[n];
         fill(size,size+n,1);
+    }
+    Union(const Union&other):n(other.n),group(other.group){
+        find=new int[n];
+        memcpy(find,other.find,n*sizeof(int));
+        size=new int[n];
+        memcpy(size,other.size,n*sizeof(int));
     }
     ~Union(){
         delete []find;

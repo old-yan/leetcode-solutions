@@ -1,22 +1,7 @@
 #pragma once
-#include <iostream>
-#include <fstream>
-#include <tuple>
-#include <cmath>
-#include <string>
-#include <cstring>
 #include <algorithm>
-#include <bitset>
+#include <memory.h>
 #include <vector>
-#include <list>
-#include <queue>
-#include <stack>
-#include <map>
-#include <set>
-#include <unordered_map>
-#include <unordered_set>
-#include <iomanip>
-#include <numeric>
 using namespace std;
 #define OLDYAN_ZKWTREE
 
@@ -129,12 +114,12 @@ public:
 //区间求和线段树
 class zkwTree{
 public:
-    int*data;
+    long*data;
     int X;
     zkwTree(int n=100005,int _default_val=0){
         for(X=4;X<n;X<<=1);
-        data=new int[X*2];
-        memset(data+X,0,X*sizeof(int));
+        data=new long[X*2];
+        memset(data+X,0,X*sizeof(long));
         fill(data+X,data+X*2,_default_val);
         for(int i=X-1;i;i--){
             data[i]=data[i*2]+data[i*2+1];
@@ -142,16 +127,16 @@ public:
     }
     zkwTree(vector<int>&nums){
         for(X=4;X<nums.size();X<<=1);
-        data=new int[X*2];
-        memset(data+X,0,X*sizeof(int));
+        data=new long[X*2];
+        memset(data+X,0,X*sizeof(long));
         if(nums.size()){
-            memcpy(data+X,&nums[0],nums.size()*sizeof(int));
+            for(int i=0;i<nums.size();i++)data[X+i]=nums[i];
         }
         for(int i=X-1;i;i--){
             data[i]=data[i*2]+data[i*2+1];
         }
     }
-    void set(int i,int val){
+    void set(int i,long val){
         int d=val-data[i+=X];
         while(i){
             data[i]+=d;
@@ -165,15 +150,15 @@ public:
             i>>=1;
         }
     }
-    int operator[](int i){
+    long operator[](int i){
         return data[i+X];
     }
-    int operator()(int l,int r){
+    long operator()(int l,int r){
         l=max(l,0);
         r=min(r,X-1);
         if(l>r)return 0;
         if(l!=r){
-            int res=data[l+=X]+data[r+=X];
+            long res=data[l+=X]+data[r+=X];
             while(l/2!=r/2){
                 if(l%2==0)res+=data[l+1];
                 if(r%2)res+=data[r-1];
@@ -184,7 +169,7 @@ public:
         }
         else return data[l+X];
     }
-    int find_nth(int n){
+    int find_nth(long n){
         if(n>=data[1])return -1;
         int i=1;
         while(i<X){

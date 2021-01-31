@@ -1,22 +1,7 @@
 #pragma once
-#include <iostream>
-#include <fstream>
-#include <tuple>
-#include <cmath>
-#include <string>
-#include <cstring>
-#include <algorithm>
-#include <bitset>
-#include <vector>
-#include <list>
 #include <queue>
-#include <stack>
-#include <map>
-#include <set>
 #include <unordered_map>
-#include <unordered_set>
 #include <iomanip>
-#include <numeric>
 using namespace std;
 #define OLDYAN_NEXTNODE
 
@@ -47,7 +32,7 @@ struct NextNode {
     NextNode(int _val) : val(_val), left(NULL), right(NULL), next(NULL) {}
     NextNode(int _val, NextNode* _left, NextNode* _right, NextNode* _next)
         : val(_val), left(_left), right(_right), next(_next) {}
-	NextNode(const string&s){
+	NextNode(string&&s){
 		if(s[0]=='['&&s.back()==']')s=s.substr(1,s.size()-2);
 		else if(s[0]=='[')s=s.substr(1,s.size()-1);
 		else if(s.back()==']')s.pop_back();

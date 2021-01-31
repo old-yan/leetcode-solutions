@@ -14,7 +14,7 @@ public:
         //对于每种乘积，可以产生C(2,m)种匹配对
         //每种匹配对可以产生8种排列
         int ans=0;
-        for(auto it:M){
+        for(auto&it:M){
             int i=it.second;
             if(i>1){
                 ans+=i*(i-1)/2*8;
