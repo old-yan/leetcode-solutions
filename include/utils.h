@@ -327,10 +327,26 @@ vi next_different(vector<T>&a){
 	}
 	return v;
 }
+vi next_different(string&a){
+	vi v(a.size());
+	for(int i=0,j;i<a.size();){
+		for(j=i+1;j<a.size()&&a[j]==a[i];j++);
+		while(i<j)v[i++]=j;
+	}
+	return v;
+}
 
 // 上一个不同处
 template<class T>
 vi prev_different(vector<T>&a){
+	vi v(a.size());
+	for(int i=int(a.size())-1,j;i>=0;){
+		for(j=i-1;j>=0&&a[j]==a[i];j--);
+		while(i>j)v[i--]=j;
+	}
+	return v;
+}
+vi prev_different(string&a){
 	vi v(a.size());
 	for(int i=int(a.size())-1,j;i>=0;){
 		for(j=i-1;j>=0&&a[j]==a[i];j--);
