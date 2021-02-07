@@ -30,12 +30,10 @@ public:
             //pos小于0表示events[i]无法和之前事件并存，只能作为第一件事
             //所以只能尝试更新一件事的最大值，两件以上时放弃第i件事
             if(pos<0){
-                if(i){
-                    FOR(j,1,k+1){
-                        dp[i][j]=dp[i-1][j];
-                    }
+                FOR(j,1,k+1){
+                    if(i)dp[i][j]=dp[i-1][j];
+                    if(j==1)chmax(dp[i][1],value);
                 }
-                chmax(dp[i][1],value);
             }
             //pos大于0时，在不做第i件事和做第i件事中选最大值
             else{
