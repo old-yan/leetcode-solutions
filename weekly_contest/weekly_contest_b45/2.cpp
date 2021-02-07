@@ -10,10 +10,10 @@ public:
         for(int a:nums)sum.pb(sum.back()+a);
         //afterMax记录sum数组某个位置之后的最大值
         int afterMax[sum.size()];
-        REPR(i,sum.size()-1)afterMax[i]=i==sum.size()-1?sum[i]:max(sum[i],afterMax[i]);
+        REPR(i,sum.size()-1)afterMax[i]=i==sum.size()-1?sum[i]:max(sum[i],afterMax[i+1]);
         //afterMin记录sum数组某个位置之后的最小值
         int afterMin[sum.size()];
-        REPR(i,sum.size()-1)afterMin[i]=i==sum.size()-1?sum[i]:min(sum[i],afterMin[i]);
+        REPR(i,sum.size()-1)afterMin[i]=i==sum.size()-1?sum[i]:min(sum[i],afterMin[i+1]);
         REP(i,nums.size()){
             //可能会正的很大
             chmax(ans,abs(afterMax[i]-sum[i]));
