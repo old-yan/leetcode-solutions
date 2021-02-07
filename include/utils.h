@@ -317,6 +317,41 @@ vector<ll> presum(vi&a){
 	return v;
 }
 
+// 后缀和
+vector<ll> postsum(vi&a){
+	vector<ll> v(a.size() + 1,0);
+	REPR(i, a.size()-1)v[i] = v[i+1] + a[i];
+	return v;
+}
+
+// 前缀最大
+vector<int> premax(vi&a){
+	vector<int> v(a.size(),0);
+	REP(i, a.size())v[i] =i? max(v[i-1],a[i]):a[i];
+	return v;
+}
+
+// 前缀最小
+vector<int> premin(vi&a){
+	vector<int> v(a.size(),0);
+	REP(i, a.size())v[i] =i? min(v[i-1],a[i]):a[i];
+	return v;
+}
+
+// 后缀最大
+vector<int> postmax(vi&a){
+	vector<int> v(a.size(),0);
+	REPR(i, a.size()-1)v[i] =i+1<a.size()? max(v[i+1],a[i]):a[i];
+	return v;
+}
+
+// 后缀最小
+vector<int> postmin(vi&a){
+	vector<int> v(a.size(),0);
+	REPR(i, a.size()-1)v[i] =i+1<a.size()? min(v[i+1],a[i]):a[i];
+	return v;
+}
+
 // 下一个不同处
 template<class T>
 vi next_different(vector<T>&a){
@@ -327,7 +362,7 @@ vi next_different(vector<T>&a){
 	}
 	return v;
 }
-vi next_different(string&a){
+vi next_different(string&&a){
 	vi v(a.size());
 	for(int i=0,j;i<a.size();){
 		for(j=i+1;j<a.size()&&a[j]==a[i];j++);
@@ -346,7 +381,7 @@ vi prev_different(vector<T>&a){
 	}
 	return v;
 }
-vi prev_different(string&a){
+vi prev_different(string&&a){
 	vi v(a.size());
 	for(int i=int(a.size())-1,j;i>=0;){
 		for(j=i-1;j>=0&&a[j]==a[i];j--);
