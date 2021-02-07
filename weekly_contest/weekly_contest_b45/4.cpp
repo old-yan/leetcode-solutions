@@ -5,7 +5,7 @@ class Solution {
     vi ends;
 public:
     int maxValue(vector<vector<int>>& events, int k) {
-        //dp[i][j]表示在下标范围0~i的事件中找k件事做，的最大值
+        //dp[i][j]表示在下标范围0~i的事件中找j件事做，获得的最大值
         int dp[events.size()][k+1];
         memset(dp,0,sizeof(dp));
         //按照end升序排列
