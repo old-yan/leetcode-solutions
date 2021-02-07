@@ -64,8 +64,6 @@ public:
     }
 };
 
-
-
 int main()
 {
     cout<<boolalpha;

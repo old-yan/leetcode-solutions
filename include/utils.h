@@ -390,6 +390,38 @@ vi prev_different(string&&a){
 	return v;
 }
 
+// 获取一个数组内的所有可能的子序列和（升序放置）
+vi getSubsequenceSum(vi&nums){
+	int nonzero=0;
+	for(int a:nums)if(a)nonzero++;
+	vector<int>v(1<<nonzero,0);
+	int size=1;
+	for(int a:nums){
+		if(!a)continue;
+		int duplicate=0;
+		for(int i=0,j=0;i<size&&j<size;){
+			if(v[i]+a==v[j]){
+				duplicate++,i++,j++;
+			}
+			else if(v[i]+a<v[j])i++;
+			else j++;
+		}
+		int i=size-1,j=size-1;
+		size=size*2-duplicate;
+		int k=size-1;
+		while(i>=0&&j>=0){
+			if(v[i]==v[j]+a){
+				v[k--]=v[i--];j--;
+			}
+			else if(v[i]>v[j]+a)v[k--]=v[i--];
+			else v[k--]=v[j--]+a;
+		}
+		while(j>=0)v[k--]=v[j--]+a;
+	}
+	v.resize(size);
+	return v;
+}
+
 // 获取每个元素的排名(无并列)
 template<class T>
 vi getrank(vector<T>&a){
