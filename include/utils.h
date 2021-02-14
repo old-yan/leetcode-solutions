@@ -11,6 +11,7 @@
 #include <set>
 #include <unordered_map>
 #include <unordered_set>
+#include <numeric>
 // 头文件太多会拖慢编译速度，平时没有必要都include进来，可以include常用的，或者在主文件再include
 // #include "ListNode.h"
 // #include "TreeNode.h"
@@ -55,6 +56,8 @@ using vvi = vector<vector<int>>;
 #define DBGN(a)
 #endif
 #define ALL(v) v.begin(), v.end()
+#define ALLR(v) v.rbegin(), v.rend()
+#define VALID (ii>=0&&ii<m&&jj>=0&&jj<n)
 #define pb push_back
 
 // 取最大
@@ -362,7 +365,7 @@ vi next_different(vector<T>&a){
 	}
 	return v;
 }
-vi next_different(string&&a){
+vi next_different(const string&a){
 	vi v(a.size());
 	for(int i=0,j;i<a.size();){
 		for(j=i+1;j<a.size()&&a[j]==a[i];j++);
@@ -381,7 +384,7 @@ vi prev_different(vector<T>&a){
 	}
 	return v;
 }
-vi prev_different(string&&a){
+vi prev_different(const string&a){
 	vi v(a.size());
 	for(int i=int(a.size())-1,j;i>=0;){
 		for(j=i-1;j>=0&&a[j]==a[i];j--);

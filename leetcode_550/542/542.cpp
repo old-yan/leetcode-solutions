@@ -25,7 +25,7 @@ public:
             int i=p.i,j=p.j;
             REP(k,4){
                 int ii=i+di[k],jj=j+dj[k];
-                if(ii>=0&&ii<m&&jj>=0&&jj<n&&ans[ii][jj]>p.dis){
+                if(VALID&&ans[ii][jj]>p.dis){
                     ans[ii][jj]=p.dis+1;
                     Q.emplace(ii,jj,ans[ii][jj]);
                 }

@@ -1,5 +1,19 @@
 #include "utils.h"
 
+// 补充较少使用的O(nlog(n))后缀数组做法
+// class Solution {
+// public:
+//     short strStr(string haystack, string needle) {
+//         SuffixArray S(haystack+"$"+needle);
+//         S.getHeight();
+//         int rnk=S.rk[haystack.size()+1];
+//         int ans=INT_MAX;
+//         for(int i=rnk+1;S.height[i]>=int(needle.size());i++){
+//             ans=min(ans,S.sa[i]);
+//         }
+//         return ans;
+//     }
+// };
 class Solution {
 public:
     int strStr(string haystack, string needle) {

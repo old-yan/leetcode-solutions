@@ -9,7 +9,7 @@ public:
                 int count=0;
                 for(int ii=i-1;ii<=i+1;ii++){
                     for(int jj=j-1;jj<=j+1;jj++){
-                        if(ii>=0&&ii<m&&jj>=0&&jj<n&&(ii!=i||jj!=j)){
+                        if(VALID&&(ii!=i||jj!=j)){
                             if(board[ii][jj]&1)count++;
                         }
                     }

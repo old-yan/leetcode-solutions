@@ -39,7 +39,7 @@ public:
             Q.pop();
             REP(k,4){
                 int ii=a->i+di[k],jj=a->j+dj[k];
-                if(ii>=0&&ii<m&&jj>=0&&jj<n&&!visited[ii][jj]){
+                if(VALID&&!visited[ii][jj]){
                     ans+=max(a->h,heightMap[ii][jj])-heightMap[ii][jj];
                     Q.emplace(new surface(ii,jj,max(a->h,heightMap[ii][jj])));
                     visited[ii][jj]=true;

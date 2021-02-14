@@ -184,3 +184,47 @@ public:
         return i-X;
     }
 };
+
+//模板线段树
+template<class T>
+class Tree{
+    typedef T (*Operation)(T&x,T&y);
+public:
+    T*data;
+    int X;
+    T default_val;
+    Operation op;
+    Tree(int n,T _default_val,Operation _op):default_val(_default_val),op(_op){
+        for(X=4;X<n;X<<=1);
+        data=new T[X*2];
+        fill(data,data+X*2,default_val);
+        for(int i=X-1;i;i--){
+            data[i]=op(data[i*2],data[i*2+1]);
+        }
+    }
+    void set(int i,T val){
+        data[i+=X]=val;
+        while(i>>=1){
+            data[i]=op(data[i*2],data[i*2+1]);
+        }
+    }
+    T& operator[](int i){
+        return data[i+X];
+    }
+    T operator()(int l,int r){
+        l=max(l,0);
+        r=min(r,X-1);
+        if(l>r)return default_val;
+        if(l!=r){
+            T res=op(data[l+=X],data[r+=X]);
+            while(l/2!=r/2){
+                if(l%2==0)res=op(res,data[l+1]);
+                if(r%2)res=op(res,data[r-1]);
+                l>>=1;
+                r>>=1;
+            }
+            return res;
+        }
+        else return data[l+X];
+    }
+};

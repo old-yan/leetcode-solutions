@@ -15,7 +15,7 @@ public:
             REP(j,n){
                 REP(k,4){
                     int ii=i+di[k],jj=j+dj[k];
-                    if(ii>=0&&ii<m&&jj>=0&&jj<n&&matrix[ii][jj]>matrix[i][j])bigger[i][j]++;
+                    if(VALID&&matrix[ii][jj]>matrix[i][j])bigger[i][j]++;
                 }
                 if(!bigger[i][j]){
                     Q.emplace(i,j);
@@ -32,7 +32,7 @@ public:
                 chmax(ans,dp[i][j]);
                 REP(k,4){
                     int ii=i+di[k],jj=j+dj[k];
-                    if(ii>=0&&ii<m&&jj>=0&&jj<n&&matrix[ii][jj]<matrix[i][j]&&!--bigger[ii][jj]){
+                    if(VALID&&matrix[ii][jj]<matrix[i][j]&&!--bigger[ii][jj]){
                         dp[ii][jj]=dp[i][j]+1;
                         Q.emplace(ii,jj);
                     }

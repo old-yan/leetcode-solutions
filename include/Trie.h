@@ -62,14 +62,15 @@ public:
 
 //静态字典树
 class StaticTrie {
-    #define TRIEN 28
+    #define TRIEN
 public:
     int*data,size;
     bitset<1<<18>pool;
-    StaticTrie(int _size=1):size(_size) {
+    StaticTrie(int _size=1):size(_size){
         data=(int*)malloc(size*TRIEN*sizeof(int));
         memset(data,0,size*TRIEN*sizeof(int));
-        (*this)[0][27]=1;
+        (*this)[0][26]=-1;
+        (*this)[0][27]=0;
         pool.set();
         pool.reset(0);
     }
@@ -82,11 +83,12 @@ public:
         if(first>=size){
             int d=&idx-data;
             data=(int*)realloc(data,size*2*TRIEN*sizeof(int));
-            memset((*this)[size],0,size*TRIEN*sizeof(int));
             size<<=1;
             data[d]=first;
         }
         else idx=first;
+        memset((*this)[first],0,TRIEN*sizeof(int));
+        (*this)[first][26]=-1;
         pool.reset(first);
     }
     void Free(int&idx){
@@ -96,9 +98,9 @@ public:
     int insert(int cur,const string&word,int i,int _signal) {
         int res=0;
         if(i==word.size()){
-            if(!(*this)[cur][26]){
+            if((*this)[cur][26]<0){
                 (*this)[cur][26]=_signal;
-                ++res;
+                res=1;
             }
         }
         else{
@@ -111,7 +113,7 @@ public:
         return res;
     }
     void insert(const string&word,int _signal=1) {
-        insert(0,word,0,_signal+1);
+        insert(0,word,0,_signal);
     }
     int search(const string&word) {
         int cur=0;
@@ -121,7 +123,7 @@ public:
             }
             cur=(*this)[cur][word[i]-'a'];
         }
-        return (*this)[cur][26]-1;
+        return (*this)[cur][26]>=0;
     }
     bool startsWith(const string&prefix) {
         int cur=0;

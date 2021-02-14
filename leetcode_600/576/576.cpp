@@ -11,7 +11,7 @@ public:
                 REP(j,n){
                     REP(k,4){
                         int ii=i+di[k],jj=j+dj[k];
-                        if(ii>=0&&ii<m&&jj>=0&&jj<n){
+                        if(VALID){
                             dp[i][j][step]+=dp[ii][jj][step-1];
                         }
                         else if(step==1)dp[i][j][step]++;

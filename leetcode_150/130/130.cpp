@@ -7,7 +7,7 @@ class Solution {
         board[i][j]='Q';
         REP(k,4){
             int ii=i+di[k],jj=j+dj[k];
-            if(ii>=0&&ii<m&&jj>=0&&jj<n&&board[ii][jj]=='O'){
+            if(VALID&&board[ii][jj]=='O'){
                 dfs(ii,jj);
             }
         }

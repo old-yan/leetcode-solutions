@@ -20,7 +20,7 @@ public:
             Q.pop();
             REP(k,4){
                 int ii=p.first+di[k],jj=p.second+dj[k];
-                if(ii>=0&&ii<m&&jj>=0&&jj<n&&matrix[ii][jj]>=matrix[p.first][p.second]&&!pacific[ii][jj]){
+                if(VALID&&matrix[ii][jj]>=matrix[p.first][p.second]&&!pacific[ii][jj]){
                     Q.emplace(ii,jj);
                     pacific[ii][jj]=true;
                 }
@@ -41,7 +41,7 @@ public:
             Q.pop();
             REP(k,4){
                 int ii=p.first+di[k],jj=p.second+dj[k];
-                if(ii>=0&&ii<m&&jj>=0&&jj<n&&matrix[ii][jj]>=matrix[p.first][p.second]&&!atlantic[ii][jj]){
+                if(VALID&&matrix[ii][jj]>=matrix[p.first][p.second]&&!atlantic[ii][jj]){
                     Q.emplace(ii,jj);
                     atlantic[ii][jj]=true;
                 }

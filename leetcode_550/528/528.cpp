@@ -8,7 +8,7 @@ class Solution {
         int count=0;
         for(int ii=i-1;ii<=i+1;ii++){
             for(int jj=j-1;jj<=j+1;jj++){
-                if(ii>=0&&ii<m&&jj>=0&&jj<n&&!(i==ii&&j==jj)&&(board[ii][jj]=='M'||board[ii][jj]=='X')){
+                if(VALID&&!(i==ii&&j==jj)&&(board[ii][jj]=='M'||board[ii][jj]=='X')){
                     count++;
                 }
             }
@@ -25,7 +25,7 @@ class Solution {
                 board[i][j]='B';
                 for(int ii=i-1;ii<=i+1;ii++){
                     for(int jj=j-1;jj<=j+1;jj++){
-                        if(ii>=0&&ii<m&&jj>=0&&jj<n&&(board[ii][jj]=='M'||board[ii][jj]=='E')){
+                        if(VALID&&(board[ii][jj]=='M'||board[ii][jj]=='E')){
                             dfs(ii,jj);
                         }
                     }

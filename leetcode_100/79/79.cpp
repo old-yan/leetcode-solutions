@@ -10,7 +10,7 @@ class Solution {
         visited[i][j]=true;
         REP(k,4){
             int ii=i+di[k],jj=j+dj[k];
-            if(ii>=0&&ii<m&&jj>=0&&jj<n&&!visited[ii][jj]&&board[ii][jj]==word[idx+1]){
+            if(VALID&&!visited[ii][jj]&&board[ii][jj]==word[idx+1]){
                 if(dfs(ii,jj,idx+1))return true;
             }
         }
