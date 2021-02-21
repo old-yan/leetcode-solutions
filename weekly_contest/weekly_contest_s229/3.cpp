@@ -9,7 +9,7 @@ public:
         long cur=0;
         //dp[i][j]表示当面临multipliers[i]，且nums剩余区间以j开头时，可获取的最大收益
         //毫无疑问j<=i，因为即使每次都从nums前面取，临界情况也是j==i，何况有时候会从后面取。
-        //而nums的具体区间为[j,j+n-i-1]
+        //当nums的区间头为j时，nums的区间尾为j+n-i-1。所以multipliers[i]可以去找nums[j]，也可以去找nums[j+n-i-1]
         long dp[m+1][m+1];
         memset(dp,0,sizeof(dp));
         for(int i=m-1;i>=0;i--){

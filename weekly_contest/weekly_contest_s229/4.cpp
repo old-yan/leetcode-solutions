@@ -2,35 +2,38 @@
 
 class Solution {
 public:
+    //本题可以理解为将word1和word2合并，然后在里面找最长回文子序列
+    //最长回文子序列的求法参见第516题
+    //但是需要注意的是，取出的最长回文子序列必须满足既有word1的成分，也有word2的成分
+    //所以长度为1的回文子序列，不会更新ans；
+    //长度大于1的回文子序列，需要头部在word1里，尾部在word2里
     int longestPalindrome(string word1, string word2) {
         string s=word1+word2;
         int n1=word1.size(),n2=word2.size(),n=n1+n2;
+        //dp[i][j]表示s从下标i到下标j，内部能取到的最长回文子序列
         int dp[n][n];
         memset(dp,0,sizeof(dp));
-        #define a(i)  (i<n1?word1[i]:word2[i-n1])
         int ans=0;
-        for(int j=n-1;j>=0;j--){
-            for(int i=j;i<n;i++){
-                dp[j][i]=1;
-                if(j+1<n)dp[j][i]=max(dp[j][i],dp[j+1][i]);
-                if(i)dp[j][i]=max(dp[j][i],dp[j][i-1]);
-                if(a(j)==a(i)){
-                    if(j==i)dp[j][i]=1;
+        for(int i=n-1;i>=0;i--){
+            for(int j=i;j<n;j++){
+                //每个字符本身就是一个回文子序列，所以dp值至少为1
+                dp[i][j]=1;
+                if(s[i]==s[j]){
+                    if(i==j)dp[i][j]=1;
                     else{
-                        if(dp[j+1][i-1]+2>=dp[j][i]){
-                            dp[j][i]=dp[j+1][i-1]+2;
-                            if(i>=n1)ans=max(ans,dp[j][i]);
-                        }
+                        dp[i][j]=dp[i+1][j-1]+2;
+                        if(i<n1&&j>=n1)ans=max(ans,dp[i][j]);
                     }
+                }
+                else{
+                    if(i+1<n)dp[i][j]=max(dp[i][j],dp[i+1][j]);
+                    if(j)dp[i][j]=max(dp[i][j],dp[i][j-1]);
                 }
             }
         }
-        cout<<ans;
         return ans;
     }
 };
-
-
 
 int main()
 {
