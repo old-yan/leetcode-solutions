@@ -559,3 +559,22 @@ int getDirection(T*cur,T*next,T*query){
 	else if(abs(x2)<abs(x1)||abs(y2)<abs(y1))return -1;
 	else return 3;
 }
+
+vvi makevvi(string s){
+	s.erase(remove(ALL(s),' '),s.end());
+	if(s[1]=='[')s=s.substr(1);
+	if(s[s.size()-2]==']')s.pop_back();
+	vvi res;
+	for(int i=1,j;i<s.size();){
+		res.pb(vi());
+		while(true){
+			j=min(s.find_first_of(']',i),s.find_first_of(',',i));
+			res.back().pb(s2i(s.substr(i,j-i)));
+			i=j;
+			if(s[i]==']')break;
+			else i++;
+		}
+		if(i==s.size()-1)break;
+		else i+=3;
+	}
+}
