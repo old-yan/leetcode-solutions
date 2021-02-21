@@ -4,16 +4,13 @@ class Solution {
     vi nums;
     vi*original;
 public:
-    Solution(vector<int>&_nums):original(&_nums){}
+    Solution(vector<int>&_nums):nums(_nums),original(&_nums){}
     vector<int> reset() {
         return *original;
     }
     vector<int> shuffle() {
-        zkwTree T(original->size(),1);
-        REP(i,original->size()){
-            int j=T.find_nth(rand()%(original->size()-i));
-            T.set(j,0);
-            nums[i]=(*original)[j];
+        REP(i,nums.size()-1){
+            swap(nums[i],nums[i+rand()%(nums.size()-i)]);
         }
         return nums;
     }

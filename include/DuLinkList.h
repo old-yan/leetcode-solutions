@@ -5,24 +5,6 @@
 using namespace std;
 #define OLDYAN_DULINKLIST
 
-pair<bool,int> readdulinklist(string&s,int &i){
-	if(s[i]=='n'){
-		i+=4;
-		if(s[i])i++;
-		return make_pair(false,0);
-	}
-	else{
-		int signal=1;
-		if(s[i]=='-'){
-			signal=-1;
-			i++;
-		}
-		int val=0;
-		while(isdigit(s[i]))val=val*10+s[i++]-'0';
-		if(s[i])i++;
-		return make_pair(true,val*signal);
-	}
-}
 struct DuLinkList{
 	int val;
     DuLinkList*prev;
@@ -30,21 +12,41 @@ struct DuLinkList{
     DuLinkList*child;
 	DuLinkList() :val(-1),prev(nullptr),next(NULL),child(nullptr) {}
 	DuLinkList(int x) : val(x),prev(nullptr),next(nullptr),child(nullptr) {}
+    DuLinkList(int x,DuLinkList*_prev,DuLinkList*_next) : val(x),prev(_prev),next(_next){}
+    DuLinkList(int x,DuLinkList*_prev,DuLinkList*_next,DuLinkList*_child) : val(x),prev(_prev),next(_next),child(_child) {}
     DuLinkList(string&&s):DuLinkList(){
-        if(s[0]=='['&&s.back()==']')s=s.substr(1,s.size()-2);
-		else if(s[0]=='[')s=s.substr(1,s.size()-1);
-		else if(s.back()==']')s.pop_back();
+        auto readdulinklist=[&](int &i){
+            if(s[i]=='n'){
+                i+=4;
+                if(s[i])i++;
+                return make_pair(false,0);
+            }
+            else{
+                int signal=1;
+                if(s[i]=='-'){
+                    signal=-1;
+                    i++;
+                }
+                int val=0;
+                while(isdigit(s[i]))val=val*10+s[i++]-'0';
+                if(s[i])i++;
+                return make_pair(true,val*signal);
+            }
+        };
+        s.erase(remove(s.begin(),s.end(),' '),s.end());
+		s.erase(remove(s.begin(),s.end(),'['),s.end());
+		s.erase(remove(s.begin(),s.end(),']'),s.end());
         DuLinkList*cur;
         stack<queue<DuLinkList*>*>S;
         int i=0;
-        auto pp=readdulinklist(s,i);
+        auto pp=readdulinklist(i);
 		if (!pp.first)return;
         S.push(new queue<DuLinkList*>);
         val=pp.second;
         cur=this;
         while(cur||S.size()){
             if(i==s.size())break;
-            auto pp=readdulinklist(s,i);
+            auto pp=readdulinklist(i);
             if(cur){
                 S.top()->emplace(cur);
                 if(pp.first){

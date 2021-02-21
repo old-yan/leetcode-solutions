@@ -1,28 +1,11 @@
 #pragma once
 #include <queue>
+#include <algorithm>
 #include <unordered_map>
 #include <iomanip>
 using namespace std;
 #define OLDYAN_TREENODE
 
-pair<bool,int> readtreenode(string&s,int &i){
-	if(s[i]=='n'){
-		i+=4;
-		if(s[i])i++;
-		return make_pair(false,0);
-	}
-	else{
-		int signal=1;
-		if(s[i]=='-'){
-			signal=-1;
-			i++;
-		}
-		int val=0;
-		while(isdigit(s[i]))val=val*10+s[i++]-'0';
-		if(s[i])i++;
-		return make_pair(true,val*signal);
-	}
-}
 struct TreeNode {
 	int val;
 	TreeNode* left;
@@ -31,12 +14,30 @@ struct TreeNode {
 	TreeNode(int x) : val(x), left(NULL), right(NULL) {}
 	TreeNode(int x, TreeNode* _left, TreeNode* _right) : val(x), left(_left), right(_right) {}
 	TreeNode(string s){
-		if(s[0]=='['&&s.back()==']')s=s.substr(1,s.size()-2);
-		else if(s[0]=='[')s=s.substr(1,s.size()-1);
-		else if(s.back()==']')s.pop_back();
+		auto readtreenode=[&](int&i){
+			if(s[i]=='n'){
+				i+=4;
+				if(s[i])i++;
+				return make_pair(false,0);
+			}
+			else{
+				int signal=1;
+				if(s[i]=='-'){
+					signal=-1;
+					i++;
+				}
+				int val=0;
+				while(isdigit(s[i]))val=val*10+s[i++]-'0';
+				if(s[i])i++;
+				return make_pair(true,val*signal);
+			}
+		};
+		s.erase(remove(s.begin(),s.end(),' '),s.end());
+		s.erase(remove(s.begin(),s.end(),'['),s.end());
+		s.erase(remove(s.begin(),s.end(),']'),s.end());
 		int i=0;
 		val=0,left=nullptr,right=nullptr;
-		pair<bool,int>pp=readtreenode(s,i);
+		pair<bool,int>pp=readtreenode(i);
 		if (!pp.first)return;
 		val=pp.second;
 		queue<TreeNode*>Q;
@@ -45,7 +46,7 @@ struct TreeNode {
 			TreeNode* q = Q.front();
 			Q.pop();
 			if (s[i]) {
-				pp=readtreenode(s,i);
+				pp=readtreenode(i);
 				if (!pp.first)q->left = nullptr;
 				else {
 					q->left = new TreeNode(pp.second);
@@ -54,7 +55,7 @@ struct TreeNode {
 			}
 			else q->left = nullptr;
 			if (s[i]) {
-				pp=readtreenode(s,i);
+				pp=readtreenode(i);
 				if (!pp.first)q->right = nullptr;
 				else {
 					q->right = new TreeNode(pp.second);
@@ -88,7 +89,7 @@ ostream&operator<<(ostream&out,TreeNode*root){
 	}
 	string s[maxdepth];
 	{
-		int width=6;
+		int width=4;
 		for(int i=0;i<maxdepth;i++){
 			s[i].resize(((1<<maxdepth)-1)*width);
 			for(char&c:s[i])c=' ';

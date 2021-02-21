@@ -1,22 +1,17 @@
 #include "utils.h"
 
 class Solution {
+    ll pre=INT_MIN;
+    ll ans=INT_MAX;
+    void fun(TreeNode*root){
+        if(root->left)fun(root->left);
+        chmin(ans,root->val-pre);
+        pre=root->val;
+        if(root->right)fun(root->right);
+    }
 public:
-    int findPairs(vector<int>& nums, int k) {
-        sort(ALL(nums));
-        auto next=next_different(nums);
-        int ans=0;
-        for(int i=0,j=0;i<nums.size();i=next[i]){
-            while(j<nums.size()){
-                if(j==i)j++;
-                else if(nums[j]<nums[i]+k)j=next[j];
-                else break;
-            }
-            if(j==nums.size())break;
-            if(nums[j]==nums[i]+k){
-                ans++;
-            }
-        }
+    int getMinimumDifference(TreeNode* root) {
+        fun(root);
         return ans;
     }
 };
@@ -26,9 +21,9 @@ int main()
     cout<<boolalpha;
     Solution sol;
 
-    vi nums{3,1,4,1,5};
-    int k=2;
-    auto ans=sol.findPairs(nums,k);
+    TreeNode*root=new TreeNode("[1,null,3,2]");
+    DBGT(root);
+    auto ans=sol.getMinimumDifference(root);
     DBG(ans);
 
     system("pause");

@@ -3,7 +3,7 @@
 class Solution {
 public:
     vector<vector<int>> reconstructQueue(vector<vector<int>>& people) {
-        zkwTree T(people.size(),1);
+        SegTree<int> T(people.size(),1,[](int x,int y){return x+y;});
         vi idx(people.size());
         iota(ALL(idx),0);
         sort(ALL(idx),[&](int x,int y)->bool{return people[x][0]<people[y][0]||(people[x][0]==people[y][0]&&people[x][1]>people[y][1]);});

@@ -3,16 +3,14 @@
 class Solution {
 public:
     int lengthOfLIS(vector<int>& nums) {
-        vi v=getrank2(nums);
-        zkwMaxTree T;
-        int ans=0;
-        REP(i,v.size()){
-            int len=1;
-            if(v[i])chmax(len,T(0,v[i]-1)+1);
-            chmax(ans,len);
-            if(T[v[i]]<len)T.set(v[i],len);
+        vi rnk=getrank2(nums);
+        SegTree<int>T(rnk.size(),0,[](int x,int y){
+            return max(x,y);
+        });
+        for(int a:rnk){
+            T.set(a,T(0,a-1)+1);
         }
-        return ans;
+        return T.data[1];
     }
 };
 

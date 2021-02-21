@@ -1,14 +1,19 @@
 #include "utils.h"
 
-class Solution {
-    zkwTree T;
-    int total;
+class KthLargest {
+    priority_queue<int,vi,greater<int>>Q;
+    int k;
 public:
-    Solution(vector<int>& w):T(w){
-        total=T.data[1];
+    KthLargest(int _k, vector<int>& nums):k(_k) {
+        for(int a:nums){
+            Q.push(a);
+            if(Q.size()>k)Q.pop();
+        }
     }
-    int pickIndex() {
-        return T.find_nth(rand()%total);
+    int add(int val) {
+        Q.push(val);
+        if(Q.size()>k)Q.pop();
+        return Q.top();
     }
 };
 
@@ -16,18 +21,13 @@ int main()
 {
     cout<<boolalpha;
 
-    vi w{1,3};
-    Solution*obj=new Solution(w);
-	DBG(obj->pickIndex());
-    DBG(obj->pickIndex());
-    DBG(obj->pickIndex());
-    DBG(obj->pickIndex());
-    DBG(obj->pickIndex());
-    DBG(obj->pickIndex());
-    DBG(obj->pickIndex());
-    DBG(obj->pickIndex());
-    DBG(obj->pickIndex());
-    DBG(obj->pickIndex());
+    vi nums{4,5,8,2};
+	KthLargest*obj=new KthLargest(3,nums);
+	obj->add(3);
+	obj->add(5);
+	obj->add(10);
+	obj->add(9);
+	obj->add(4);
 
     system("pause");
     return 0;

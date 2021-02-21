@@ -1,3 +1,4 @@
+#include "TreeNode.h"
 #include "utils.h"
 
 class Solution {
@@ -18,7 +19,7 @@ int main()
     cout<<boolalpha;
     Solution sol;
 
-    TreeNode*root=new TreeNode("5,1,4,null,null,3,6");
+    TreeNode*root=new TreeNode("[-6,-9,-3,1,-8,-4,1,null,null,null,-7,null,null,0,5,null,null,null,null,2]");
     DBGT(root);
     auto ans=sol.isValidBST(root);
     DBG(ans);

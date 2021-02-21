@@ -4,20 +4,19 @@ class Solution {
 public:
     int countRangeSum(vector<int>& nums, int lower, int upper) {
         auto sum=presum(nums);
-        vi rank=getrank2(sum);
-        map<ll,int>M;
-        REP(i,rank.size()){
-            M[sum[i]]=rank[i];
+        int n=sum.size();
+        REP(i,n){
+            sum.pb(sum[i]-lower);
+            sum.pb(sum[i]-upper);
         }
-        M[LLONG_MAX]=INT_MAX;
-        zkwTree T(rank.size());
-        T.step(rank[0]);
+        vi rnk=getrank2(sum);
+        unordered_map<int,int>M;
+        REP(i,rnk.size())M[sum[i]]=rnk[i];
+        SegTree<int> T(M.size(),0,[](int x,int y){return x+y;});
         int ans=0;
-        FOR(i,1,rank.size()){   
-            auto it=M.lower_bound(sum[i]-upper);
-            auto it2=M.lower_bound(sum[i]-lower+1);
-            ans+=T(it->second,it2->second-1);
-            T.step(rank[i]);
+        REP(i,n){  
+            ans+=T(M[sum[i]-upper],M[sum[i]-lower]);
+            T.step_forward(rnk[i]);
         }
         return ans;
     }

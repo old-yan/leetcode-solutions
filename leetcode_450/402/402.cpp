@@ -4,7 +4,7 @@ class Solution {
 public:
     string removeKdigits(string num, int k) {
         string ans;
-        zkwMinTree T(num.size());
+        SegTree<int> T(num.size(),128,[](int x,int y){return min(x,y);});
         REP(i,num.size())T.set(i,num[i]);
         REP(i,num.size()){
             if(i+k==num.size())break;

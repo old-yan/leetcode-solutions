@@ -5,24 +5,6 @@
 using namespace std;
 #define OLDYAN_NEXTNODE
 
-pair<bool,int> readnextnode(string&s,int &i){
-	if(s[i]=='n'){
-		i+=4;
-		if(s[i])i++;
-		return make_pair(false,0);
-	}
-	else{
-		int signal=1;
-		if(s[i]=='-'){
-			signal=-1;
-			i++;
-		}
-		int val=0;
-		while(isdigit(s[i]))val=val*10+s[i++]-'0';
-		if(s[i])i++;
-		return make_pair(true,val*signal);
-	}
-}
 struct NextNode {
     int val;
     NextNode* left;
@@ -33,11 +15,29 @@ struct NextNode {
     NextNode(int _val, NextNode* _left, NextNode* _right, NextNode* _next)
         : val(_val), left(_left), right(_right), next(_next) {}
 	NextNode(string&&s){
-		if(s[0]=='['&&s.back()==']')s=s.substr(1,s.size()-2);
-		else if(s[0]=='[')s=s.substr(1,s.size()-1);
-		else if(s.back()==']')s.pop_back();
+		auto readnextnode=[&](int &i){
+			if(s[i]=='n'){
+				i+=4;
+				if(s[i])i++;
+				return make_pair(false,0);
+			}
+			else{
+				int signal=1;
+				if(s[i]=='-'){
+					signal=-1;
+					i++;
+				}
+				int val=0;
+				while(isdigit(s[i]))val=val*10+s[i++]-'0';
+				if(s[i])i++;
+				return make_pair(true,val*signal);
+			}
+		};
+		s.erase(remove(s.begin(),s.end(),' '),s.end());
+		s.erase(remove(s.begin(),s.end(),'['),s.end());
+		s.erase(remove(s.begin(),s.end(),']'),s.end());
 		int i=0;
-		pair<bool,int>pp=readnextnode(s,i);
+		pair<bool,int>pp=readnextnode(i);
 		if (!pp.first)return;
 		val=0,left=nullptr,right=nullptr,next=nullptr;
 		queue<NextNode*>Q;
@@ -46,7 +46,7 @@ struct NextNode {
 			NextNode* q = Q.front();
 			Q.pop();
 			if (s[i]) {
-				pp=readnextnode(s,i);
+				pp=readnextnode(i);
 				if (!pp.first)q->left = nullptr;
 				else {
 					q->left = new NextNode(pp.second);
@@ -55,7 +55,7 @@ struct NextNode {
 			}
 			else q->left = nullptr;
 			if (s[i]) {
-				pp=readnextnode(s,i);
+				pp=readnextnode(i);
 				if (!pp.first)q->right = nullptr;
 				else {
 					q->right = new NextNode(pp.second);

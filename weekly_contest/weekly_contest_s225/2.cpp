@@ -1,13 +1,14 @@
+#include "SegTree.h"
 #include "utils.h"
 
 class Solution {
 public:
     int minCharacters(string a, string b) {
-        zkwTree T1(26),T2(26);
+        SegTree<int>T1(26,0,[](int x,int y){return x+y;}),T2(26,0,[](int x,int y){return x+y;});
         //将字符串a的字母分布存入T1
-        for(char c:a)T1.step(c-'a');
+        for(char c:a)T1.step_forward(c-'a');
         //将字符串b的字母分布存入T2
-        for(char c:b)T2.step(c-'a');
+        for(char c:b)T2.step_forward(c-'a');
         int ans=INT_MAX;
         //遍历字母，计算将a、b全部变成某字母的步数
         REP(c,26){

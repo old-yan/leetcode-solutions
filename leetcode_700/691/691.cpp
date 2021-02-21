@@ -1,74 +1,33 @@
 #include "utils.h"
 
 class Solution {
-    unordered_map<char,int>M;
-    vi need;
-    vvi material;
-    int ans;
-    void dfs(int cur,int curtake,vi&curhave,int curlack){
-        if(curtake>=ans)return;
-        if(cur<material.size()){
-            int stillneed=0;
-            REP(c,M.size()){
-                if(curhave[c]<need[c]){
-                    curlack-=min(material[cur][c],need[c]-curhave[c]);
-                }
-                curhave[c]+=material[cur][c];
-                if(curhave[c]<need[c]&&material[cur][c])stillneed++;
-            }
-            if(!curlack)chmin(ans,curtake);
-            else{
-                if(stillneed)dfs(cur,curtake+1,curhave,curlack);
-                FOR(i,cur+1,material.size()+1){
-                    dfs(i,curtake+1,curhave,curlack);
-                }
-            }
-            REP(c,M.size()){
-                curhave[c]-=material[cur][c];
-                if(curhave[c]<need[c]){
-                    curlack+=min(material[cur][c],need[c]-curhave[c]);
-                }
-            }
+    int sticker_chars[50][26]={0};
+    void countStickerChar(vector<string>&stickers){
+        for(int i=0;i<stickers.size();i++){
+            for(char c:stickers[i])sticker_chars[i][c-'a']++;
         }
     }
 public:
     int minStickers(vector<string>&stickers, string target) {
-        for(char c:target){
-            if(!M.count(c))M[c]=M.size();
-        }
-        need.resize(M.size(),0);
-        for(char c:target)need[M[c]]++;
-        {
-            for(string&sticker:stickers){
-                material.pb(vi(M.size(),0));
-                for(char c:sticker)material.back()[M[c]]++;
-            }
-            vector<bool>isworse(stickers.size(),false);
-            for(int i=stickers.size()-1;i>=0;i--){
-                REP(j,stickers.size()){
-                    if(j==i)continue;
-                    bool advantage=false;
-                    REP(c,M.size()){
-                        if(!need[c])continue;
-                        if(material[i][c]>material[j][c]){
-                            advantage=true;
-                        }
-                    }
-                    if(!advantage){
-                        stickers.erase(stickers.begin()+i);
-                        material.erase(material.begin()+i);
-                        break;
+        countStickerChar(stickers);
+        int dp[1<<15];
+        fill(dp,dp+(1<<15),10000000);
+        dp[0]=0;
+        for(int i=1;i<(1<<target.size());i++){
+            for(int j=0;j<stickers.size();j++){
+                int chars[26];
+                memcpy(chars,sticker_chars[j],sizeof(chars));
+                int icopy=i;
+                for(int k=0;k<target.size();k++){
+                    if((icopy&(1<<k))&&chars[target[k]-'a']){
+                        chars[target[k]-'a']--;
+                        icopy-=(1<<k);
                     }
                 }
+                dp[i]=min(dp[i],dp[icopy]+1);
             }
-            DBGV(stickers);
         }
-        ans=target.size()+1;
-        vi curhave(M.size(),0);
-        REP(i,stickers.size()){
-            dfs(i,1,curhave,accumulate(ALL(need),0));
-        }
-        return ans==target.size()+1?-1:ans;
+        return dp[(1<<target.size())-1]==10000000?-1:dp[(1<<target.size())-1];
     }
 };
 

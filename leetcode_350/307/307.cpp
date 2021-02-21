@@ -1,14 +1,14 @@
 #include "utils.h"
 
 class NumArray {
-    zkwTree T;
+    SegTree<int>T;
 public:
-    NumArray(vector<int>& nums):T(nums) {}
-    void update(int i, int val) {
-        T.set(i,val);
+    NumArray(vector<int>& nums):T(nums,0,[](int x,int y){return x+y;}) {}
+    void update(int index, int val) {
+        T.set(index,val);
     }
-    int sumRange(int i, int j) {
-        return T(i,j);
+    int sumRange(int left, int right) {
+        return T(left,right);
     }
 };
 

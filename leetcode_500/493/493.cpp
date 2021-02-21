@@ -6,21 +6,18 @@ public:
         auto half=[](ll val){
             return val>0?(val-1)/2:(val-2)/2;
         };
-        vi elems(nums.size()*2);
-        REP(i,nums.size()){
-            elems[i*2]=nums[i];
-            elems[i*2+1]=half(nums[i]);
+        int n=nums.size();
+        REP(i,n){
+            nums.pb(half(nums[i]));
         }
-        sort(ALL(elems));
-        elems.resize(unique(ALL(elems))-elems.begin());
+        vi rnk=getrank2(nums);
         unordered_map<int,int>M;
-        for(int a:elems)M[a]=M.size();
-        zkwTree T(elems.size());
+        REP(i,rnk.size())M[nums[i]]=rnk[i];
+        SegTree<int> T(M.size(),0,[](int x,int y){return x+y;});
         int ans=0;
-        REPR(i,nums.size()-1){
+        REPR(i,n-1){
             ans+=T(0,M[half(nums[i])]);
-            int j=M[nums[i]];
-            T.step(j);
+            T.step_forward(rnk[i]);
         }
         return ans;
     }

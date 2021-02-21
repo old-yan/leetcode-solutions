@@ -3,20 +3,20 @@
 class Solution {
 public:
     int maxEnvelopes(vector<vector<int>>& envelopes) {
-        map<int,multiset<int>>M;
-        int Max=INT_MIN;
-        for(auto&A:envelopes){
-            M[A[0]].insert(A[1]);
-            chmax(Max,max(A[0],A[1]));
+        sort(ALL(envelopes),[](vi&x,vi&y){
+            if(x[0]!=y[0])return x[0]>y[0];
+            return x[1]<y[1];
+        });
+        vi h;
+        for(auto&envelope:envelopes)h.pb(envelope[1]);
+        vi rnk=getrank2(h);
+        unordered_map<int,int>M;
+        REP(i,h.size())M[h[i]]=rnk[i];
+        SegTree<int>T(M.size(),0,[](int x,int y){return max(x,y);});
+        for(auto&envelope:envelopes){
+            T.set(M[envelope[1]],T(M[envelope[1]]+1,M.size()-1)+1);
         }
-        zkwMaxTree T(Max+1);
-        for(auto it=M.rbegin();it!=M.rend();++it){
-            auto&v=it->second;
-            for(int a:v){
-                T.set(a,T(a+1,Max)+1);
-            }
-        }
-        return T(0,Max);
+        return T.data[1];
     }
 };
 

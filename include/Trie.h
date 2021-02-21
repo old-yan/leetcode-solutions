@@ -62,7 +62,7 @@ public:
 
 //静态字典树
 class StaticTrie {
-    #define TRIEN
+    #define TRIEN 30
 public:
     int*data,size;
     bitset<1<<18>pool;
@@ -123,7 +123,7 @@ public:
             }
             cur=(*this)[cur][word[i]-'a'];
         }
-        return (*this)[cur][26]>=0;
+        return (*this)[cur][26];
     }
     bool startsWith(const string&prefix) {
         int cur=0;

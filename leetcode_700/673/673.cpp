@@ -5,19 +5,19 @@ class Solution {
         int len,count;
         lengthCounter(int _len=0,int _counter=0):len(_len),count(_counter){}
     };
-    static lengthCounter merge(lengthCounter&x,lengthCounter&y){
-        if(x.len==y.len)return {x.len,x.count+y.count};
-        return x.len>y.len?x:y;
-    }
 public:
     int findNumberOfLIS(vector<int>& nums) {
         vi rnk=getrank2(nums);
-        Tree<lengthCounter>T(rnk.size(),lengthCounter(),merge);
+        auto merge=[](lengthCounter&x,lengthCounter&y){
+            if(x.len==y.len)return lengthCounter(x.len,x.count+y.count);
+            return x.len>y.len?x:y;
+        };
+        SegTree<lengthCounter>T(rnk.size(),lengthCounter(),merge);
         REP(i,rnk.size()){
             auto p=T(0,rnk[i]-1);
             p.len++;
             chmax(p.count,1);
-            T.set(rnk[i],merge(T[rnk[i]],p));
+            T.step(rnk[i],p);
         }
         return T.data[1].count;
     }

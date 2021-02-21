@@ -12,6 +12,7 @@
 #include <unordered_map>
 #include <unordered_set>
 #include <numeric>
+#include <functional>
 // 头文件太多会拖慢编译速度，平时没有必要都include进来，可以include常用的，或者在主文件再include
 // #include "ListNode.h"
 // #include "TreeNode.h"
@@ -236,6 +237,15 @@ ll inv(ll a,ll mod=1000000007){
     ll x,y;
     extgcd(a,mod,x,y);
     return (x+mod)%mod;
+}
+
+//求逆元表
+vi invTable(ll m, ll mod=1000000007){
+	vi table(m+1,1);
+	for(int i=2;i<=m;i++){
+		table[i]=(mod-mod/i)*table[mod%i]%mod;
+	}
+	return table;
 }
 
 //组合数

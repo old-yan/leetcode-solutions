@@ -3,13 +3,13 @@
 class Solution {
 public:
     vector<int> countSmaller(vector<int>& nums) {
-        zkwTree T(nums.size());
-        vi rank=getrank2(nums);
-        vi ans(nums.size(),0);
-        REPR(i,rank.size()-1){
-            int j=rank[i];
-            if(j)ans[i]=T(0,j-1);
-            T.step(j);
+        SegTree<int>T(nums.size(),0,[](int x,int y){return x+y;});
+        vi rnk=getrank2(nums);
+        vi ans(rnk.size(),0);
+        REPR(i,rnk.size()-1){
+            int j=rnk[i];
+            ans[i]=T(0,j-1);
+            T.step_forward(j);
         }
         return ans;
     }

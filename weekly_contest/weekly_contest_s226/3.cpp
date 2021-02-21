@@ -1,11 +1,11 @@
-#include "zkwTree.h"
+#include "SegTree.h"
 #include "utils.h"
 
 class Solution {
 public:
-    vector<bool> canEat(vector<int>& candiesCount, vector<vector<int>>& queries) {
+    vector<bool> canEat(vector<int>&candiesCount, vector<vector<int>>& queries) {
         //利用线段树存储糖果分布情况
-        zkwTree T(candiesCount);
+        SegTree<long> T(candiesCount,0,[](long x,long y){return x+y;});
         vector<bool>ans(queries.size());
         for(int i=0;i<queries.size();i++){
             long type=queries[i][0];
