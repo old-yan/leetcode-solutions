@@ -42,7 +42,7 @@ using vvi = vector<vector<int>>;
 #define FOR(i, m, n) for (ll i = m; i < n; i++)
 #define FORR(i, m, n) for (ll i = m; i >= n; i--)
 #ifdef LOCAL_DEBUG
-#define DBGVV(a) cout << #a << " : \n";for(ll i=0;i<a.size();i++){DBG(i)DBGV(a[i])};
+#define DBGVV(a) cout << #a << " : \n";for(ll i=0;i<a.size();i++){DBGV(a[i])};
 #define DBGV(a) cout << #a << " : ";for(auto b:a)cout << b << ' ';cout << endl;
 #define DBG(a) cout << #a << " : " << a << endl;
 #define DBGL(a) cout << #a;for(auto b=a;b;b=b->next)cout<<' '<<b->val;cout<<endl;
@@ -567,14 +567,14 @@ vvi makevvi(string s){
 	vvi res;
 	for(int i=1,j;i<s.size();){
 		res.pb(vi());
-		while(true){
+		while(s[i]!=']'){
 			j=min(s.find_first_of(']',i),s.find_first_of(',',i));
 			res.back().pb(s2i(s.substr(i,j-i)));
-			i=j;
-			if(s[i]==']')break;
-			else i++;
+			if(s[j]==',')i=j+1;
+			else i=j;
 		}
 		if(i==s.size()-1)break;
 		else i+=3;
 	}
+	return res;
 }

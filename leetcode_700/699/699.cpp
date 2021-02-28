@@ -133,8 +133,6 @@ public:
     }
 };
 
-
-
 class Solution {
 public:
     vector<int> fallingSquares(vector<vector<int>>& positions) {
@@ -163,9 +161,7 @@ int main()
     cout<<boolalpha;
     Solution sol;
 
-    vvi positions{
-        {4,9},{8,8},{6,8},{8,2}
-    };
+    vvi positions=makevvi("[[4, 9], [8, 8], [6, 8], [8, 2]]");
     auto ans=sol.fallingSquares(positions);
     DBGV(ans);
 

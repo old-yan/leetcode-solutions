@@ -47,8 +47,8 @@ int main()
     cout<<boolalpha;
     Solution sol;
 
-    vvi isw{{0,1},{0,0}};
-    auto ans=sol.highestPeak(isw);
+    vvi isWater=makevvi("[[0,0,1],[1,0,0],[0,0,0]]");
+    auto ans=sol.highestPeak(isWater);
     DBGVV(ans);
 
     system("pause");

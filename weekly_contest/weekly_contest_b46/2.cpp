@@ -33,9 +33,7 @@ int main()
     cout<<boolalpha;
     Solution sol;
 
-    vvi groups{
-        {1,-1,-1},{3,-2,0}
-    };
+    vvi groups=makevvi("[[1,-1,-1],[3,-2,0]");
     vi nums{1,-1,0,1,-1,-1,3,-2,0};
     auto ans=sol.canChoose(groups,nums);
     DBG(ans);
