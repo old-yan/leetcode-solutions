@@ -4,7 +4,7 @@ using namespace std;
 
 // 后缀数组，生成sa，rk数组
 struct SuffixArray{
-    #define MAXN 100010
+    #define MAXN 10000
     string s;
     int n,bucketRange;
     int sa[MAXN],second[MAXN],bucket[MAXN],mem[MAXN],rk_mem[MAXN],rk2_mem[MAXN],height[MAXN];

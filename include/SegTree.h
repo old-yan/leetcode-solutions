@@ -540,8 +540,7 @@ public:
     int X,Y;
     T default_val;
     Operation op;
-    bool addition;
-    LazyTree(int n,T _default_val,Operation _op,bool _addition=false):default_val(_default_val),op(_op),addition(_addition){
+    LazyTree(int n,T _default_val,Operation _op):default_val(_default_val),op(_op){
         for(X=4;X<n;X<<=1);
         Y=__builtin_ctz(X);
         data=new elem[X*2];
@@ -551,7 +550,7 @@ public:
         }
     }
     template<class Tlike>
-    LazyTree(vector<Tlike>&nums,T _default_val,Operation _op,bool _addition=false):default_val(_default_val),op(_op),addition(_addition){
+    LazyTree(vector<Tlike>&nums,T _default_val,Operation _op):default_val(_default_val),op(_op){
         for(X=4;X<nums.size();X<<=1);
         Y=__builtin_ctz(X);
         data=new elem[X*2];
@@ -590,7 +589,6 @@ public:
                 data[r>>1].val=op(data[r].val,data[r^1].val);
                 l>>=1;
                 r>>=1;
-                if(addition)inc<<=1;
             }
             while(l>>=1){
                 data[l].val=op(data[l*2].val,data[l*2+1].val);
@@ -600,8 +598,8 @@ public:
     void push_down(int i){
         for(int j=Y,k=1;j;k=(i&(1<<--j))?(k<<1)+1:k<<1){
             if(data[k].b){
-                inherite(k*2,addition?data[k].inc/2:data[k].inc);
-                inherite(k*2+1,addition?data[k].inc/2:data[k].inc);
+                inherite(k*2,data[k].inc);
+                inherite(k*2+1,data[k].inc);
                 data[k]=elem(data[k].val);
             }
         }
