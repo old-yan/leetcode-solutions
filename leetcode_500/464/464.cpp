@@ -2,12 +2,12 @@
 
 class Solution {
     int maxChoosableInteger;
-    bitset<1<<20>visited;
+    bitset<1<<20>route_visited;
     bitset<1<<20>can;
     bitset<20>material;
     int fun(int target){
-        if(visited[material.to_ulong()])return can[material.to_ulong()];
-        visited.set(material.to_ulong());
+        if(route_visited[material.to_ulong()])return can[material.to_ulong()];
+        route_visited.set(material.to_ulong());
         int i=material._Find_first();
         while(i<maxChoosableInteger){
             int j=i+1;
