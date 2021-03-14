@@ -2,7 +2,7 @@
 
 class Solution {
 public:
-    //暴力枚举所有的交换对，时间复杂度 O(n^2)
+    //暴力枚举所有的交换对，时间复杂度 O(n^3)
     //O(n)做法可以参考力扣859题
     bool areAlmostEqual(string s1, string s2) {
         if(s1==s2)return true;

@@ -38,7 +38,10 @@ int main()
     cout<<boolalpha;
     Solution sol;
 
-    
+    vvi classes=makevvi("[[1,2],[3,5],[2,2]]");
+    int extraStudents=2;
+    auto ans=sol.maxAverageRatio(classes,extraStudents);
+    DBG(ans);
 
     system("pause");
     return 0;

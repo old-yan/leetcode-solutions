@@ -36,7 +36,10 @@ int main()
     cout<<boolalpha;
     Solution sol;
 
-    
+    vi nums{5,5,4,5,4,1,1,1};
+    int k=0;
+    auto ans=sol.maximumScore(nums,k);
+    DBG(ans);
 
     system("pause");
     return 0;
