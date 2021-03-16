@@ -565,7 +565,7 @@ vvi makevvi(string s){
 	if(s[1]=='[')s=s.substr(1);
 	if(s[s.size()-2]==']')s.pop_back();
 	vvi res;
-	for(int i=1,j;i<s.size();){
+	for(int i=1,j;i<s.size()&&s[i]!=']';){
 		res.pb(vi());
 		while(s[i]!=']'){
 			j=min(s.find_first_of(']',i),s.find_first_of(',',i));
