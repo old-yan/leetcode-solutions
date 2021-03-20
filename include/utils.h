@@ -228,6 +228,17 @@ ll factorial(ll a){
 	else return 1;
 }
 
+//快速幂
+ll fastPower(ll a,ll n,ll mod=1000000007){
+	ll res=1;
+	while(n){
+		if(n&1)res=res*a%mod;
+		a=a*a%mod;
+		n>>=1;
+	}
+	return res;
+}
+
 //求逆元
 void extgcd(ll a,ll b,ll& x,ll& y){
 	if(!a){x=0,y=1;}
