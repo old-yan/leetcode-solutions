@@ -5,28 +5,28 @@ class FreqStack {
     struct node{
         int val;
         vi timeStamps;
-        node(int _val,int _timeStamp):val(_val),timeStamps({_timeStamp}){}
+        node(){}
+        node(int _val,int _timeStamp):val(_val),timeStamps({_timeStamp}){
+            cout<<"hello";
+        }
         bool operator<(const node&other)const{
             if(timeStamps.size()!=other.timeStamps.size())return timeStamps.size()<other.timeStamps.size();
             return timeStamps.size()&&timeStamps.back()<other.timeStamps.back();
         }
     };
-    unordered_map<int,int>M;
-    vector<node>nodes;
-    Heap H;
+    unordered_map<int,node>M;
+    Heap<int>H;
     int timer;
 public:
-    FreqStack():timer(0),H([&](int x,int y){return nodes[x]<nodes[y];}) {}
+    FreqStack():timer(0),H([&](int x,int y){return M[x]<M[y];}) {}
     void push(int val) {
         if(M.count(val)){
-            auto p=M[val];
-            nodes[p].timeStamps.pb(timer++);
-            H.push(p);
+            M[val].timeStamps.pb(timer++);
+            H.push(val);
         }
         else{
-            auto p=M[val]=M.size();
-            nodes.emplace_back(val,timer++);
-            H.push(p);
+            M[val]=node(val,timer++);
+            H.push(val);
         }
     }
     int pop() {
