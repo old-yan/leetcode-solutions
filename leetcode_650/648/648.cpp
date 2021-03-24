@@ -32,12 +32,12 @@
 //         return ans;
 //     }
 // };
+
+StaticTrie T;
 class Solution {
-    //静态Trie树做法
-    typedef StaticTrie Trie;
 public:
     string replaceWords(vector<string>& dictionary, string sentence) {
-        Trie T;
+        T.clear();
         for(auto&word:dictionary)T.insert(word);
         string ans;
         for(int i=0,j;i<sentence.size();i=j+1){
@@ -47,7 +47,7 @@ public:
             int idx=0;
             int len=0;
             while(len<word.size()){
-                if(idx&&T[idx][26]){
+                if(idx&&T[idx][26]>=0){
                     ans+=word.substr(0,len)+" ";
                     break;
                 }

@@ -7,26 +7,16 @@ using namespace std;
 
 //并查集
 class Union{
+    #define UNIONSIZE 100000
 public:
-    int*find;
-    int*size;
-    int n;
-    int group;
+    int find[UNIONSIZE],size[UNIONSIZE],n,group;
     Union(int _n):n(_n),group(_n){
-        find=new int[n];
         iota(find,find+n,0);
-        size=new int[n];
         fill(size,size+n,1);
     }
     Union(const Union&other):n(other.n),group(other.group){
-        find=new int[n];
         memcpy(find,other.find,n*sizeof(int));
-        size=new int[n];
         memcpy(size,other.size,n*sizeof(int));
-    }
-    ~Union(){
-        delete []find;
-        delete []size;
     }
     void reset(){
         iota(find,find+n,0);
@@ -38,9 +28,7 @@ public:
         else return find[i]=Find(find[i]);
     }
     bool unite(int i,int j){
-        i=Find(i);
-        j=Find(j);
-        if(i==j)return false;
+        if((i=Find(i))==(j=Find(j)))return false;
         if(i<j){
             find[j]=i;
             size[i]+=size[j];

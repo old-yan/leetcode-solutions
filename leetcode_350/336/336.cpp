@@ -47,15 +47,14 @@
 //     }
 // };
 
+StaticTrie T;
 class Solution {
-    typedef StaticTrie Trie;
     vector<string>words;
-    Trie T;
     vvi arm;
     vvi ans;
     void dfs(int p,int i){
-        if(T[p][26]>0){
-            int j=T[p][26]-1;
+        if(T[p][26]>=0){
+            int j=T[p][26];
             int li=words[i].size(),lj=words[j].size();
             if(lj>li&&arm[j][li+lj+1]==lj-li)ans.pb({j,i});
         }
@@ -68,6 +67,7 @@ class Solution {
 public:
     vector<vector<int>> palindromePairs(vector<string>&_words) {
         words=_words;
+        T.clear();
         REP(i,words.size()){
             T.insert(words[i],i);
             arm.emplace_back(getarm(words[i]));
@@ -75,17 +75,17 @@ public:
         REP(i,words.size()){
             string&word=words[i];
             int p=0;
-            if(T[p][26]>0&&T[p][26]!=i+1){
-                if(arm[i][word.size()+1]==word.size())ans.pb({T[p][26]-1,int(i)});
+            if(T[p][26]>=0&&T[p][26]!=i){
+                if(arm[i][word.size()+1]==word.size())ans.pb({T[p][26],int(i)});
             }
             FORR(j,int(word.size())-1,0){
                 p=T[p][word[j]-'a'];
                 if(!p)break;
-                if(T[p][26]>0&&T[p][26]!=i+1){
-                    if(arm[i][j+1]==j)ans.pb({T[p][26]-1,int(i)});
+                if(T[p][26]>=0&&T[p][26]!=i){
+                    if(arm[i][j+1]==j)ans.pb({T[p][26],int(i)});
                 }
             }
-            if(word.empty())dfs(p,i);
+            if(word.empty()||p)dfs(p,i);
         }
         return ans;
     }

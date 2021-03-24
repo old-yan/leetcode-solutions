@@ -434,16 +434,18 @@ public:
 //模板线段树
 template<class T>
 class SegTree{
+    #define SEGTREEDEPTH 17
     typedef function<T(T&,T&)> Operation;
 public:
-    T*data;
+    T data[1<<(SEGTREEDEPTH+1)]={0};
     int X;
     T default_val;
     Operation op;
     SegTree(int n,T _default_val,Operation _op):default_val(_default_val),op(_op){
         for(X=4;X<n;X<<=1);
-        data=new T[X*2];
-        fill(data+X,data+X*2,default_val);
+        if(memcmp(data,&default_val,sizeof(default_val))){
+            fill(data+X,data+X*2,default_val);
+        }
         for(int i=X-1;i;i--){
             data[i]=op(data[i*2],data[i*2+1]);
         }
@@ -451,9 +453,11 @@ public:
     template<class Tlike>
     SegTree(vector<Tlike>&nums,T _default_val,Operation _op):default_val(_default_val),op(_op){
         for(X=4;X<nums.size();X<<=1);
-        data=new T[X*2];
-        for(int i=0;i<X;i++){
-            data[X+i]=i<nums.size()?nums[i]:default_val;
+        for(int i=0;i<nums.size();i++){
+            data[X+i]=nums[i];
+        }
+        if(memcmp(data,&default_val,sizeof(default_val))){
+            fill(data+X+nums.size(),data+X*2,default_val);
         }
         for(int i=X-1;i;i--){
             data[i]=op(data[i*2],data[i*2+1]);
@@ -485,12 +489,12 @@ public:
     void step(int i,T inc){
         for(i+=X;i;i>>=1)data[i]=op(data[i],inc);
     }
-    void step_forward(int i){
+    void step_forward(T i){
         if(is_same<T,int>::value||is_same<T,long>::value){
             for(i+=X;i;i>>=1)data[i]++;
         }
     }
-    void step_back(int i){
+    void step_back(T i){
         if(is_same<T,int>::value||is_same<T,long>::value){
             for(i+=X;i;i>>=1)data[i]--;
         }
@@ -516,6 +520,7 @@ public:
 //模板懒惰标记线段树，适用各种区间修改操作
 template<class T>
 class LazyTree{
+    #define LAZYTREEDEPTH 17
     typedef function<T(T&,T&)> Operation;
     struct elem{
         T val;
@@ -536,15 +541,16 @@ class LazyTree{
         data[i].b=true;
     }
 public:
-    elem*data;
+    elem data[1<<(LAZYTREEDEPTH+1)];
     int X,Y;
     T default_val;
     Operation op;
     LazyTree(int n,T _default_val,Operation _op):default_val(_default_val),op(_op){
         for(X=4;X<n;X<<=1);
         Y=__builtin_ctz(X);
-        data=new elem[X*2];
-        fill(data+X,data+X*2,elem(default_val));
+        if(memcmp(data,&default_val,sizeof(default_val))){
+            fill(data+X,data+X*2,elem(default_val));
+        }
         for(int i=X-1;i;i--){
             data[i].val=op(data[i*2].val,data[i*2+1].val);
         }
@@ -553,9 +559,11 @@ public:
     LazyTree(vector<Tlike>&nums,T _default_val,Operation _op):default_val(_default_val),op(_op){
         for(X=4;X<nums.size();X<<=1);
         Y=__builtin_ctz(X);
-        data=new elem[X*2];
-        for(int i=0;i<X;i++){
-            data[X+i]=elem(i<nums.size()?nums[i]:default_val);
+        for(int i=0;i<nums.size();i++){
+            data[X+i]=nums[i];
+        }
+        if(memcmp(data,&default_val,sizeof(default_val))){
+            fill(data+X+nums.size(),data+X*2,default_val);
         }
         for(int i=X-1;i;i--){
             data[i]=elem(op(data[i*2].val,data[i*2+1].val));

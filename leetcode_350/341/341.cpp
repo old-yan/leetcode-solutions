@@ -1,3 +1,4 @@
+#include "NestedInteger.h"
 #include "utils.h"
 
 class NestedIterator {

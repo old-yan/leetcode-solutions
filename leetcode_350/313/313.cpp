@@ -1,3 +1,4 @@
+#include "Heap.h"
 #include "utils.h"
 
 class Solution {
@@ -13,17 +14,16 @@ public:
             res[i]=ans[step[i]]*primes[i];
         }
         auto comp=[&](int x,int y){return res[x]>res[y];};
-        priority_queue<int,deque<int>,decltype(comp)>Q(comp);
-        REP(i,primes.size())Q.push(i);
+        Heap<int>H(comp);
+        REP(i,primes.size())H.push(i);
         while(idx<n){
-            auto a=Q.top();
-            Q.pop();
+            auto a=H.top();
             if(res[a]>ans[idx-1]){
                 ans[idx++]=res[a];
             }
             step[a]++;
             res[a]=ans[step[a]]*primes[a];
-            Q.push(a);
+            H.sink(a);
         }
         return ans[n-1];
     }

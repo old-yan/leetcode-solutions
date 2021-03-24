@@ -16,10 +16,12 @@ public:
     }
 };
 
+mytrie T;
 class Solution {
 public:
     string longestWord(vector<string>& words) {
-        mytrie T;
+        T.clear();
+        T.maxlen=0;
         REP(i,words.size())T.insert(words[i],i);
         T.traverse(0,0);
         return T.maxlen?words[T.maxlen_idx]:"";

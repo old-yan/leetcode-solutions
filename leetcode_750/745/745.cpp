@@ -4,7 +4,7 @@
 class mytrie:public StaticTrie{
     int res;
 public:
-    mytrie(int _size=1):StaticTrie(_size){}
+    mytrie():StaticTrie(){}
     void insert(int cur,const string&word,int i,int _signal) {
         int res=0;
         if(i==word.size()){
@@ -56,10 +56,11 @@ public:
     }
 };
 
+mytrie T;
 class WordFilter {
-    mytrie T;
 public:
-    WordFilter(vector<string>& words):T(words.size()) {
+    WordFilter(vector<string>& words) {
+        T.clear();
         REP(i,words.size()){
             T.insert(words[i],i);
         }

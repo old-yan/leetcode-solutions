@@ -1,3 +1,4 @@
+#include "Heap.h"
 #include "utils.h"
 
 class Solution {
@@ -11,18 +12,18 @@ public:
         vvi ans;
         if(nums1.empty()||nums2.empty())return ans;
         auto comp=[&](adder*x,adder*y){return x->sum>y->sum;};
-        priority_queue<adder*,vector<adder*>,decltype(comp)>Q(comp);
+        Heap<adder*,1>H(comp);
         REP(i,nums1.size()){
-            Q.push(new adder(i,0,nums1[i]+nums2[0]));
+            H.push(new adder(i,0,nums1[i]+nums2[0]));
         }
-        while(ans.size()<k&&Q.size()){
-            auto p=Q.top();
-            Q.pop();
+        while(ans.size()<k&&H.size()){
+            auto p=H.top();
             ans.pb({nums1[p->i],nums2[p->j]});
             if(++p->j<nums2.size()){
                 p->sum=nums1[p->i]+nums2[p->j];
-                Q.push(p);
+                H.sink(p);
             }
+            else H.pop();
         }
         return ans;
     }
@@ -34,8 +35,8 @@ int main()
     Solution sol;
 
     vi nums1{1,1,2};
-    vi nums2{1,1,2,3};
-    int k=5;
+    vi nums2{1,2,3};
+    int k=10;
     auto ans=sol.kSmallestPairs(nums1,nums2,k);
     DBGVV(ans);
 

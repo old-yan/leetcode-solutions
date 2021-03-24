@@ -1,10 +1,16 @@
+#include "Trie.h"
 #include "utils.h"
 
 //二叉字典树按照每个数字二进制从高位到低位，对该数字进行保存，本题的树高度设为15就够用（1<<15==32768)
-struct BiTrie {
-    #define TRIEN 3
-    int data[50000][TRIEN]={0},used,low,high,a,res;
-    BiTrie(int _low,int _high):used(1),low(_low),high(_high){}
+//继承Trie头文件中的二叉字典树，进行修改
+class mybitrie:public BiTrie{
+public:
+    int low,high,a,res;
+    mybitrie():BiTrie(){}
+    void reset(int _low,int _high){
+        clear();
+        low=_low,high=_high;
+    }
     void insert(int num){
         int cur=0;
         //从高位到低位，按照是0还是1往下分叉保存
@@ -48,13 +54,14 @@ struct BiTrie {
     }
 };
 
+mybitrie T;
 class Solution {
 public:
     //本题需要使用二叉字典树，先把所有数插到树里，再对每个数字判断树中和自己进行异或可以落在[low,high]区间内的数字数量
     int countPairs(vector<int>& nums, int low, int high) {
         int n=nums.size();
         int ans=0;
-        BiTrie T(low,high);
+        T.reset(low,high);
         for(int a:nums){
             T.insert(a);
             ans+=T.find(a);

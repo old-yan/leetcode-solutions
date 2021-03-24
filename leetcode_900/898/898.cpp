@@ -1,31 +1,28 @@
 #include "utils.h"
 
 class Solution {
+    int ans[500000],len=0;
 public:
     int subarrayBitwiseORs(vector<int>& arr) {
-        queue<int>Q[32];
-        unordered_set<int>S:
-        REP(i,arr.size()){
-            if(!arr[i])S.insert(0);
-            REP(j,32){
-                if(arr[i]>>j&1)Q[j].push(i);
+        int n=arr.size();
+        int cur[32]={0},curlen=1;
+        for(int a:arr){
+            if(a){
+                int i,j;
+                cur[curlen++]=0;
+                for(i=0;i<curlen&&(cur[i]&a)==a;i++);
+                for(j=i;i<curlen;i++){
+                    cur[j]=cur[i]|a;
+                    if(!j||cur[j]!=cur[j-1]){
+                        ans[len++]=cur[j++];
+                    }
+                }
+                curlen=j;
             }
+            else ans[len++]=0;
         }
-        REP(i,arr.size()){
-            vi v;
-            REP(j,32)if(Q[j].size())v.pb(Q[j].front());
-            sort(ALL(v));
-            v.resize(unique(ALL(v))-v.begin());
-            int mask=0;
-            for(int j:v){
-                mask|=arr[j];
-                S.insert(mask);
-            }
-            REP(j,32){
-                if(arr[i]>>j&1)Q[j].pop();
-            }
-        }
-        return S.size();
+        sort(ans,ans+len);
+        return unique(ans,ans+len)-ans;
     }
 };
 

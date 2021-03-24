@@ -1,39 +1,30 @@
-#include "Heap.h"
 #include "utils.h"
 
+int tail[4000]={0},mem[10001],Prev[10001],memcnt,maxlen;
+unordered_map<int,int>M;
+
 class FreqStack {
-    struct node{
-        int val;
-        vi timeStamps;
-        node(){}
-        node(int _val,int _timeStamp):val(_val),timeStamps({_timeStamp}){
-            cout<<"hello";
-        }
-        bool operator<(const node&other)const{
-            if(timeStamps.size()!=other.timeStamps.size())return timeStamps.size()<other.timeStamps.size();
-            return timeStamps.size()&&timeStamps.back()<other.timeStamps.back();
-        }
-    };
-    unordered_map<int,node>M;
-    Heap<int>H;
-    int timer;
 public:
-    FreqStack():timer(0),H([&](int x,int y){return M[x]<M[y];}) {}
+    FreqStack(){
+        maxlen=0;
+        memcnt=1;
+    }
+    ~FreqStack(){
+        M.clear();
+        memset(tail,0,maxlen*sizeof(int));
+    }
     void push(int val) {
-        if(M.count(val)){
-            M[val].timeStamps.pb(timer++);
-            H.push(val);
-        }
-        else{
-            M[val]=node(val,timer++);
-            H.push(val);
-        }
+        auto len=++M[val];
+        mem[memcnt]=val;
+        Prev[memcnt]=tail[len];
+        tail[len]=memcnt++;
+        if(len>maxlen)maxlen=len;
     }
     int pop() {
-        auto p=H.top();
-        nodes[p].timeStamps.pop_back();
-        H.sink(p);
-        return nodes[p].val;
+        auto p=tail[maxlen];
+        if(!(tail[maxlen]=Prev[p]))maxlen--;
+        if(!--M[mem[p]])M.erase(mem[p]);
+        return mem[p];
     }
 };
 

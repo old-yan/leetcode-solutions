@@ -5,7 +5,7 @@
 //提交时记得TRIEN修改为30
 class mytrie:public StaticTrie{
 public:
-    mytrie(int size=1):StaticTrie(size){}
+    mytrie():StaticTrie(){}
     int insert(int cur,const string&word,int i,int val) {
         int res=0;
         if(i==word.size()){
@@ -29,10 +29,12 @@ public:
     }
 };
 
+mytrie T;
 class MapSum {
-    mytrie T;
 public:
-    MapSum():T(2501){}
+    MapSum(){
+        T.clear();
+    }
     void insert(string key, int val) {
         T.insert(key,val);
     }

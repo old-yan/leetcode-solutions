@@ -1,9 +1,10 @@
 #include "utils.h"
 
+BiTrie T;
 class Solution {
 public:
     int findMaximumXOR(vector<int>& nums) {
-        BiTrie T=BiTrie(nums.size());
+        T.clear();
         int ans=0;
         REP(i,nums.size()){
             chmax(ans,T.searchMax(nums[i]^0xffffffff));

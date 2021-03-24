@@ -62,34 +62,29 @@ public:
 
 //静态字典树
 class StaticTrie {
+    #define TRIESIZE 10000
     #define TRIEN 30
 public:
-    int*data,size;
-    bitset<1<<18>pool;
-    StaticTrie(int _size=1):size(_size){
-        data=(int*)malloc(size*TRIEN*sizeof(int));
-        memset(data,0,size*TRIEN*sizeof(int));
-        (*this)[0][26]=-1;
-        (*this)[0][27]=0;
+    int data[TRIESIZE+1][TRIEN]={0};
+    bitset<TRIESIZE+1>pool;
+    StaticTrie(){
+        data[0][26]=-1;
+        data[0][27]=0;
         pool.set();
         pool.reset(0);
     }
-    ~StaticTrie(){free(data);}
-    int* operator[](int i){
-        return data+i*TRIEN;
+    void clear(){
+        memset(data,0,sizeof(data));
+        data[0][26]=-1;
+        pool.set();
+        pool.reset(0);
     }
+    int* operator[](int i){return data[i];}
     void Malloc(int&idx){
-        int first=pool._Find_first();
-        if(first>=size){
-            int d=&idx-data;
-            data=(int*)realloc(data,size*2*TRIEN*sizeof(int));
-            size<<=1;
-            data[d]=first;
-        }
-        else idx=first;
-        memset((*this)[first],0,TRIEN*sizeof(int));
-        (*this)[first][26]=-1;
-        pool.reset(first);
+        idx=pool._Find_first();
+        memset(data[idx],0,TRIEN*sizeof(int));
+        data[idx][26]=-1;
+        pool.reset(idx);
     }
     void Free(int&idx){
         pool.set(idx);
@@ -98,18 +93,18 @@ public:
     int insert(int cur,const string&word,int i,int _signal) {
         int res=0;
         if(i==word.size()){
-            if((*this)[cur][26]<0){
-                (*this)[cur][26]=_signal;
+            if(data[cur][26]<0){
+                data[cur][26]=_signal;
                 res=1;
             }
         }
         else{
-            if(!(*this)[cur][word[i]-'a']){
-                Malloc((*this)[cur][word[i]-'a']);
+            if(!data[cur][word[i]-'a']){
+                Malloc(data[cur][word[i]-'a']);
             }
-            res=insert((*this)[cur][word[i]-'a'],word,i+1,_signal);
+            res=insert(data[cur][word[i]-'a'],word,i+1,_signal);
         }
-        (*this)[cur][27]+=res;
+        data[cur][27]+=res;
         return res;
     }
     void insert(const string&word,int _signal=1) {
@@ -118,62 +113,60 @@ public:
     int search(const string&word) {
         int cur=0;
         for(int i=0;i<word.size();i++){
-            if(!(*this)[cur][word[i]-'a']){
+            if(!data[cur][word[i]-'a']){
                 return -1;
             }
-            cur=(*this)[cur][word[i]-'a'];
+            cur=data[cur][word[i]-'a'];
         }
-        return (*this)[cur][26];
+        return data[cur][26];
     }
     bool startsWith(const string&prefix) {
         int cur=0;
         for(int i=0;i<prefix.size();i++){
-            if(!(*this)[cur][prefix[i]-'a']){
+            if(!data[cur][prefix[i]-'a']){
                 return false;
             }
-            cur=(*this)[cur][prefix[i]-'a'];
+            cur=data[cur][prefix[i]-'a'];
         }
         return true;
     }
     #undef TRIEN
+    #undef TRIESIZE
 };
 
 //二叉字典树
 class BiTrie {
-    #define TRIEN 2
+    #define TRIESIZE 10000
+    #define TRIEN 4
 public:
-    int*data,used,default_val;
-    BiTrie(int size=1,int _default_val=0):used(1),default_val(_default_val){
-        int count=1,j=1;
-        for(int i=0;i<32;i++){
-            j=min(j*2,size);
-            count+=j;
-        }
-        data=(int*)malloc(count*TRIEN*sizeof(int));
-        memset(data,0,count*TRIEN*sizeof(int));
+    int data[TRIESIZE+1][TRIEN]={0},used;
+    BiTrie():used(1){}
+    void clear(){
+        memset(data,0,sizeof(data));
+        used=1;
     }
-    ~BiTrie(){free(data);}
     void insert(int num){
         int cur=0;
         for(int i=31;i>=0;i--){
-            int&next=data[cur*TRIEN+((num>>i)&1)];
+            int&next=data[cur][num>>i&1];
             if(!next)next=used++;
             cur=next;
         }
     }
     int searchMax(int num) {
-        if(used==1)return default_val;
+        if(used==1)return 0;
         int cur=0,maxSame=0;
         for(int i=31;i>=0;i--){
             maxSame<<=1;
-            int next=data[cur*TRIEN+((num>>i)&1)];
+            int next=data[cur][num>>i&1];
             if(next){
                 cur=next;
                 maxSame++;
             }
-            else cur=data[cur*TRIEN+!((num>>i)&1)];
+            else cur=data[cur][!((num>>i)&1)];
         }
         return maxSame;
     }
     #undef TRIEN
+    #undef TRIESIZE
 };

@@ -1,74 +1,61 @@
+#include "Heap.h"
 #include "utils.h"
 
+int mindis[20001];
+int ways[20001];
+int deg[20001];
 class Solution {
-    //邻接表，使用pair保存邻居编号以及之间的距离
     vector<pair<int,int>>adj[20001];
-    long mindis[20001];
-    long ways[20001];
-    int deg[20001];
-    //使用Dijkstra算法求单源最短路
-    void get_mindis(int n,vector<vector<int>>&edges){
-        //建立邻接表
-        for(auto&edge:edges){
-            int i=edge[0],j=edge[1],dis=edge[2];
-            adj[i].emplace_back(j,dis);
-            adj[j].emplace_back(i,dis);
-        }
-        //使用堆结构维护"陌生点"的距离远近
-        auto comp=[](pair<int,int>&x,pair<int,int>&y){
-            return x.second>y.second;
+    void getMindis(int n){
+        auto comp=[&](int x,int y){
+            return mindis[x]>mindis[y];
         };
-        priority_queue<pair<int,int>,vector<pair<int,int>>,decltype(comp)>Q(comp);
-        mindis[n]=0;
-        Q.emplace(n,mindis[n]);
-        while(Q.size()){
-            //找出最近的"陌生点"near
-            auto [near,near_dis]=Q.top();
-            Q.pop();
-            //如果是过时的结点，直接跳过
-            if(near_dis!=mindis[near])continue;
-            //near已经入伙了，再来帮忙拉拢邻居
-            for(auto&a:adj[near]){
-                if(mindis[a.first]>near_dis+a.second){
-                    mindis[a.first]=near_dis+a.second;
-                    Q.emplace(a.first,mindis[a.first]);
+        Heap<int,0>H(comp);
+        H.push(n);
+        while(H.size()){
+            int near=H.top();
+            H.pop();
+            int near_dis=mindis[near];
+            for(auto [a,dis]:adj[near]){
+                if(chmin(mindis[a],near_dis+dis)){
+                    H.push(a);
                 }
             }
         }
     }
-    //按拓扑顺序将路数从1传递到n
-    void getways(int n,vector<vector<int>>&edges){
-        for(auto&edge:edges){
-            int i=edge[0],j=edge[1];
-            if(mindis[i]>mindis[j])deg[j]++;
-            else if(mindis[i]<mindis[j])deg[i]++;
+    void getWays(int n){
+        queue<int>Q;
+        for(int i=1;i<=n;i++){
+            for(auto [a,dis]:adj[i]){
+                if(mindis[a]>mindis[i])deg[i]++;
+            }
+            if(!deg[i])Q.push(i);
         }
         ways[1]=1;
-        queue<int>Q;
-        for(int i=1;i<=n;i++)if(!deg[i])Q.push(i);
         while(Q.size()){
-            auto i=Q.front();
+            auto p=Q.front();
             Q.pop();
-            //将自己的路数传给邻居
-            for(auto&[j,dis]:adj[i]){
-                if(mindis[j]<mindis[i]){
-                    ways[j]=(ways[j]+ways[i])%MOD;
-                    if(!--deg[j]){
-                        Q.push(j);
-                    }
+            for(auto [a,dis]:adj[p]){
+                if(mindis[a]<mindis[p]){
+                    ways[a]=(ways[a]+ways[p])%MOD;
+                    if(!--deg[a])Q.push(a);
                 }
             }
         }
     }
 public:
-    //按题意一步一步来，先算出所有点到终点距离，再按这个距离从大到小传递路数
     int countRestrictedPaths(int n, vector<vector<int>>& edges) {
-        //初始化
-        memset(mindis,0x3f,sizeof(mindis));
+        fill(mindis+1,mindis+n+1,INT_MAX);
+        mindis[n]=0;
         memset(ways,0,sizeof(ways));
         memset(deg,0,sizeof(deg));
-        get_mindis(n,edges);
-        getways(n,edges);
+        for(auto&edge:edges){
+            int i=edge[0],j=edge[1],dis=edge[2];
+            adj[i].emplace_back(j,dis);
+            adj[j].emplace_back(i,dis);
+        }
+        getMindis(n);
+        getWays(n);
         return ways[n];
     }
 };

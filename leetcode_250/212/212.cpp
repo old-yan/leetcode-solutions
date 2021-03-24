@@ -1,3 +1,4 @@
+#include "Trie.h"
 #include "utils.h"
 
 // /*基于动态Trie树和静态Trie树，都可以解决本问题*/
@@ -51,6 +52,7 @@
 // };
 
 
+StaticTrie T;
 class Solution {
     vector<vector<char>>board;
     vector<string>words;
@@ -59,9 +61,9 @@ class Solution {
     int dfs(StaticTrie&T,int&cur,int i,int j){
         int num_of_deleted=0;
         int&next=T[cur][board[i][j]-'a'];
-        if(T[next][26]){
-            ans.pb(words[T[next][26]-1]);
-            T[next][26]=0;
+        if(T[next][26]>=0){
+            ans.pb(words[T[next][26]]);
+            T[next][26]=-1;
             num_of_deleted=1;
             if(!--T[next][27]){
                 T.Free(next);
@@ -84,7 +86,7 @@ public:
     vector<string> findWords(vector<vector<char>>&_board, vector<string>&_words) {
         board=_board;
         words=_words;
-        StaticTrie T(words.size()*10+1);
+        T.clear();
         int cur=0;
         REP(i,words.size())T.insert(words[i],i);
         REP(i,board.size()){

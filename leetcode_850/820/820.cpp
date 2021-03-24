@@ -18,10 +18,11 @@ public:
     }
 };
 
+mytrie T;
 class Solution {
 public:
     int minimumLengthEncoding(vector<string>& words) {
-        mytrie T;
+        T.clear();
         sort(ALL(words),[](string&x,string&y){return x.size()>y.size();});
         int ans=0;
         for(auto&word:words){
