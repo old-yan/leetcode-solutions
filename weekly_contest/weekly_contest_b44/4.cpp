@@ -3,11 +3,13 @@
 class Solution {
 public:
     vector<int> waysToFillArray(vector<vector<int>>& queries) {
+        //欧拉结构体辅助分解质因数
+        static EulerPrime<100>ep;
         vi ans;
         for(auto&query:queries){
             ll res=1;
             //求出所有的因数
-            vi factors=getFactor(query[1],100);
+            vi factors=ep.getFactors<1>(k);
             //求出next数组
             vi next=next_different(factors);
             for(int i=0;i<next.size();i=next[i]){

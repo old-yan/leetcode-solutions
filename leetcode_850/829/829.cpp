@@ -1,3 +1,4 @@
+#include "EulerPrime.h"
 #include "utils.h"
 
 class Solution {
@@ -20,8 +21,9 @@ class Solution {
     }
 public:
     int consecutiveNumbersSum(int _N) {
+        static EulerPrime<40000>ep;
         N=_N;
-        factors=getFactor(N,40000);
+        factors=ep.getFactors<1>(N);
         next=next_different(factors);
         dfs(0,1);
         return ans;

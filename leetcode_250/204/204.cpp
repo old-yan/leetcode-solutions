@@ -1,19 +1,17 @@
+#include "EulerPrime.h"
 #include "utils.h"
 
 class Solution {
 public:
     int countPrimes(int n) {
-        if(n<=2)return 0;
-        bool banned[n];
-        memset(banned,0,sizeof(banned));
-        int ans=0;
-        FOR(i,2,n){
-            if(!banned[i]){
-                ans++;
-                for(int j=i;j<n;j+=i)banned[j]=true;
-            }
+        static EulerPrime<1500000>ep;
+        int low=0,high=ep.lv;
+        while(low<high){
+            int mid=(low+high)/2;
+            if(ep.v[mid]>=n)high=mid;
+            else low=mid+1;
         }
-        return ans;
+        return low;
     }
 };
 

@@ -297,43 +297,6 @@ vvi combinationTable(int m,int n,int mod=1000000007){
 	return table;
 }
 
-// 判质
-bool isprime(ll n){
-	if(n<2)return false;
-	if(n==2)return true;
-	if(n%2==0)return false;
-	for(int i=3;i<=sqrt(n);i+=2)if(n%i==0)return false;
-	return true;
-}
-
-//质因数分解
-vi getprime(int range){
-	vi primes{2};
-	bitset<200000>b;
-	for(int i=3;i<=range;i+=2){
-		if(!b[i]){
-			primes.push_back(i);
-			for(int j=i*3;j<=range;j+=i*2){
-				b.set(j);
-			}
-		}
-	}
-	return primes;
-}
-vi getFactor(ll n,ll range=10000){
-	static vector<int>primes=getprime(range);
-	vector<int>ans;
-	for(int a:primes){
-		if(a*a>n)break;
-		while(n%a==0){
-			n/=a;
-			ans.push_back(a);
-		}
-	}
-	if(n>1)ans.push_back(n);
-	return ans;
-}
-
 // 前缀和
 vector<ll> presum(vi&a){
 	vector<ll> v(a.size() + 1,0);

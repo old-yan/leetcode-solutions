@@ -1,12 +1,12 @@
+#include "EulerPrime.h"
 #include "utils.h"
 
 class Solution {
 public:
     int minSteps(int n) {
-        vi factors=getFactor(n);
-        int sum=0;
-        for(int a:factors)sum+=a;
-        return sum;
+        static EulerPrime<31>ep;
+        vi factors=ep.getFactors<1>(n);
+        return accumulate(ALL(factors),0);
     }
 };
 
