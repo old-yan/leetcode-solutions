@@ -3,44 +3,29 @@
 
 class Solution {
     int gcd_of_multiples[200001]={0};
-    void dfs(vi&factors,vi&next,int cur,ll curp,int a){
-        if(cur==next.size()){
-            if(gcd_of_multiples[curp]){
-                gcd_of_multiples[curp]=gcd(gcd_of_multiples[curp],a);
-            }
-            else gcd_of_multiples[curp]=a;
-        }
-        else{
-            int j=next[cur]-cur;
-            for(int i=0;i<=j;i++){
-                dfs(factors,next,next[cur],curp,a);
-                curp*=factors[cur];
-            }
-        }
-    }
 public:
     //本题可以遍历每一个数的所有因数，看看这个因数能否成为一个最大公约数
     int countDifferentSubsequenceGCDs(vector<int>& nums) {
-        static EulerPrime<1000000>ep;
-        int ans=0;
-        //排序减少一些重复操作
-        sort(ALL(nums));
-        int Max=nums.back();
-        for(int i=0,j;i<nums.size();i=j){
+        static EulerPrime<200000>ep;
+        for(int i=0;i<nums.size();i++){
             if(nums[i]==1){
                 gcd_of_multiples[1]=1;
             }
             else{
-                //先进行质因数分解
-                auto factors=ep.getFactors<1>(nums[i]);
-                auto next=next_different(factors);
-                //dfs获取所有可能的质因数组合，也就是获取所有的因数
-                dfs(factors,next,0,1,nums[i]);
+                //ep辅助获取nums[i]的所有的因数
+                ep.getFactors(nums[i]);
+                REP(_,ep.flen){
+                    int a=ep.factors[_];
+                    if(gcd_of_multiples[a]){
+                        gcd_of_multiples[a]=gcd(gcd_of_multiples[a],nums[i]);
+                    }
+                    else gcd_of_multiples[a]=nums[i];
+                }
             }
-            for(j=i+1;j<nums.size()&&nums[j]==nums[i];j++);
         }
         //对所有可以成为gcd的数进行累加
-        for(int i=1;i<=Max;i++){
+        int ans=0;
+        for(int i=1;i<=200000;i++){
             ans+=gcd_of_multiples[i]==i;
         }
         return ans;

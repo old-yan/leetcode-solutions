@@ -1,18 +1,23 @@
+#include "EulerPrime.h"
 #include "Union.h"
 #include "utils.h"
 
+int first[100001];
+Union u(100000);
 class Solution {
 public:
     int largestComponentSize(vector<int>& A) {
-        Union u(A.size());
-        unordered_map<int,int>M;
+        static EulerPrime<100000>ep;
+        memset(first,0xff,sizeof(first));
+        u.reset();
         REP(i,A.size()){
-            auto v=getFactor(A[i],3200);
-            for(int a:v){
-                if(M.count(a)){
-                    u.unite(i,M[a]);
+            ep.getPrimeFactors<0>(A[i]);
+            REP(_,ep.plen){
+                int a=ep.pf[_];
+                if(first[a]>=0){
+                    u.unite(i,first[a]);
                 }
-                else M[a]=i;
+                else first[a]=i;
             }
         }
         int ans=0;

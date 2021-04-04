@@ -2,30 +2,17 @@
 #include "utils.h"
 
 class Solution {
-    int N,ans=0;
-    vi factors;
-    vi next;
-    void dfs(int cur,ll curprod){
-        if(cur==next.size()){
-            int n=N/curprod;
-            if(n%2&&curprod-n/2>0)ans++;
-            if(curprod%2&&curprod/2>=n)ans++;
-        }
-        else{
-            dfs(next[cur],curprod);
-            REP(i,next[cur]-cur){
-                curprod*=factors[cur];
-                dfs(next[cur],curprod);
-            }
-        }
-    }
 public:
-    int consecutiveNumbersSum(int _N) {
+    int consecutiveNumbersSum(int N) {
         static EulerPrime<40000>ep;
-        N=_N;
-        factors=ep.getFactors<1>(N);
-        next=next_different(factors);
-        dfs(0,1);
+        ep.getFactors(N);
+        int ans=0;
+        REP(_,ep.flen){
+            int a=ep.factors[_];
+            int n=N/a;
+            if(n%2&&a-n/2>0)ans++;
+            if(a%2&&a/2>=n)ans++;
+        }
         return ans;
     }
 };

@@ -5,8 +5,12 @@ class Solution {
 public:
     int minSteps(int n) {
         static EulerPrime<31>ep;
-        vi factors=ep.getFactors<1>(n);
-        return accumulate(ALL(factors),0);
+        ep.getPrimeFactors<1>(n);
+        int ans=0;
+        REP(_,ep.plen){
+            ans+=ep.pf[_]*ep.pcnt[_];
+        }
+        return ans;
     }
 };
 
