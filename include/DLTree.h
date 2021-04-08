@@ -1,12 +1,16 @@
-//#include "DLTree.h"
-#include "utils.h"
+#include <iostream>
+#include <memory.h>
+#include <functional>
+using namespace std;
 
+//动态开点+懒惰标记线段树
+//需要根据题意，输入op参数，灵活修改inherite函数
 class DLTree{
     function<int(int&,int&)>op;
-    #define DLTREESIZE 100000
+    #define DLTREESIZE 500000
     void inherite(int idx,int _inc){
-        val[idx]+=_inc;
-        inc[idx]+=_inc;
+        val[idx]=_inc;
+        inc[idx]=_inc;
         lazy[idx]=true;
     }
 public:
@@ -21,7 +25,7 @@ public:
             memset(a,0,(cnt+1)*sizeof(int));
         }
         memset(lazy,0,(cnt+1)*sizeof(bool));
-        cnt=1;
+        cnt=1;sz[1]=X;
     }
     inline int Lc(int cur){
         if(!lc[cur]){
@@ -90,41 +94,3 @@ public:
         return res;
     }
 };
-
-class MyCalendarTwo {
-    DLTree T;
-public:
-    MyCalendarTwo():T(1000000000,[](int x,int y){return x>y?x:y;}) {}
-    bool book(int start, int end) {
-        if(T(start,end-1)==2)return false;
-        T.step(start,end-1,1);
-        return true;
-    }
-};
-
-int main()
-{
-    cout<<boolalpha;
-
-	MyCalendarTwo*obj=new MyCalendarTwo();
-	DBG(obj->book(10,20));
-	DBG(obj->book(10,40));
-	DBG(obj->book(5,15));
-
-    system("pause");
-    return 0;
-}
-/*
-使用如下正则替换将leetcode测试用例转换为代码
-首先将leetcode测试样例复制到代码正文中，把换行符删除，两行合并为一行;
-将如下替换使用一次(也可以自己手打)：
-
-\["(.+?)"(.*?)\]\[\[(.*?)\](.*)\]
-\t$1*obj=new $1($3);\n[$2][$4]
-
-将如下替换连续使用：
-
-\[,"(.+?)"(.*?)\]\[,\[(.*?)\](.*)\]
-\tobj->$1($3);\n[$2][$4]
-
-*/

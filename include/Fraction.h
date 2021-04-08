@@ -35,7 +35,7 @@ struct Fraction{
     Fraction(long _numerator,long _denominator):signal(1),numerator(_numerator),denominator(_denominator){
         normalize();
     }
-    Fraction(string&&str1,string&&str2):signal(1),numerator(0),denominator(0){
+    Fraction(const string&str1,const string&str2):signal(1),numerator(0),denominator(0){
         int idx=0;
         if(!isdigit(str1[idx])&&str1[idx++]=='-')signal=-1;
         while(isdigit(str1[idx]))numerator=numerator*10+str1[idx++]-'0';
@@ -44,7 +44,7 @@ struct Fraction{
         while(isdigit(str2[idx]))denominator=denominator*10+str2[idx++]-'0';
         normalize();
     }
-    Fraction(string&&str):Fraction(str.substr(0,str.find('/')),str.substr(str.find('/')+1,str.size()-str.find('/')-1)){}
+    Fraction(const string&str):Fraction(str.substr(0,str.find('/')),str.substr(str.find('/')+1,str.size()-str.find('/')-1)){}
     Fraction operator+(const Fraction&other){
         return Fraction(signal*numerator*other.denominator+other.signal*other.numerator*denominator,denominator*other.denominator);
     }

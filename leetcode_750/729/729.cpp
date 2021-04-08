@@ -1,100 +1,104 @@
+//#include "DLTree.h"
 #include "utils.h"
 
-class node{
+class DLTree{
+    function<int(int&,int&)>op;
+    #define DLTREESIZE 100000
+    void inherite(int idx,int _inc){
+        val[idx]=_inc;
+        inc[idx]=_inc;
+        lazy[idx]=true;
+    }
 public:
-    int count;
-    bool b;
-    node*lchild,*rchild,*parent;
-    node(){};
-    node(int _count,bool _b,node*_parent):count(_count),b(_b),lchild(nullptr),rchild(nullptr),parent(_parent){}
-    node*getlchild();
-    node*getrchild();
-};
-node mem[500000];
-size_t memcnt;
-
-node* node::getlchild(){
-    if(!lchild){
-        mem[memcnt]=node(0,false,this);
-        lchild=mem+memcnt++;
+    int val[DLTREESIZE]={0},inc[DLTREESIZE]={0},lc[DLTREESIZE]={0},rc[DLTREESIZE]={0},p[DLTREESIZE]={0},sz[DLTREESIZE]={0},X,Y,cnt;
+    bool lazy[DLTREESIZE]={0};
+    DLTree(int range,function<int(int&,int&)>_op):cnt(1),op(_op){
+        for(X=4,Y=2;X<=range;X<<=1,Y++);
+        sz[1]=X;
     }
-    return lchild;
-}
-node* node::getrchild(){
-    if(!rchild){
-        mem[memcnt]=node(0,false,this);
-        rchild=mem+memcnt++;
+    void clear(){
+        for(auto a:{val,inc,lc,rc,p,sz}){
+            memset(a,0,(cnt+1)*sizeof(int));
+        }
+        memset(lazy,0,(cnt+1)*sizeof(bool));
+        cnt=1;
     }
-    return rchild;
-}
-
-struct Tree{
-    const int X=1<<30,Y=30;
-    node*root;
-    Tree():root(new node(0,false,nullptr)){memcnt=0;}
-    void inherite(node*p,int val){
-        p->count=val;
-        p->b=true;
+    inline int Lc(int cur){
+        if(!lc[cur]){
+            lc[cur]=++cnt;
+            p[cnt]=cur;
+            sz[cnt]=sz[cur]>>1;
+        }
+        return lc[cur];
     }
-    void push_up(node*p){
-        p->count=p->getlchild()->count+p->getrchild()->count;
+    inline int Rc(int cur){
+        if(!rc[cur]){
+            rc[cur]=++cnt;
+            p[cnt]=cur;
+            sz[cnt]=sz[cur]>>1;
+        }
+        return rc[cur];
     }
-    node* push_down(int i){
-        auto p=root;
-        for(int j=Y;j;){
-            if(p->b){
-                inherite(p->getlchild(),p->count>>1);
-                inherite(p->getrchild(),p->count>>1);
-                p->b=false;
+    int push_down(int i){
+        int cur=1;
+        for(int j=Y;j--;cur=i>>j&1?Rc(cur):Lc(cur)){
+            if(lazy[cur]){
+                inherite(Lc(cur),inc[cur]);
+                inherite(Rc(cur),inc[cur]);
+                lazy[cur]=false;inc[cur]=0;
             }
-            p=(i&(1<<--j))?p->getrchild():p->getlchild();
         }
-        return p;
+        return cur;
     }
-    void set(int l,int r,int val){
-        auto a=push_down(l);
-        auto b=push_down(r);
-        a->count=b->count=val;
-        while(a->parent!=b->parent){
-            if(a==a->parent->lchild)inherite(a->parent->getrchild(),val);
-            if(b==b->parent->rchild)inherite(b->parent->getlchild(),val);
-            push_up(a->parent);
-            a=a->parent;
-            push_up(b->parent);
-            b=b->parent;
-            val<<=1;
-        }
-        while(a->parent){
-            push_up(a->parent);
-            a=a->parent;
+    void push_up(int i){
+        val[i]=op(val[Lc(i)],val[Rc(i)]);
+    }
+    void step(int idx,int value){
+        auto a=push_down(idx);
+        inherite(a,value);
+        for(;p[a];a=p[a])push_up(p[a]);
+    }
+    void step(int l,int r,int value){
+        if(l==r)step(l,value);
+        else{
+            auto a=push_down(l),b=push_down(r);
+            inherite(a,value);
+            inherite(b,value);
+            for(;p[a]!=p[b];a=p[a],b=p[b]){
+                if(a==lc[p[a]])inherite(Rc(p[a]),value);
+                if(b==rc[p[b]])inherite(Lc(p[b]),value);
+                push_up(p[a]);
+                push_up(p[b]);
+            }
+            for(;p[a];a=p[a])push_up(p[a]);
         }
     }
-    int operator[](int i){
-        auto a=push_down(i);
-        return a->count;
+    int operator[](int idx){
+        return val[push_down(idx)];
     }
     int operator()(int l,int r){
+        l=max(l,0);
+        r=min(r,X-1);
+        if(l>r)return 0;
         if(l==r)return (*this)[l];
-        auto a=push_down(l);
-        auto b=push_down(r);
-        int res=a->count+b->count;
-        while(a->parent!=b->parent){
-            if(a==a->parent->lchild)res+=a->parent->getrchild()->count;
-            if(b==b->parent->rchild)res+=b->parent->getlchild()->count;
-            a=a->parent;
-            b=b->parent;
+        auto a=push_down(l),b=push_down(r);
+        int res=op(val[a],val[b]);
+        for(;p[a]!=p[b];a=p[a],b=p[b]){
+            if(a==lc[p[a]])res=op(res,val[Rc(p[a])]);
+            if(b==rc[p[b]])res=op(res,val[Lc(p[b])]);
         }
         return res;
     }
 };
 
 class MyCalendar {
-    Tree T;
+    DLTree T;
 public:
-    MyCalendar() {}
+    MyCalendar():T(1000000000,[](unsigned char x,unsigned char y){return x>y?x:y;}){}
     bool book(int start, int end) {
         if(T(start,end-1))return false;
-        T.set(start,end-1,1);
+        T.step(start,end-1,1);
+        return true;
     }
 };
 
