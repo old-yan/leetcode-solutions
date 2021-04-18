@@ -1,3 +1,4 @@
+#include "ListNode.h"
 #include "utils.h"
 
 class Solution {
@@ -16,7 +17,7 @@ int main()
 
     auto head=makelistnode(vi{1,2,3,4,5});
     auto ans=sol.removeNthFromEnd(head,2);
-    DBGL(ans);
+    DBG(ans);
 
     system("pause");
     return 0;

@@ -1,3 +1,4 @@
+#include "TreeNode.h"
 #include "utils.h"
 
 class Solution {
@@ -34,7 +35,7 @@ int main()
     Solution sol;
 
     TreeNode*root=new TreeNode("[5,2,-3]");
-    DBGT(root);
+    DBG(root);
     auto ans=sol.findFrequentTreeSum(root);
     DBGV(ans);
 

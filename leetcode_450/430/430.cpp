@@ -1,3 +1,4 @@
+#include "DuLinkList.h"
 #include "utils.h"
 
 class Solution {
@@ -29,9 +30,9 @@ int main()
     Solution sol;
 
     DuLinkList*head=new DuLinkList("[1,2,3,4,5,6,null,null,null,7,8,9,10,null,null,11,12,null,null,null,null,null,13]");
-    DBGN(head);
+    DBG(head);
     auto ans=sol.flatten(head);
-    DBGN(ans);
+    DBG(ans);
 
     system("pause");
     return 0;

@@ -23,7 +23,7 @@ int main()
     Solution sol;
 
     TreeNode*root=new TreeNode("[4,2,6,1,3,null,null]");
-    DBGT(root);
+    DBG(root);
     auto ans=sol.minDiffInBST(root);
     DBG(ans);
 

@@ -1,3 +1,4 @@
+#include "Graph.h"
 #include "utils.h"
 
 class Solution {
@@ -39,9 +40,9 @@ int main()
     Solution sol;
 
     Graph*g=new Graph(vvi{{2,4},{1,3},{2,4},{1,3}});
-    DBGN(g);
+    DBG(g);
     auto ans=sol.cloneGraph(g->vertices[0]);
-    DBGN(ans);
+    DBG(ans);
 
     system("pause");
     return 0;

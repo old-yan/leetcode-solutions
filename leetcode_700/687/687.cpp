@@ -35,7 +35,7 @@ int main()
     Solution sol;
 
     TreeNode*root=new TreeNode("[5,4,5,1,1,5]");
-    DBGT(root);
+    DBG(root);
     auto ans=sol.longestUnivaluePath(root);
     DBG(ans);
 

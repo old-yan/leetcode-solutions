@@ -1,3 +1,4 @@
+#include "TreeNode.h"
 #include "utils.h"
 
 class Solution {
@@ -41,10 +42,10 @@ int main()
     Solution sol;
 
     TreeNode*root=new TreeNode("5,3,6,2,4,null,7");
-    DBGT(root);
+    DBG(root);
     int key=5;
     auto ans=sol.deleteNode(root,key);
-    DBGT(ans);
+    DBG(ans);
 
     system("pause");
     return 0;

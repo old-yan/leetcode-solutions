@@ -1,3 +1,4 @@
+#include "ListNode.h"
 #include "utils.h"
 
 class Solution {
@@ -27,10 +28,10 @@ int main()
     ListNode*headA=arrtolist(v1);
     v2.insert(v2.end(),v.begin(),v.end());
     ListNode*headB=arrtolist(v2);
-    DBGL(headA);
-    DBGL(headB);
+    DBG(headA);
+    DBG(headB);
     auto ans=sol.getIntersectionNode(headA,headB);
-    DBGL(ans);
+    DBG(ans);
 
     system("pause");
     return 0;

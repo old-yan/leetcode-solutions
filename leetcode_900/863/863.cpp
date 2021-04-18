@@ -49,9 +49,9 @@ int main()
     Solution sol;
 
     TreeNode*root=new TreeNode("[3,5,1,6,2,0,8,null,null,7,4]");
-    DBGT(root);
+    DBG(root);
     TreeNode*target=root->left;
-    DBGT(target);
+    DBG(target);
     int K=2;
     auto ans=sol.distanceK(root,target,K);
     DBGV(ans);

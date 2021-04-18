@@ -1,3 +1,4 @@
+#include "TreeNode.h"
 #include "utils.h"
 
 class Solution {
@@ -22,7 +23,7 @@ int main()
     Solution sol;
 
     TreeNode*root=new TreeNode("[1,null,3,2]");
-    DBGT(root);
+    DBG(root);
     auto ans=sol.getMinimumDifference(root);
     DBG(ans);
 

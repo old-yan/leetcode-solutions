@@ -1,3 +1,4 @@
+#include "ListNode.h"
 #include "utils.h"
 
 class Solution {
@@ -29,7 +30,7 @@ int main()
     auto l1=makelistnode({1,2,4});
     auto l2=makelistnode({1,3,4});
     auto ans=sol.mergeTwoLists(l1,l2);
-    DBGL(ans);
+    DBG(ans);
 
     system("pause");
     return 0;

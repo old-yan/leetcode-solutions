@@ -1,3 +1,4 @@
+#include "TreeNode.h"
 #include "utils.h"
 
 class Solution {
@@ -35,7 +36,7 @@ int main()
     Solution sol;
 
     TreeNode*root=new TreeNode("10,5,-3,3,2,null,11,3,-2,null,1");
-    DBGT(root);
+    DBG(root);
     int sum=8;
     auto ans=sol.pathSum(root,sum);
     DBG(ans);

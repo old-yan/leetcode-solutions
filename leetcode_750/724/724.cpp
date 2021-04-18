@@ -3,10 +3,11 @@
 class Solution {
 public:
     int pivotIndex(vector<int>& nums) {
-        auto sum=presum(nums);
-        int total=sum.back();
-        for(int i=1;i<sum.size();i++){
-            if(sum[i-1]+sum[i]==total)return i-1;
+        auto copy=nums;
+        partial_sum(ALL(copy),copy.begin());
+        int total=copy.back();
+        REP(i,copy.size()){
+            if(copy[i]*2-nums[i]==total)return i;
         }
         return -1;
     }

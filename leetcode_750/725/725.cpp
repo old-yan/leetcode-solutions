@@ -1,4 +1,5 @@
 #include "ListNode.h"
+#include "ListNode.h"
 #include "utils.h"
 
 class Solution {
@@ -27,10 +28,7 @@ int main()
     ListNode*root=makelistnode({1,2,3,4});
     int k=5;
     auto ans=sol.splitListToParts(root,k);
-    REP(i,ans.size()){
-        cout<<i<<' ';
-        DBGL(ans[i]);
-    }
+    DBGV(ans);
 
     system("pause");
     return 0;

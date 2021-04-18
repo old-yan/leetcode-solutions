@@ -37,9 +37,9 @@ int main()
     Solution sol;
 
     TreeNode*root=new TreeNode("[3,5,1,6,2,0,8,null,null,7,4]");
-    DBGT(root);
+    DBG(root);
     auto ans=sol.subtreeWithAllDeepest(root);
-    DBGT(ans);
+    DBG(ans);
 
     system("pause");
     return 0;

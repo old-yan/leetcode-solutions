@@ -1,22 +1,28 @@
+#include "SegTree.h"
 #include "utils.h"
 
 class Solution {
 public:
     int countRangeSum(vector<int>& nums, int lower, int upper) {
-        auto sum=presum(nums);
-        int n=sum.size();
-        REP(i,n){
-            sum.pb(sum[i]-lower);
-            sum.pb(sum[i]-upper);
+        vector<ll>copy(ALL(nums));
+        partial_sum(ALL(copy),copy.begin());
+        unordered_map<ll,int>M;
+        {
+            vector<ll> ma{0};
+            for(ll a:copy){
+                ma.pb(a);
+                ma.pb(a-lower);
+                ma.pb(a-upper);
+            }
+            vi rnk=getrank2(ma);
+            REP(i,rnk.size())M[ma[i]]=rnk[i];
         }
-        vi rnk=getrank2(sum);
-        unordered_map<int,int>M;
-        REP(i,rnk.size())M[sum[i]]=rnk[i];
         SegTree<int> T(M.size(),0,[](int x,int y){return x+y;});
         int ans=0;
-        REP(i,n){  
-            ans+=T(M[sum[i]-upper],M[sum[i]-lower]);
-            T.step_forward(rnk[i]);
+        T.step_forward(M[0]);
+        for(ll a:copy){
+            ans+=T(M[a-upper],M[a-lower]);
+            T.step_forward(M[a]);
         }
         return ans;
     }
@@ -27,9 +33,9 @@ int main()
     cout<<boolalpha;
     Solution sol;
 
-    vi nums{0};
-    int lower=0;
-    int upper=0;
+    vi nums{-2,0,1,-1};
+    int lower=1;
+    int upper=4;
     auto ans=sol.countRangeSum(nums,lower,upper);
     DBG(ans);
 

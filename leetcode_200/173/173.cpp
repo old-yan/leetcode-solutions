@@ -1,10 +1,11 @@
+#include "TreeNode.h"
 #include "utils.h"
 
 class BSTIterator {
     stack<TreeNode*>S;
 public:
     BSTIterator(TreeNode* root) {
-        DBGT(root);
+        DBG(root);
         for(TreeNode*p=root;p;p=p->left)S.push(p);
     }
     

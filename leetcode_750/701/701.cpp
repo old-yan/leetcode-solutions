@@ -19,10 +19,10 @@ int main()
     Solution sol;
 
     TreeNode*root=new TreeNode("[4,2,7,1,3]");
-    DBGT(root);
+    DBG(root);
     int val=5;
     auto ans=sol.insertIntoBST(root,val);
-    DBGT(ans);
+    DBG(ans);
 
     system("pause");
     return 0;

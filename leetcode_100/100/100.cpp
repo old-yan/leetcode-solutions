@@ -1,3 +1,4 @@
+#include "TreeNode.h"
 #include "utils.h"
 
 class Solution {
@@ -14,9 +15,9 @@ int main()
     Solution sol;
 
     TreeNode*p=new TreeNode("1,2,3");
-    DBGT(p);
+    DBG(p);
     TreeNode*q=new TreeNode("1,2,3");
-    DBGT(q);
+    DBG(q);
     auto ans=sol.isSameTree(p,q);
     DBG(ans);
 

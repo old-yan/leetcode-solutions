@@ -16,7 +16,7 @@ int main()
 
     ListNode*head=makelistnode({1,2,3,4,5});
     auto ans=sol.middleNode(head);
-    DBGL(ans);
+    DBG(ans);
 
     system("pause");
     return 0;

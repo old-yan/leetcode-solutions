@@ -1,3 +1,4 @@
+#include "TreeNode.h"
 #include "utils.h"
 
 class Solution {
@@ -35,7 +36,7 @@ int main()
     Solution sol;
 
     TreeNode*root=new TreeNode("1,null,2,3");
-    DBGT(root);
+    DBG(root);
     auto ans=sol.postorderTraversal(root);
     DBGV(ans);
 

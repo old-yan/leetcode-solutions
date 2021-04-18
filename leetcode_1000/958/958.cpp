@@ -23,7 +23,7 @@ int main()
     Solution sol;
 
     TreeNode*root=new TreeNode("[1,2,3,4,5,6]");
-    DBGT(root);
+    DBG(root);
     auto ans=sol.isCompleteTree(root);
     DBG(ans);
 

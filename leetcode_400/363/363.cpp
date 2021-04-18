@@ -3,13 +3,12 @@
 class Solution {
     int m,n,k;
     int ans=INT_MIN;
-    void fun(int presum[]){
-        set<int>S;
-        S.insert(0);
-        FOR(r,1,m+1){
-            auto it=S.lower_bound(presum[r]-k);
-            if(it!=S.end())chmax(ans,presum[r]-*it);
-            S.insert(presum[r]);
+    void fun(int sum[]){
+        set<int>S{0};
+        REP(i,n){
+            auto it=S.lower_bound(sum[i]-k);
+            if(it!=S.end())chmax(ans,sum[i]-*it);
+            S.insert(sum[i]);
         }
     }
 public:
@@ -17,20 +16,15 @@ public:
         m=matrix.size();
         n=matrix[0].size();
         k=_k;
-        int presum[m+1];
-        REP(c1,n){
-            memset(presum,0,sizeof(presum));
-            FOR(c2,c1,n){
-                int Minbefore=0,Maxd=INT_MIN;
-                int cnt=0;
-                REP(r,m){
-                    cnt+=matrix[r][c2];
-                    presum[r+1]+=cnt;
-                    chmax(Maxd,presum[r+1]-Minbefore);
-                    chmin(Minbefore,presum[r+1]);
-                }
-                if(Maxd<=k)chmax(ans,Maxd);
-                else fun(presum);
+        REP(r1,m){
+            int colsum[n];
+            memset(colsum,0,sizeof(colsum));
+            FOR(r2,r1,m){
+                auto&row=matrix[r2];
+                REP(c,n)colsum[c]+=row[c];
+                partial_sum(colsum,colsum+n,colsum);
+                fun(colsum);
+                adjacent_difference(colsum,colsum+n,colsum);
             }
         }
         return ans;
@@ -42,11 +36,9 @@ int main()
     cout<<boolalpha;
     Solution sol;
 
-    vvi matrix{
-        {1,0,1},
-        {0,-2,3}
-    };
-    auto ans=sol.maxSumSubmatrix(matrix,2);
+    vvi matrix=makevvi("[[2,2,-1]]");
+    int k=3;
+    auto ans=sol.maxSumSubmatrix(matrix,k);
     DBG(ans);
 
     system("pause");

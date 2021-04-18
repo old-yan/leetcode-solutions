@@ -4,10 +4,12 @@ class Solution {
     int num[10000]={0};
 public:
     int subarraysDivByK(vector<int>& A, int K) {
-        for(int&a:A)a+=10000*K;
-        auto sum=presum(A);
+        int d=20000-20000%K;
+        for(int&a:A)a+=d;
+        partial_sum(ALL(A),A.begin());
         int ans=0;
-        for(ll a:sum){
+        num[0]++;
+        for(ll a:A){
             a%=K;
             ans+=num[a]++;
         }

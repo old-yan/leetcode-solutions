@@ -25,8 +25,9 @@ int main()
     Solution sol;
 
     TreeNode*root=new TreeNode("[0,null,0,null,0,null,0,null,0,0,0,null,null,0,0]");
-    DBGT(root);
+    DBG(root);
     auto ans=sol.minCameraCover(root);
+    DBG(ans);
 
     system("pause");
     return 0;

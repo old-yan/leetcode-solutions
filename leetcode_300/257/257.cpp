@@ -1,3 +1,5 @@
+#include <cstring>
+#include "TreeNode.h"
 #include "utils.h"
 
 class Solution {
@@ -31,7 +33,7 @@ int main()
     Solution sol;
 
     TreeNode*root=new TreeNode("[1,2,3,null,5]");
-    DBGT(root);
+    DBG(root);
     auto ans=sol.binaryTreePaths(root);
     DBGV(ans);
 

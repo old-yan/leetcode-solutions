@@ -1,3 +1,4 @@
+#include "TreeNode.h"
 #include "utils.h"
 
 class Codec {
@@ -44,12 +45,12 @@ int main()
     cout<<boolalpha;
 
     TreeNode*root=new TreeNode("1,2,3,4,5,null,7");
-    DBGT(root);
+    DBG(root);
     Codec*obj=new Codec();
     string s=obj->serialize(root);
     DBG(s);
     auto ans=obj->deserialize(s);
-    DBGT(ans);
+    DBG(ans);
 
     system("pause");
     return 0;

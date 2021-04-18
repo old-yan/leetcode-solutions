@@ -27,9 +27,9 @@ int main()
     Solution sol;
 
     TreeNode*root=new TreeNode("[5,3,6,2,4,null,8,1,null,null,null,7,9]");
-    DBGT(root);
+    DBG(root);
     auto ans=sol.increasingBST(root);
-    DBGT(ans);
+    DBG(ans);
 
     system("pause");
     return 0;

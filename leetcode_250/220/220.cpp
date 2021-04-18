@@ -3,14 +3,14 @@
 class Solution {
 public:
     bool containsNearbyAlmostDuplicate(vector<int>& nums, int k, int t) {
-        set<ll>S;
+        multiset<ll>S;
         for(int i=0,j=0;j<nums.size();){
             if(j<=i+k){
                 auto it=S.lower_bound((ll)nums[j]-t);
                 if(it!=S.end()&&*it<=(ll)nums[j]+t)return true;
                 S.insert(nums[j++]);
             }
-            else S.erase(nums[i++]);
+            else S.erase(S.find(nums[i++]));
         }
         return false;
     }

@@ -1,4 +1,5 @@
 #pragma once
+#include <algorithm>
 #include <queue>
 #include <unordered_map>
 #include <iomanip>

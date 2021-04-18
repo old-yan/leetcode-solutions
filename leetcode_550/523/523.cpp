@@ -4,13 +4,11 @@ class Solution {
 public:
     bool checkSubarraySum(vector<int>& nums, int k) {
         if(!k)k=INT_MAX;
-        auto sum=presum(nums);
-        unordered_set<ll>S;
-        REP(i,sum.size()){
-            if(i>1){
-                S.insert(sum[i-2]%k);
-                if(S.count(sum[i]%k))return true;
-            }
+        partial_sum(ALL(nums),nums.begin());
+        unordered_set<ll>S{0};
+        FOR(i,1,nums.size()){
+            if(S.count(nums[i]%k))return true;
+            S.insert(nums[i-1]%k);
         }
         return false;
     }

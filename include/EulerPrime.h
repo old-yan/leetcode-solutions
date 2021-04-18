@@ -70,17 +70,6 @@ struct EulerPrime{
     void getFactors(long long n){
         flen=0;
         getPrimeFactors<1>(n);
-        stack<tuple<int,long long,int>>S;
-        S.emplace(0,1,0);
-        while(S.size()){
-            auto [cur,curp,i]=S.top();
-            S.pop();
-            if(i>pcnt[cur]){
-                if(S.size())S.
-            }
-        }
-
-
         dfs(0,1);
     }
 };

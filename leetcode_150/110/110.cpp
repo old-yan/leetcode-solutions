@@ -1,3 +1,4 @@
+#include "TreeNode.h"
 #include "utils.h"
 
 class Solution {
@@ -19,7 +20,7 @@ int main()
     Solution sol;
 
     TreeNode*root=new TreeNode("1,2,2,3,3,null,null,4,4");
-    DBGT(root);
+    DBG(root);
     auto ans=sol.isBalanced(root);
     DBG(ans);
 

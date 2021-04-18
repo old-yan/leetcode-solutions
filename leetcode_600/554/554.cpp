@@ -5,10 +5,10 @@ public:
     int leastBricks(vector<vector<int>>& wall) {
         unordered_map<int,int>M;
         int maxGap=0;
-        REP(i,wall.size()){
-            auto sum=presum(wall[i]);
-            FOR(j,1,sum.size()-1){
-                chmax(maxGap,++M[sum[j]]);
+        for(auto&w:wall){
+            partial_sum(ALL(w),w.begin());
+            for(int a:w){
+                if(a<w.back())chmax(maxGap,++M[a]);
             }
         }
         return wall.size()-maxGap;

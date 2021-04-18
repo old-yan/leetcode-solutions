@@ -20,7 +20,7 @@ int main()
     Solution sol;
 
     TreeNode*root=new TreeNode("[3,0,0]");
-    DBGT(root);
+    DBG(root);
     auto ans=sol.distributeCoins(root);
     DBG(ans);
 

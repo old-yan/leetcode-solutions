@@ -33,7 +33,7 @@ int main()
 
     vi preorder{8,5,1,7,10,12};
     auto ans=sol.bstFromPreorder(preorder);
-    DBGT(ans);
+    DBG(ans);
 
     system("pause");
     return 0;

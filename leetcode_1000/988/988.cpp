@@ -72,7 +72,7 @@ int main()
     Solution sol;
 
     TreeNode*root=new TreeNode("[0,1,2,3,4,3,4]");
-    DBGT(root);
+    DBG(root);
     auto ans=sol.smallestFromLeaf(root);
     DBG(ans);
 

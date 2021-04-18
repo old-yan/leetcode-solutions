@@ -1,3 +1,4 @@
+#include "NextNode.h"
 #include "utils.h"
 
 class Solution {
@@ -30,9 +31,9 @@ int main()
     Solution sol;
 
     NextNode*root=new NextNode("1,2,3,4,5,6,7");
-    DBGN(root);
+    DBG(root);
     auto ans=sol.connect(root);
-    DBGN(ans);
+    DBG(ans);
 
     system("pause");
     return 0;

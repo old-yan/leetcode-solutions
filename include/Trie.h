@@ -68,6 +68,7 @@ public:
     int data[TRIESIZE+1][TRIEN]={0};
     bitset<TRIESIZE+1>pool;
     StaticTrie(){
+        cout<<"attention TRIESIZE,<="<<TRIESIZE<<'\n';
         data[0][26]=-1;
         data[0][27]=0;
         pool.set();

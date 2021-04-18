@@ -39,7 +39,7 @@ int main()
     Solution sol;
 
     TreeNode*root=new TreeNode("[1,0,4,-2,null,3]");
-    DBGT(root);
+    DBG(root);
     int k=7;
     auto ans=sol.findTarget(root,k);
     DBG(ans);

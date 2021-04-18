@@ -17,6 +17,7 @@ public:
     int val[DLTREESIZE]={0},inc[DLTREESIZE]={0},lc[DLTREESIZE]={0},rc[DLTREESIZE]={0},p[DLTREESIZE]={0},sz[DLTREESIZE]={0},X,Y,cnt;
     bool lazy[DLTREESIZE]={0};
     DLTree(int range,function<int(int&,int&)>_op):cnt(1),op(_op){
+        cout<<"attention TREESIZE,<="<<DLTREESIZE<<'\n';
         for(X=4,Y=2;X<=range;X<<=1,Y++);
         sz[1]=X;
     }

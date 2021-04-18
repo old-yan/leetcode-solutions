@@ -23,9 +23,9 @@ int main()
     Solution sol;
 
     TreeNode*root1=new TreeNode("[3,5,1,6,2,9,8,null,null,7,4]");
-    DBGT(root1);
+    DBG(root1);
     TreeNode*root2=new TreeNode("[3,5,1,6,7,4,2,null,null,null,null,null,null,9,8]");
-    DBGT(root2);
+    DBG(root2);
     auto ans=sol.leafSimilar(root1,root2);
     DBG(ans);
 

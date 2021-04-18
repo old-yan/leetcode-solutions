@@ -1,3 +1,4 @@
+#include "ListNode.h"
 #include "utils.h"
 
 class Solution {
@@ -18,7 +19,7 @@ int main()
     int m=2;
     int n=4;
     auto ans=sol.reverseBetween(head,m,n);
-    DBGL(ans);
+    DBG(ans);
 
     system("pause");
     return 0;

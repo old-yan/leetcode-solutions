@@ -22,7 +22,7 @@ int main()
     Solution sol;
 
     TreeNode*root=new TreeNode("[10,5,15,3,7,null,18]");
-    DBGT(root);
+    DBG(root);
     int low=7;
     int high=15;
     auto ans=sol.rangeSumBST(root,low,high);

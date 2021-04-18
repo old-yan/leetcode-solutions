@@ -1,3 +1,4 @@
+#include "ListNode.h"
 #include "utils.h"
 
 class Solution {
@@ -26,11 +27,11 @@ int main(){
     Solution sol;
 
     auto l1=makelistnode({2,4,3});
-    DBGL(l1);
+    DBG(l1);
     auto l2=makelistnode({5,6,4});
-    DBGL(l2);
+    DBG(l2);
     auto ans=sol.addTwoNumbers(l1,l2);
-    DBGL(ans);
+    DBG(ans);
 
     system("pause");
 }

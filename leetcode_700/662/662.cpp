@@ -30,7 +30,7 @@ int main()
     Solution sol;
 
     TreeNode*root=new TreeNode("[1,3,2,5,3,null,9]");
-    DBGT(root);
+    DBG(root);
     auto ans=sol.widthOfBinaryTree(root);
     DBG(ans);
 

@@ -7,7 +7,7 @@ class Solution {
             root=new TreeNode(val,root,nullptr);
         }
         else{
-            fun(root->right);
+            fun(root->right,val);
         }
     }
 public:
@@ -23,10 +23,10 @@ int main()
     Solution sol;
 
     TreeNode*root=new TreeNode("[4,1,3,null,null,2]");
-    DBGT(root);
+    DBG(root);
     int val=5;
     auto ans=sol.insertIntoMaxTree(root,val);
-    DBGT(ans);
+    DBG(ans);
 
     system("pause");
     return 0;

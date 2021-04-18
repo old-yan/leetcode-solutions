@@ -1,4 +1,5 @@
 #pragma once
+#include <iostream>
 #include <algorithm>
 #include <memory.h>
 #include <vector>
@@ -10,7 +11,7 @@ using namespace std;
 //模板线段树
 template<class T>
 class SegTree{
-    #define SEGTREEDEPTH 17
+    #define SEGTREEDEPTH 4
     typedef function<T(T&,T&)> Operation;
 public:
     T data[1<<(SEGTREEDEPTH+1)]={0};
@@ -18,6 +19,7 @@ public:
     T default_val;
     Operation op;
     SegTree(int n,T _default_val,Operation _op):default_val(_default_val),op(_op){
+        cout<<"attention TREESIZE,<="<<(1<<SEGTREEDEPTH)<<'\n';
         for(X=4;X<n;X<<=1);
         if(memcmp(data,&default_val,sizeof(default_val))){
             fill(data+X,data+X*2,default_val);
@@ -96,7 +98,7 @@ public:
 //模板懒惰标记线段树，适用各种区间修改操作
 template<class T>
 class LazyTree{
-    #define LAZYTREEDEPTH 17
+    #define LAZYTREEDEPTH 10
     typedef function<T(T&,T&)> Operation;
     inline int size(int i){
         return __builtin_clz(i)+Y-31;
@@ -114,6 +116,7 @@ public:
     T default_val;
     Operation op;
     LazyTree(int n,T _default_val,Operation _op):default_val(_default_val),op(_op){
+        cout<<"attention TREESIZE,<="<<(1<<LAZYTREEDEPTH)<<'\n';
         for(X=4;X<n;X<<=1);
         Y=__builtin_ctz(X);
         fill(data+X,data+X*2,default_val);
@@ -124,6 +127,7 @@ public:
     }
     template<class Tlike>
     LazyTree(vector<Tlike>&nums,T _default_val,Operation _op):default_val(_default_val),op(_op){
+        cout<<"attention TREESIZE,<="<<(1<<LAZYTREEDEPTH)<<'\n';
         for(X=4;X<nums.size();X<<=1);
         Y=__builtin_ctz(X);
         for(int i=0;i<nums.size();i++){

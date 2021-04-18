@@ -3,13 +3,12 @@
 class Solution {
 public:
     int subarraySum(vector<int>& nums, int k) {
-        auto sum=presum(nums);
-        unordered_map<ll,int>M;
-        for(auto a:sum)M[a]++;
+        partial_sum(ALL(nums),nums.begin());
+        unordered_map<int,int>M{{0,1}};
         int ans=0;
-        for(auto a:sum){
-            M[a]--;
-            ans+=M[a+k];
+        for(int a:nums){
+            if(M.count(a-k))ans+=M[a-k];
+            M[a]++;
         }
         return ans;
     }

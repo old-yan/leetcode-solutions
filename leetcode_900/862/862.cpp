@@ -3,14 +3,14 @@
 class Solution {
 public:
     int shortestSubarray(vector<int>& A, int K) {
-        auto sum=presum(A);
-        deque<int>Q{0};
+        partial_sum(ALL(A),A.begin());
+        deque<pair<int,int>>Q{{0,-1}};
         int ans=INT_MAX;
-        FOR(i,1,sum.size()){
-            while(Q.size()&&sum[Q.back()]>=sum[i])Q.pop_back();
-            Q.push_back(i);
-            while(Q.size()&&sum[i]-sum[Q.front()]>=K){
-                chmin(ans,int(i-Q.front()));
+        REP(i,A.size()){
+            while(Q.size()&&Q.back().first>=A[i])Q.pop_back();
+            Q.emplace_back(A[i],i);
+            while(Q.size()&&A[i]-Q.front().first>=K){
+                chmin(ans,int(i-Q.front().second));
                 Q.pop_front();
             }
         }

@@ -21,7 +21,7 @@ int main()
     Solution sol;
 
     TreeNode*root=new TreeNode("1,null,2");
-    DBGT(root);
+    DBG(root);
     auto ans=sol.inorderTraversal(root);
     DBGV(ans);
 

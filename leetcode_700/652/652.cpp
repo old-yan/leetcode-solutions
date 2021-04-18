@@ -1,3 +1,5 @@
+#include "Union.h"
+#include "TreeNode.h"
 #include "utils.h"
 
 class Solution {
@@ -57,7 +59,7 @@ int main()
     Solution sol;
 
     TreeNode*root=new TreeNode("[1,2,3,4,null,2,4,null,null,4]");
-    DBGT(root);
+    DBG(root);
     auto ans=sol.findDuplicateSubtrees(root);
     DBGV(ans);
 

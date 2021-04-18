@@ -29,8 +29,10 @@ int main()
     Solution sol;
 
     TreeNode*root=new TreeNode("[1,2,3,4]");
-    DBGT(root);
-    auto ans=sol.isCousins(root);
+    DBG(root);
+    int x=2;
+    int y=3;
+    auto ans=sol.isCousins(root,x,y);
     DBG(ans);
 
     system("pause");

@@ -1,3 +1,4 @@
+#include "TreeNode.h"
 #include "utils.h"
 
 class Solution {
@@ -25,7 +26,7 @@ int main()
     Solution sol;
 
     TreeNode*root=new TreeNode("[2,1,3]");
-    DBGT(root);
+    DBG(root);
     auto ans=sol.findBottomLeftValue(root);
     DBG(ans);
 

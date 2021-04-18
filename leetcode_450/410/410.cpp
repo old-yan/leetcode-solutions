@@ -3,7 +3,7 @@
 class Solution {
 public:
     int splitArray(vector<int>& nums, int m) {
-        ll total=presum(nums).back();
+        ll total=accumulate(ALL(nums),0);
         ll low=(ll)*max_element(ALL(nums)),high=total;
         while(low<high){
             ll mid=(low+high)/2;

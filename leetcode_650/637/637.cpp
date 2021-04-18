@@ -28,7 +28,7 @@ int main()
     Solution sol;
 
     TreeNode*root=new TreeNode("[3,9,20,15,7]");
-    DBGT(root);
+    DBG(root);
     auto ans=sol.averageOfLevels(root);
     DBGV(ans);
 

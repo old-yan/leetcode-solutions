@@ -3,11 +3,13 @@
 class NumArray {
     vi sum;
 public:
-    NumArray(vector<int>&& nums) {
-        sum=presum(nums);
+    NumArray(vector<int>& nums) {
+        partial_sum(ALL(nums),nums.begin());
+        sum=nums;
     }
+    
     int sumRange(int i, int j) {
-        return sum[j+1]-sum[i];
+        return i?sum[j]-sum[i-1]:sum[j];
     }
 };
 

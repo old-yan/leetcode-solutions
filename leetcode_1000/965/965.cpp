@@ -22,7 +22,7 @@ int main()
     Solution sol;
 
     TreeNode*root=new TreeNode("[1,1,1,1,1,null,1]");
-    DBGT(root);
+    DBG(root);
     auto ans=sol.isUnivalTree(root);
     DBG(ans);
 

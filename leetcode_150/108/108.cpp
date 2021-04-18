@@ -1,3 +1,4 @@
+#include "TreeNode.h"
 #include "utils.h"
 
 class Solution {
@@ -24,7 +25,7 @@ int main()
 
     vi nums{-10,-3,0,5,9};
     auto ans=sol.sortedArrayToBST(nums);
-    DBGT(ans);
+    DBG(ans);
 
     system("pause");
     return 0;

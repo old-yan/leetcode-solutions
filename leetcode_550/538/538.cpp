@@ -1,3 +1,4 @@
+#include "TreeNode.h"
 #include "utils.h"
 
 class Solution {
@@ -21,9 +22,9 @@ int main()
     Solution sol;
 
     TreeNode*root=new TreeNode("[4,1,6,0,2,5,7,null,null,null,3,null,null,null,8]");
-    DBGT(root);
+    DBG(root);
     auto ans=sol.convertBST(root);
-    DBGT(ans);
+    DBG(ans);
 
     system("pause");
     return 0;

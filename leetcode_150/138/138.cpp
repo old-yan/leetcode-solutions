@@ -1,3 +1,4 @@
+#include "RandomNode.h"
 #include "utils.h"
 
 class Solution {
@@ -29,9 +30,9 @@ int main()
     Solution sol;
 
     RandomNode*head=makerandomnode("[7,null],[13,0],[11,4],[10,2],[1,0]");
-    DBGN(head);
+    DBG(head);
     auto ans=sol.copyRandomList(head);
-    DBGN(ans);
+    DBG(ans);
 
     system("pause");
     return 0;

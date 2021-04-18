@@ -23,9 +23,9 @@ int main()
     Solution sol;
 
     TreeNode*root=new TreeNode("1,null,0,0,1");
-    DBGT(root);
+    DBG(root);
     auto ans=sol.pruneTree(root);
-    DBGT(ans);
+    DBG(ans);
 
     system("pause");
     return 0;

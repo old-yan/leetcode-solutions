@@ -1,3 +1,4 @@
+#include "ListNode.h"
 #include "utils.h"
 
 class Solution {
@@ -21,7 +22,7 @@ int main()
 
     ListNode*head=makelistnode({1,4,3,2,5,2});
     auto ans=sol.partition(head,3);
-    DBGL(ans);
+    DBG(ans);
 
     system("pause");
     return 0;

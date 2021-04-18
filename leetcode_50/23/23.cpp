@@ -1,3 +1,4 @@
+#include "ListNode.h"
 #include "utils.h"
 
 class Solution {
@@ -28,7 +29,7 @@ int main()
         makelistnode({2,6})
     };
     auto ans=sol.mergeKLists(lists);
-    DBGL(ans);
+    DBG(ans);
 
     system("pause");
     return 0;

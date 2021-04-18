@@ -1,4 +1,5 @@
 #pragma once
+#include <iostream>
 #include <memory.h>
 #include <vector>
 #include <numeric>
@@ -11,6 +12,7 @@ class Union{
 public:
     int find[UNIONSIZE],size[UNIONSIZE],n,group;
     Union(int _n):n(_n),group(_n){
+        cout<<"attention UNIONSIZE,<="<<UNIONSIZE<<'\n';
         iota(find,find+n,0);
         fill(size,size+n,1);
     }

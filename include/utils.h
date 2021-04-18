@@ -13,30 +13,16 @@
 #include <unordered_set>
 #include <numeric>
 #include <functional>
-// 头文件太多会拖慢编译速度，平时没有必要都include进来，可以include常用的，或者在主文件再include
-// #include "ListNode.h"
-// #include "TreeNode.h"
-// #include "NextNode.h"
-// #include "Graph.h"
-// #include "RandomNode.h"
-// #include "Union.h"
-// #include "Trie.h"
-// #include "zkwTree.h"
-// #include "NestedInteger.h"
-// #include "QuadTree.h"
-// #include "MultiTreeNode.h"
-// #include "DuLinkList.h"
-// # include "Fraction.h"
+// 自己写的头文件太多会拖慢编译速度，平时没有必要都include进来，可以include常用的，或者在主文件再include
 using namespace std;
 #define LOCAL_DEBUG
 
 typedef long long ll;
-using vi = vector<int>;
-using vvi = vector<vector<int>>;
-//using Graph = vector<vector<ll>>;
-#define EPS (1e-7)
-#define PI (acos(-1))
-#define MOD 1000000007LL
+typedef vector<int> vi;
+typedef vector<vector<int>> vvi;
+const double EPS=1e-7;
+const double PI=acos(-1);
+const ll MOD=1000000007;
 #define REP(i, n) for (ll i = 0; i < n; i++)
 #define REPR(i, n) for (ll i = n; i >= 0; i--)
 #define FOR(i, m, n) for (ll i = m; i < n; i++)
@@ -45,16 +31,10 @@ using vvi = vector<vector<int>>;
 #define DBGVV(a) cout << #a << " : \n";for(ll i=0;i<a.size();i++){DBGV(a[i])};
 #define DBGV(a) cout << #a << " : ";for(auto b:a)cout << b << ' ';cout << endl;
 #define DBG(a) cout << #a << " : " << a << endl;
-#define DBGL(a) cout << #a;for(auto b=a;b;b=b->next)cout<<' '<<b->val;cout<<endl;
-#define DBGT(a) cout << #a << " : \n" << a << endl;
-#define DBGN(a) cout << #a << " : \n" << a << endl;
 #else
 #define DBGVV(a)
 #define DBGV(a)
 #define DBG(a)
-#define DBGL(a)
-#define DBGT(a)
-#define DBGN(a)
 #endif
 #define ALL(v) v.begin(), v.end()
 #define ALLR(v) v.rbegin(), v.rend()
@@ -153,21 +133,8 @@ NestedInteger makenestedinteger(const string&s){
 const int di[] = { 0,-1,0,1 };
 const int dj[] = { 1,0,-1,0 };
 
-// 数字转字符串
-string i2s(ll x){
-	if(!x)return "0";
-	if(x<0)return "-"+i2s(-x);
-	char c[20]={0};
-	int idx=0;
-	while(x){
-		c[idx++]='0'+x%10;
-		x/=10;
-	}
-	reverse(c,c+idx);
-	return c;
-}
 // 数字转字符串，指定进制
-string i2s(ll x,int radix){
+string i2s(ll x,int radix=10){
 	if(!x)return "0";
 	if(x<0)return "-"+i2s(-x,radix);
 	char c[64]={0};
@@ -180,19 +147,8 @@ string i2s(ll x,int radix){
 	return c;
 }
 
-// 字符串转数字
-ll s2i(const string&s){
-	int signal=1,idx=0;
-	ll val=0;
-	if(s[0]=='-'){
-		signal=-1;
-		idx++;
-	}
-	while(idx<s.size())val=val*10+s[idx++]-'0';
-	return signal*val;
-}
 // 字符串转数字，指定进制
-ll s2i(const string&s,int radix){
+ll s2i(const string&s,int radix=10){
 	int signal=1,idx=0;
 	ll val=0;
 	if(s[0]=='-'){
@@ -203,6 +159,17 @@ ll s2i(const string&s,int radix){
 	return signal*val;
 }
 
+//字符串切割
+vector<string> split(const string&s,char c=' '){
+	int i=0;
+	vector<string>res;
+	for(int j;i<s.size();i=j+1){
+		if((j=s.find_first_of(c,i))<0)break;
+		res.emplace_back(&s[i],&s[j]);
+	}
+	if(i<s.size())res.emplace_back(s.substr(i));
+	return res;
+}
 
 // 最大公约数
 ll gcd(ll a, ll b){
@@ -297,20 +264,6 @@ vvi combinationTable(int m,int n,int mod=1000000007){
 	return table;
 }
 
-// 前缀和
-vector<ll> presum(vi&a){
-	vector<ll> v(a.size() + 1,0);
-	REP(i, a.size())v[i + 1] = v[i] + a[i];
-	return v;
-}
-
-// 后缀和
-vector<ll> postsum(vi&a){
-	vector<ll> v(a.size() + 1,0);
-	REPR(i, a.size()-1)v[i] = v[i+1] + a[i];
-	return v;
-}
-
 // 前缀最大
 vector<int> premax(vi&a){
 	vector<int> v(a.size(),0);
@@ -381,7 +334,7 @@ vi prev_different(const string&a){
 vi getSubsequenceSum(vi&nums){
 	int nonzero=0;
 	for(int a:nums)if(a)nonzero++;
-	vector<int>v(1<<nonzero,0);
+	vector<int>v(1<<min(20,nonzero),0);
 	int size=1;
 	for(int a:nums){
 		if(!a)continue;

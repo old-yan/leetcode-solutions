@@ -1,3 +1,4 @@
+#include "ListNode.h"
 #include "utils.h"
 
 class Solution {
@@ -17,7 +18,7 @@ int main()
     ListNode*head=makelistnode({4,5,1,9});
     ListNode*node=head->next;
     sol.deleteNode(node);
-    DBGL(head);
+    DBG(head);
 
     system("pause");
     return 0;

@@ -27,7 +27,7 @@ int main()
 
     vi nums{3,2,1,6,0,5};
     auto ans=sol.constructMaximumBinaryTree(nums);
-    DBGT(ans);
+    DBG(ans);
 
     system("pause");
     return 0;

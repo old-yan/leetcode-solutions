@@ -1,3 +1,4 @@
+#include "TreeNode.h"
 #include "utils.h"
 
 class Solution {
@@ -32,7 +33,7 @@ int main()
     vi inorder{9,3,15,20,7};
     vi postorder{9,15,7,20,3};
     auto ans=sol.buildTree(inorder,postorder);
-    DBGT(ans);
+    DBG(ans);
 
     system("pause");
     return 0;

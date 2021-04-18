@@ -1,3 +1,4 @@
+#include "TreeNode.h"
 #include "utils.h"
 
 class Solution {
@@ -21,11 +22,11 @@ int main()
     Solution sol;
 
     TreeNode*t1=new TreeNode("[1,3,2,5]");
-    DBGT(t1);
+    DBG(t1);
     TreeNode*t2=new TreeNode("[2,1,3,null,4,null,7]");
-    DBGT(t2);
+    DBG(t2);
     auto ans=sol.mergeTrees(t1,t2);
-    DBGT(ans);
+    DBG(ans);
 
     system("pause");
     return 0;

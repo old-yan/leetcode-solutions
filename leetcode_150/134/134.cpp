@@ -5,13 +5,9 @@ public:
     int canCompleteCircuit(vector<int>& gas, vector<int>& cost) {
         int n=gas.size();
         REP(i,n)gas[i]-=cost[i];
-        vi _presum=presum(gas);
-        if(_presum.back()<0)return -1;
-        int lowest=0;
-        REP(i,n){
-            if(_presum[i+1]<_presum[lowest])lowest=i+1;
-        }
-        return lowest%n;
+        partial_sum(ALL(gas),gas.begin());
+        if(gas.back()<0)return -1;
+        return (min_element(ALL(gas))-gas.begin()+1)%n;
     }
 };
 

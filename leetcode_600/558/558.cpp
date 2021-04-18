@@ -1,3 +1,4 @@
+#include "QuadTree.h"
 #include "utils.h"
 
 #define Node QuadTree//提交时注释本行
@@ -41,11 +42,11 @@ int main()
     Solution sol;
 
     Node*quadTree1=new Node("[[0,1],[1,1],[1,1],[1,0],[1,0]]");
-    DBGN(quadTree1);
+    DBG(quadTree1);
     Node*quadTree2=new Node("[[0,1],[1,1],[0,1],[1,1],[1,0],null,null,null,null,[1,0],[1,0],[1,1],[1,1]]");
-    DBGN(quadTree2);
+    DBG(quadTree2);
     auto ans=sol.intersect(quadTree1,quadTree2);
-    DBGN(ans);
+    DBG(ans);
 
     system("pause");
     return 0;

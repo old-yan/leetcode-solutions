@@ -33,11 +33,11 @@ int main()
     Solution sol;
 
     TreeNode*root=new TreeNode("3,0,4,null,2,null,null,1");
-    DBGT(root);
+    DBG(root);
     int low=1;
     int high=3;
     auto ans=sol.trimBST(root,low,high);
-    DBGT(ans);
+    DBG(ans);
 
     system("pause");
     return 0;

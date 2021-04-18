@@ -4,15 +4,15 @@ class Solution {
 public:
     int findMaxLength(vector<int>& nums) {
         for(int&a:nums)if(!a)a=-1;
-        auto sum=presum(nums);
-        unordered_map<ll,int>M;
+        partial_sum(ALL(nums),nums.begin());
+        unordered_map<ll,int>M{{0,-1}};
         int ans=0;
-        REP(i,sum.size()){
-            if(M.count(sum[i])){
-                chmax(ans,int(i)-M[sum[i]]);
+        REP(i,nums.size()){
+            if(M.count(nums[i])){
+                chmax(ans,int(i)-M[nums[i]]);
             }
             else{
-                M[sum[i]]=i;
+                M[nums[i]]=i;
             }
         }
         return ans;

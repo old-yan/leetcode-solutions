@@ -1,3 +1,4 @@
+#include "TreeNode.h"
 #include "utils.h"
 
 class Solution {
@@ -17,9 +18,9 @@ int main()
     Solution sol;
 
     TreeNode*root=new TreeNode("[4,2,7,1,3,6,9]");
-    DBGT(root);
+    DBG(root);
     auto ans=sol.invertTree(root);
-    DBGT(ans);
+    DBG(ans);
 
     system("pause");
     return 0;

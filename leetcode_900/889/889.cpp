@@ -25,7 +25,7 @@ int main()
     vi pre{1,2,4,5,3,6,7};
     vi post{4,5,2,6,7,3,1};
     auto ans=sol.constructFromPrePost(pre,post);
-    DBGT(ans);
+    DBG(ans);
 
     system("pause");
     return 0;

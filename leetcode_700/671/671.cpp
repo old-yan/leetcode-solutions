@@ -30,9 +30,9 @@ int main()
     Solution sol;
 
     TreeNode*root=new TreeNode("[2,2,5,null,null,5,7]");
-    DBGT(root);
+    DBG(root);
     auto ans=sol.findSecondMinimumValue(root);
-    DBGT(ans);
+    DBG(ans);
 
     system("pause");
     return 0;

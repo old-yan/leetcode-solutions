@@ -20,7 +20,7 @@ int main()
     Solution sol;
 
     TreeNode*root=new TreeNode("[-6,-9,-3,1,-8,-4,1,null,null,null,-7,null,null,0,5,null,null,null,null,2]");
-    DBGT(root);
+    DBG(root);
     auto ans=sol.isValidBST(root);
     DBG(ans);
 
