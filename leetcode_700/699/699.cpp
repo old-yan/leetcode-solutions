@@ -1,96 +1,95 @@
 #include "utils.h"
 
 template<class T>
-class LazyTree{
+struct LazyTree{
+    #define LAZYTREEDEPTH 8
     typedef function<T(T&,T&)> Operation;
-    struct elem{
-        T val;
-        T inc;
-        bool b;
-        elem():val(),inc(),b(false){}
-        elem(T _val):val(_val),inc(),b(false){}
-        elem(T _val,T _inc):val(_val),inc(_inc),b(false){}
-        elem(T _val,T _inc,bool _b):val(_val),inc(_inc),b(_b){}
-    };
     inline int size(int i){
         return __builtin_clz(i)+Y-31;
     }
-    void inherite(int i,T inc){
-        data[i].val=data[i].inc=inc;
-        data[i].b=true;
+    //重载inherite，描述继承增量时的结点形为
+    void inherite(int i,T _inc){
+        data[i]=_inc;
+        inc[i]=_inc;
+        lazy[i]=true;
     }
-public:
-    elem*data;
+    T data[1<<(LAZYTREEDEPTH+1)]={0},inc[1<<(LAZYTREEDEPTH+1)]={0},default_val{0},default_inc{0};
+    bool lazy[1<<(LAZYTREEDEPTH+1)]={0};
     int X,Y;
-    T default_val;
     Operation op;
-    LazyTree(int n,T _default_val,Operation _op):default_val(_default_val),op(_op){
-        for(X=4;X<n;X<<=1);
-        Y=__builtin_ctz(X);
-        data=new elem[X*2];
-        fill(data+X,data+X*2,elem(default_val));
-        for(int i=X-1;i;i--){
-            data[i].val=op(data[i*2].val,data[i*2+1].val);
-        }
+    LazyTree(int n,Operation _op):op(_op){
+        cout<<"attention TREESIZE,<="<<(1<<LAZYTREEDEPTH)<<'\n';
+        for(X=4,Y=2;X<n;X<<=1,Y++);
     }
     template<class Tlike>
-    LazyTree(vector<Tlike>&nums,T _default_val,Operation _op):default_val(_default_val),op(_op){
-        for(X=4;X<nums.size();X<<=1);
-        Y=__builtin_ctz(X);
-        data=new elem[X*2];
-        for(int i=0;i<X;i++){
-            data[X+i]=elem(i<nums.size()?nums[i]:default_val);
+    void set(const vector<Tlike>&nums,T val=0){
+        for(int i=0;i<nums.size();i++){
+            data[X+i]=nums[i];
         }
+        fill(data+X+nums.size(),data+X*2,val);
         for(int i=X-1;i;i--){
-            data[i]=elem(op(data[i*2].val,data[i*2+1].val));
+            data[i]=op(data[i*2],data[i*2+1]);
         }
     }
-    void set(int i,T inc){
+    void set(T val){
+        fill(data+X,data+X*2,val);
+        for(int i=X-1;i;i--){
+            data[i]=op(data[i*2],data[i*2+1]);
+        }
+        fill(inc,inc+X*2,default_inc);
+        fill(lazy,lazy+X*2,false);
+    }
+    void setinc(T _inc){
+        default_inc=_inc;
+        fill(inc,inc+X*2,_inc);
+    }
+    void set(int i,T val){
         push_down(i);
-        data[i+=X].val=inc;
+        data[i+=X]=val;
         while(i>>=1){
-            data[i].val=op(data[i*2].val,data[i*2+1].val);
+            data[i]=op(data[i*2],data[i*2+1]);
         }
     }
-    void step(int i,T inc){
+    void step(int i,T _inc){
         push_down(i);
-        inherite(i+=X,inc);
+        inherite(i+=X,_inc);
         while(i>>=1){
-            data[i].val=op(data[i*2].val,data[i*2+1].val);
+            data[i]=op(data[i*2],data[i*2+1]);
         }
     }
-    void step(int l,int r,T inc){
-        if(l==r)step(l,inc);
-        else{
+    void step(int l,int r,T _inc){
+        if(l==r)step(l,_inc);
+        else if(l<r){
             push_down(l);
             push_down(r);
-            inherite(l+=X,inc);
-            inherite(r+=X,inc);
+            inherite(l+=X,_inc);
+            inherite(r+=X,_inc);
             while((l>>1)!=(r>>1)){
-                if(l%2==0)inherite(l+1,inc);
-                if(r%2)inherite(r-1,inc);
-                data[l>>1].val=op(data[l].val,data[l^1].val);
-                data[r>>1].val=op(data[r].val,data[r^1].val);
+                if(l%2==0)inherite(l+1,_inc);
+                if(r%2)inherite(r-1,_inc);
+                data[l>>1]=op(data[l],data[l^1]);
+                data[r>>1]=op(data[r],data[r^1]);
                 l>>=1;
                 r>>=1;
             }
             while(l>>=1){
-                data[l].val=op(data[l*2].val,data[l*2+1].val);
+                data[l]=op(data[l*2],data[l*2+1]);
             }
         }
     }
     void push_down(int i){
         for(int j=Y,k=1;j;k=(i&(1<<--j))?(k<<1)+1:k<<1){
-            if(data[k].b){
-                inherite(k*2,data[k].inc);
-                inherite(k*2+1,data[k].inc);
-                data[k]=elem(data[k].val);
+            if(lazy[k]){
+                inherite(k*2,inc[k]);
+                inherite(k*2+1,inc[k]);
+                inc[k]=default_inc;
+                lazy[k]=false;
             }
         }
     }
     T& operator[](int i){
         push_down(i);
-        return data[i+X].val;
+        return data[i+X];
     }
     T operator()(int l,int r){
         l=max(l,0);
@@ -99,10 +98,10 @@ public:
         if(l==r)return (*this)[l];
         push_down(l);
         push_down(r);
-        T res=op(data[l+=X].val,data[r+=X].val);
+        T res=op(data[l+=X],data[r+=X]);
         while(l/2!=r/2){
-            if(l%2==0)res=op(res,data[l+1].val);
-            if(r%2)res=op(res,data[r-1].val);
+            if(l%2==0)res=op(res,data[l+1]);
+            if(r%2)res=op(res,data[r-1]);
             l>>=1;
             r>>=1;
         }
@@ -112,16 +111,17 @@ public:
         if(n<data[1]){
             int i=1;
             while(i<X){
-                if(data[i].b){
-                    data[i*2].inherite(data[i].inc/2);
-                    data[i*2+1].inherite(data[i].inc/2);
-                    data[i]=elem(data[i].val);
+                if(lazy[i]){
+                    inherite(i*2,inc[i]);
+                    inherite(i*2+1,inc[i]);
+                    inc[i]=default_inc;
+                    lazy[i]=false;
                 }
-                if(data[i*2].val>=n+1){
+                if(data[i*2]>=n+1){
                     i<<=1;
                 }
                 else{
-                    n-=data[i*2].val;
+                    n-=data[i*2];
                     i=(i<<1)+1;
                 }
             }
@@ -131,24 +131,24 @@ public:
     }
 };
 
+LazyTree<int> T(2000,[](int x,int y){return max(x,y);});
 class Solution {
 public:
     vector<int> fallingSquares(vector<vector<int>>& positions) {
         vi old;
+        int n=positions.size();
         for(auto&position:positions){
             old.pb(position[0]);
             old.pb(position[0]+position[1]-1);
         }
         vi rnk=getrank2(old);
-        unordered_map<int,int>M;
-        REP(i,old.size())M[old[i]]=rnk[i];
-        LazyTree<int> T(M.size(),0,[](int x,int y){return max(x,y);});
         vi ans;
-        for(auto&position:positions){
-            int left=M[position[0]],right=M[position[0]+position[1]-1];
-            int height=T(left,right)+position[1];
+        T.set(0);
+        REP(i,n){
+            int left=rnk[i*2],right=rnk[i*2+1];
+            int height=T(left,right)+positions[i][1];
             T.step(left,right,height);
-            ans.pb(T.data[1].val);
+            ans.pb(T.data[1]);
         }
         return ans;
     }

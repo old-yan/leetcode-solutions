@@ -1,10 +1,12 @@
+#include "SegTree.h"
 #include "utils.h"
 
+SegTree<int> T(10000,[](int x,int y){return x+y;});
 class Solution {
-    SegTree<int> T;
     int total;
 public:
-    Solution(vector<int>& w):T(w,0,[](int x,int y){return x+y;}){
+    Solution(vector<int>& w){
+        T.set(w);
         total=T.data[1];
     }
     int pickIndex() {

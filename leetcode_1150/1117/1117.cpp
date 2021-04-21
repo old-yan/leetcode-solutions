@@ -49,18 +49,24 @@ int main()
     string task="hhhhhhhhhhhhhhhhhhhhoooooooooo";
     random_shuffle(ALL(task));
     DBG(task);
-    REP(i,30){
-        if(task[i]=='h'){
-            thread t(&H2O::hydrogen,obj,[](){printf("H");});
+    for(char c:task){
+        if(c=='h'){
+            thread t(&H2O::hydrogen,obj,[](){
+                printf("H");
+                Sleep(1);
+            });
             t.detach();
         }
         else{
-            thread t(&H2O::oxygen,obj,[](){printf("O\n");});
+            thread t(&H2O::oxygen,obj,[](){
+                printf("O\n");
+                Sleep(1);
+            });
             t.detach();
         }
-        Sleep(100);
     }
 
+    Sleep(1000);
     system("pause");
     return 0;
 }

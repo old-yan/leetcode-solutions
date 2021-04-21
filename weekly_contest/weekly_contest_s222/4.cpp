@@ -1,15 +1,17 @@
+#include "SegTree.h"
 #include "utils.h"
 
+//线段树是统计一个区间之内的最大值的有力工具
+SegTree<int> T(100000,[](int x,int y){return max(x,y);});
 class Solution {
 public:
     //本题可以理解为求target和arr中出现的最长公共子序列长度
     int minOperations(vector<int>& target, vector<int>& arr) {
-        //线段树是统计一个区间之内的最大值的有力工具
-        SegTree<int> T(target.size(),0,[](int x,int y){return max(x,y);});
         //M记录每个数字对应的在target数组中的位置(target中元素不重复)
         unordered_map<int,int>M;
         for(int i=0;i<target.size();i++)M[target[i]]=i;
         int k=0;
+        T.set(0);
         for(int i=0;i<arr.size();i++){
             //对arr中每个元素，统计以其为结尾的最长公共子序列长度
             int j=arr[i];

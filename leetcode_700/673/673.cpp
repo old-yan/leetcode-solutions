@@ -1,3 +1,4 @@
+#include "SegTree.h"
 #include "utils.h"
 
 class Solution {
@@ -5,14 +6,15 @@ class Solution {
         int len,count;
         lengthCounter(int _len=0,int _counter=0):len(_len),count(_counter){}
     };
+    static lengthCounter merge(lengthCounter&x,lengthCounter&y){
+        if(x.len==y.len)return lengthCounter(x.len,x.count+y.count);
+        return x.len>y.len?x:y;
+    };
 public:
     int findNumberOfLIS(vector<int>& nums) {
+        static SegTree<lengthCounter>T(2000,merge);
         vi rnk=getrank2(nums);
-        auto merge=[](lengthCounter&x,lengthCounter&y){
-            if(x.len==y.len)return lengthCounter(x.len,x.count+y.count);
-            return x.len>y.len?x:y;
-        };
-        SegTree<lengthCounter>T(rnk.size(),lengthCounter(),merge);
+        T.set(lengthCounter());
         REP(i,rnk.size()){
             auto p=T(0,rnk[i]-1);
             p.len++;

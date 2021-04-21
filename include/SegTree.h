@@ -10,34 +10,31 @@ using namespace std;
 
 //模板线段树
 template<class T>
-class SegTree{
-    #define SEGTREEDEPTH 4
+struct SegTree{
+    #define SEGTREEDEPTH 8
     typedef function<T(T&,T&)> Operation;
-public:
-    T data[1<<(SEGTREEDEPTH+1)]={0};
+    T data[1<<(SEGTREEDEPTH+1)]={0},default_val{0};
     int X;
-    T default_val;
     Operation op;
-    SegTree(int n,T _default_val,Operation _op):default_val(_default_val),op(_op){
+    SegTree(int n,Operation _op):op(_op){
         cout<<"attention TREESIZE,<="<<(1<<SEGTREEDEPTH)<<'\n';
         for(X=4;X<n;X<<=1);
-        if(memcmp(data,&default_val,sizeof(default_val))){
-            fill(data+X,data+X*2,default_val);
-        }
-        for(int i=X-1;i;i--){
-            data[i]=op(data[i*2],data[i*2+1]);
-        }
     }
     template<class Tlike>
-    SegTree(vector<Tlike>&nums,T _default_val,Operation _op):default_val(_default_val),op(_op){
-        for(X=4;X<nums.size();X<<=1);
+    void set(const vector<Tlike>&nums,T val=0){
         for(int i=0;i<nums.size();i++){
             data[X+i]=nums[i];
         }
-        if(memcmp(data,&default_val,sizeof(default_val))){
-            fill(data+X+nums.size(),data+X*2,default_val);
-        }
+        fill(data+X+nums.size(),data+X*2,val);
         for(int i=X-1;i;i--){
+            data[i]=op(data[i*2],data[i*2+1]);
+        }
+        int a=5;
+        a++;
+    }
+    void set(T val){
+        fill(data+X,data+X*2,val);
+        for(int i=X-1;i>=0;i--){
             data[i]=op(data[i*2],data[i*2+1]);
         }
     }
@@ -97,47 +94,47 @@ public:
 
 //模板懒惰标记线段树，适用各种区间修改操作
 template<class T>
-class LazyTree{
-    #define LAZYTREEDEPTH 10
+struct LazyTree{
+    #define LAZYTREEDEPTH 8
     typedef function<T(T&,T&)> Operation;
     inline int size(int i){
         return __builtin_clz(i)+Y-31;
     }
     //重载inherite，描述继承增量时的结点形为
     void inherite(int i,T _inc){
-        data[i]+=_inc;
+        data[i]=_inc;
         inc[i]+=_inc;
-        lazy[i]=true;
+        lazy[i]+=true;
     }
-public:
-    T data[1<<(LAZYTREEDEPTH+1)],inc[1<<(LAZYTREEDEPTH+1)];
+    T data[1<<(LAZYTREEDEPTH+1)]={0},inc[1<<(LAZYTREEDEPTH+1)]={0},default_val{0},default_inc{0};
     bool lazy[1<<(LAZYTREEDEPTH+1)]={0};
     int X,Y;
-    T default_val;
     Operation op;
-    LazyTree(int n,T _default_val,Operation _op):default_val(_default_val),op(_op){
+    LazyTree(int n,Operation _op):op(_op){
         cout<<"attention TREESIZE,<="<<(1<<LAZYTREEDEPTH)<<'\n';
-        for(X=4;X<n;X<<=1);
-        Y=__builtin_ctz(X);
-        fill(data+X,data+X*2,default_val);
-        for(int i=X-1;i;i--){
-            data[i]=op(data[i*2],data[i*2+1]);
-        }
-        fill(inc,inc+X*2,default_val);
+        for(X=4,Y=2;X<n;X<<=1,Y++);
     }
     template<class Tlike>
-    LazyTree(vector<Tlike>&nums,T _default_val,Operation _op):default_val(_default_val),op(_op){
-        cout<<"attention TREESIZE,<="<<(1<<LAZYTREEDEPTH)<<'\n';
-        for(X=4;X<nums.size();X<<=1);
-        Y=__builtin_ctz(X);
+    void set(const vector<Tlike>&nums,T val=0){
         for(int i=0;i<nums.size();i++){
             data[X+i]=nums[i];
         }
-        fill(data+X+nums.size(),data+X*2,default_val);
+        fill(data+X+nums.size(),data+X*2,val);
         for(int i=X-1;i;i--){
             data[i]=op(data[i*2],data[i*2+1]);
         }
-        fill(inc,inc+X*2,default_val);
+    }
+    void set(T val){
+        fill(data+X,data+X*2,val);
+        for(int i=X-1;i;i--){
+            data[i]=op(data[i*2],data[i*2+1]);
+        }
+        fill(inc,inc+X*2,default_inc);
+        fill(lazy,lazy+X*2,false);
+    }
+    void setinc(T _inc){
+        default_inc=_inc;
+        fill(inc,inc+X*2,_inc);
     }
     void set(int i,T val){
         push_down(i);
@@ -155,7 +152,7 @@ public:
     }
     void step(int l,int r,T _inc){
         if(l==r)step(l,_inc);
-        else{
+        else if(l<r){
             push_down(l);
             push_down(r);
             inherite(l+=X,_inc);
@@ -178,7 +175,7 @@ public:
             if(lazy[k]){
                 inherite(k*2,inc[k]);
                 inherite(k*2+1,inc[k]);
-                inc[k]=default_val;
+                inc[k]=default_inc;
                 lazy[k]=false;
             }
         }
@@ -210,7 +207,7 @@ public:
                 if(lazy[i]){
                     inherite(i*2,inc[i]);
                     inherite(i*2+1,inc[i]);
-                    inc[i]=0;
+                    inc[i]=default_inc;
                     lazy[i]=false;
                 }
                 if(data[i*2]>=n+1){

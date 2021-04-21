@@ -1,11 +1,12 @@
 #include "SegTree.h"
 #include "utils.h"
 
+//利用线段树存储糖果分布情况
+SegTree<long> T(100000,[](long x,long y){return x+y;});
 class Solution {
 public:
     vector<bool> canEat(vector<int>&candiesCount, vector<vector<int>>& queries) {
-        //利用线段树存储糖果分布情况
-        SegTree<long> T(candiesCount,0,[](long x,long y){return x+y;});
+        T.set(candiesCount);
         vector<bool>ans(queries.size());
         for(int i=0;i<queries.size();i++){
             long type=queries[i][0];

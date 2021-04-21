@@ -1,11 +1,13 @@
+#include "SegTree.h"
 #include "utils.h"
 
+SegTree<int> T(10002,[](int x,int y){return min(x,y);});
 class Solution {
 public:
     string removeKdigits(string num, int k) {
         string ans;
-        SegTree<int> T(num.size(),128,[](int x,int y){return min(x,y);});
-        REP(i,num.size())T.set(i,num[i]);
+        T.default_val=128;
+        T.set(vector<char>(ALL(num)),128);
         REP(i,num.size()){
             if(i+k==num.size())break;
             int candidate=T(i+1,i+k);
@@ -21,6 +23,7 @@ public:
         return ans.substr(zero,ans.size()-zero);
     }
 };
+
 
 int main()
 {

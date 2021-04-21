@@ -1,6 +1,7 @@
 #include "SegTree.h"
 #include "utils.h"
 
+SegTree<int>T(30001,[](int x,int y){return x+y;});
 class Solution {
 public:
     int countRangeSum(vector<int>& nums, int lower, int upper) {
@@ -17,7 +18,7 @@ public:
             vi rnk=getrank2(ma);
             REP(i,rnk.size())M[ma[i]]=rnk[i];
         }
-        SegTree<int> T(M.size(),0,[](int x,int y){return x+y;});
+        T.set(0);
         int ans=0;
         T.step_forward(M[0]);
         for(ll a:copy){

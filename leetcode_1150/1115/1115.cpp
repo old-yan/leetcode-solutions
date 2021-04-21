@@ -36,15 +36,20 @@ int main()
     FooBar *obj=new FooBar(10);
 
     cout<<"线程1出发，调用bar函数...\n";
-    thread t1(&FooBar::bar,obj,[](){printf("bar\n");});
+    thread t1(&FooBar::bar,obj,[](){
+        printf("bar\n");
+        Sleep(1);
+    });
     t1.detach();
-    Sleep(1000);
 
     cout<<"线程2出发，调用foo函数...\n";
-    thread t2(&FooBar::foo,obj,[](){printf("foo\n");});
+    thread t2(&FooBar::foo,obj,[](){
+        printf("foo\n");
+        Sleep(1);
+    });
     t2.detach();
-    Sleep(1000);
 
+    Sleep(1000);
     system("pause");
     return 0;
 }

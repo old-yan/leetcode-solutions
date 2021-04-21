@@ -32,7 +32,8 @@ public:
         for(int q:queries){
             int res=0;
             //按照度数分布，建立线段树，方便查询某个度数范围内的点的数量
-            SegTree<int>T(degmap,0,[](int x,int y){return x+y;});
+            SegTree<int>T(maxdeg+1,[](int x,int y){return x+y;});
+            T.set(degmap);
             for(int i=0;i<n;i++){
                 //将自己的度数从度数分布里去除，因为自己不能充当自己的配对
                 T.step_back(deg[i]);
@@ -48,7 +49,6 @@ public:
         return ans;
     }
 };
-
 
 int main()
 {

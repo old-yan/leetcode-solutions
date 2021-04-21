@@ -1,13 +1,16 @@
+#include "SegTree.h"
 #include "utils.h"
 
+SegTree<int>T(20001,[](int x,int y){return x+y;});
 class Solution {
 public:
     vector<int> countSmaller(vector<int>& nums) {
-        SegTree<int>T(nums.size(),0,[](int x,int y){return x+y;});
-        vi rnk=getrank2(nums);
-        vi ans(rnk.size(),0);
-        REPR(i,rnk.size()-1){
-            int j=rnk[i];
+        int Min=*min_element(ALL(nums));
+        for(int&a:nums)a-=Min;
+        vi ans(nums.size(),0);
+        T.set(0);
+        REPR(i,nums.size()-1){
+            int j=nums[i];
             ans[i]=T(0,j-1);
             T.step_forward(j);
         }

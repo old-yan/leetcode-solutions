@@ -32,20 +32,27 @@ int main()
     Foo *obj=new Foo();
     
     cout<<"线程1出发，调用second函数...\n";
-    thread t1(&Foo::second,obj,[](){printf("second\n");});
+    thread t1(&Foo::second,obj,[](){
+        printf("second\n");
+        Sleep(1);
+    });
     t1.detach();
-    Sleep(1000);
 
     cout<<"线程2出发，调用first函数...\n";
-    thread t2(&Foo::first,obj,[](){printf("first\n");});
+    thread t2(&Foo::first,obj,[](){
+        printf("first\n");
+        Sleep(1);
+    });
     t2.detach();
-    Sleep(1000);
 
     cout<<"线程3出发，调用third函数...\n";
-    thread t3(&Foo::third,obj,[](){printf("third\n");});
+    thread t3(&Foo::third,obj,[](){
+        printf("third\n");
+        Sleep(1);
+    });
     t3.detach();
-    Sleep(1000);
 
+    Sleep(1000);
     system("pause");
     return 0;
 }

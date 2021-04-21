@@ -1,5 +1,7 @@
+#include "SegTree.h"
 #include "utils.h"
 
+SegTree<int>T(5001,[](int x,int y){return max(x,y);});
 class Solution {
 public:
     int maxEnvelopes(vector<vector<int>>& envelopes) {
@@ -10,11 +12,9 @@ public:
         vi h;
         for(auto&envelope:envelopes)h.pb(envelope[1]);
         vi rnk=getrank2(h);
-        unordered_map<int,int>M;
-        REP(i,h.size())M[h[i]]=rnk[i];
-        SegTree<int>T(M.size(),0,[](int x,int y){return max(x,y);});
-        for(auto&envelope:envelopes){
-            T.set(M[envelope[1]],T(M[envelope[1]]+1,M.size()-1)+1);
+        T.set(0);
+        for(int r:rnk){
+            T.set(r,T(r+1,rnk.size()-1)+1);
         }
         return T.data[1];
     }

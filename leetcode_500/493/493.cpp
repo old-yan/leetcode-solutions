@@ -1,5 +1,7 @@
+#include "SegTree.h"
 #include "utils.h"
 
+SegTree<int>T(100000,[](int x,int y){return x+y;});
 class Solution {
 public:
     int reversePairs(vector<int>& nums) {
@@ -11,12 +13,10 @@ public:
             nums.pb(half(nums[i]));
         }
         vi rnk=getrank2(nums);
-        unordered_map<int,int>M;
-        REP(i,rnk.size())M[nums[i]]=rnk[i];
-        SegTree<int> T(M.size(),0,[](int x,int y){return x+y;});
         int ans=0;
+        T.set(0);
         REPR(i,n-1){
-            ans+=T(0,M[half(nums[i])]);
+            ans+=T(0,rnk[i+n]);
             T.step_forward(rnk[i]);
         }
         return ans;

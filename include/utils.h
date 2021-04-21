@@ -172,7 +172,7 @@ vector<string> split(const string&s,char c=' '){
 }
 
 // 最大公约数
-ll gcd(ll a, ll b){
+ll mygcd(ll a, ll b){
 	a = abs(a);b = abs(b);
 	if (a < b)swap(a, b);
 	while (b){
@@ -184,15 +184,22 @@ ll gcd(ll a, ll b){
 }
 
 // 最小公倍数
-ll lcm(ll a, ll b){
-	ll _gcd=gcd(a,b);
+ll mylcm(ll a, ll b){
+	ll _gcd=mygcd(a,b);
 	return a / _gcd * b;
 }
 
 // 阶乘
-ll factorial(ll a){
-	if(a>0)return factorial(a-1)*a;
+ll factorial(ll a, ll mod=MOD){
+	if(a>0)return factorial(a-1,mod)*a%mod;
 	else return 1;
+}
+
+//阶乘表
+vi factorialTable(ll m, ll mod=MOD){
+	vi f(m+1);
+	for(int i=0;i<=m;i++)f[i]=i?(ll)f[i-1]*i%MOD:1;
+	return f;
 }
 
 //快速幂
@@ -229,21 +236,19 @@ vi invTable(ll m, ll mod=1000000007){
 //组合数
 ll combination(ll m, ll n, ll mod=1000000007){
 	if(m<=20){
-		auto getf=[](){
+		static vector<ll>f=[](){
 			vector<ll>f(21);
 			for(int i=0;i<=20;i++)f[i]=i?f[i-1]*i:1;
 			return f;
-		};
-		static vector<ll>f=getf();
+		}();
 		return f[m]/f[n]/f[m-n];
 	}
 	else{
-		auto getf=[&](){
+		static vector<ll>f=[&](){
 			vector<ll>f(21,0);
 			for(int i=1;i<=20;i++)f[i]=inv(i,mod);
 			return f;
-		};
-		static vector<ll>f=getf();
+		}();
 		ll res=1;
 		if(n>m/2)n=m-n;
 		for(int i=0;i<n;i++)res=res*(m-i)%mod;

@@ -1,10 +1,11 @@
 #include "SegTree.h"
 #include "utils.h"
 
+SegTree<int>T1(26,[](int x,int y){return x+y;}),T2(26,[](int x,int y){return x+y;});
 class Solution {
 public:
     int minCharacters(string a, string b) {
-        SegTree<int>T1(26,0,[](int x,int y){return x+y;}),T2(26,0,[](int x,int y){return x+y;});
+        T1.set(0),T2.set(0);
         //将字符串a的字母分布存入T1
         for(char c:a)T1.step_forward(c-'a');
         //将字符串b的字母分布存入T2

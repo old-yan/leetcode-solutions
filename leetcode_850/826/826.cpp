@@ -1,16 +1,16 @@
-#include "SegTree.h"
 #include "utils.h"
 
 class Solution {
 public:
     int maxProfitAssignment(vector<int>& difficulty, vector<int>& profit, vector<int>& worker) {
-        SegTree<int>T(100000,0,[](int x,int y){return max(x,y);});
+        vi p(max(*max_element(ALL(difficulty)),*max_element(ALL(worker)))+1,0);
         REP(i,difficulty.size()){
-            T.step(difficulty[i],profit[i]);
+            chmax(p[difficulty[i]],profit[i]);
         }
+        partial_sum(ALL(p),p.begin(),[](int x,int y){return max(x,y);});
         int ans=0;
         for(int w:worker){
-            ans+=T(0,w);
+            ans+=p[w];
         }
         return ans;
     }

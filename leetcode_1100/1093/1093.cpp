@@ -1,6 +1,7 @@
 #include "SegTree.h"
 #include "utils.h"
 
+SegTree<int>T(256,[](int x,int y){return x+y;});
 class Solution {
 public:
     vector<double> sampleStats(vector<int>& count) {
@@ -13,7 +14,7 @@ public:
             REP(i,256)res+=i*count[i];
             return res/total;
         }());
-        SegTree<int>T(count,0,[](int x,int y){return x+y;});
+        T.set(count);
         ans.pb(total%2?T.find_nth(total/2):(T.find_nth(total/2-1)+T.find_nth(total/2))/2.0);
         ans.pb(max_element(ALL(count))-count.begin());
         return ans;

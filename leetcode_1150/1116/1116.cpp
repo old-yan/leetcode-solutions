@@ -44,20 +44,27 @@ int main()
     ZeroEvenOdd *obj=new ZeroEvenOdd(10);
 
     cout<<"线程1出发，调用odd函数...\n";
-    thread t1(&ZeroEvenOdd::odd,obj,[](int x){printf("%d\n",x);});
+    thread t1(&ZeroEvenOdd::odd,obj,[](int x){
+        printf("%d\n",x);
+        Sleep(1);
+    });
     t1.detach();
-    Sleep(1000);
 
     cout<<"线程2出发，调用even函数...\n";
-    thread t2(&ZeroEvenOdd::even,obj,[](int x){printf("%d\n",x);});
+    thread t2(&ZeroEvenOdd::even,obj,[](int x){
+        printf("%d\n",x);
+        Sleep(1);
+    });
     t2.detach();
-    Sleep(1000);
 
     cout<<"线程3出发，调用zero函数...\n";
-    thread t3(&ZeroEvenOdd::zero,obj,[](int x){printf("%d\n",x);});
+    thread t3(&ZeroEvenOdd::zero,obj,[](int x){
+        printf("%d\n",x);
+        Sleep(1);
+    });
     t3.detach();
+    
     Sleep(1000);
-
     system("pause");
     return 0;
 }

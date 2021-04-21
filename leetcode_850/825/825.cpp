@@ -1,16 +1,18 @@
 #include "SegTree.h"
 #include "utils.h"
 
+SegTree<int>T(121,[](int x,int y){return x+y;});
 class Solution {
 public:
     int numFriendRequests(vector<int>& ages) {
-        SegTree<int>T(121,0,[](int x,int y){return x+y;});
-        for(int age:ages)T.step_forward(age);
+        vi cnt(121,0);
+        for(int age:ages)cnt[age]++;
+        T.set(cnt);
         int ans=0;
-        for(int age:ages){
-            int left=age/2+8;
-            int right=age;
-            ans+=T(left,right);
+        for(int age=1;age<=120;age++){
+            if(!cnt[age])continue;
+            int res=T(age/2+8,age);
+            if(res)ans+=(res-1)*cnt[age];
         }
         return ans;
     }

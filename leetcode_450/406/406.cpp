@@ -1,9 +1,11 @@
+#include "SegTree.h"
 #include "utils.h"
 
+SegTree<int> T(2000,[](int x,int y){return x+y;});
 class Solution {
 public:
     vector<vector<int>> reconstructQueue(vector<vector<int>>& people) {
-        SegTree<int> T(people.size(),1,[](int x,int y){return x+y;});
+        T.set(vi(people.size(),1));
         vi idx(people.size());
         iota(ALL(idx),0);
         sort(ALL(idx),[&](int x,int y)->bool{return people[x][0]<people[y][0]||(people[x][0]==people[y][0]&&people[x][1]>people[y][1]);});

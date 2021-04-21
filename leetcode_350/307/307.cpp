@@ -1,9 +1,12 @@
+#include "SegTree.h"
 #include "utils.h"
 
+SegTree<int>T(30000,[](int x,int y){return x+y;});
 class NumArray {
-    SegTree<int>T;
 public:
-    NumArray(vector<int>& nums):T(nums,0,[](int x,int y){return x+y;}) {}
+    NumArray(vector<int>& nums){
+        T.set(nums);
+    }
     void update(int index, int val) {
         T.set(index,val);
     }

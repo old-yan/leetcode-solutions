@@ -1,12 +1,12 @@
+#include "SegTree.h"
 #include "utils.h"
 
+SegTree<int>T(2500,[](int x,int y){return max(x,y);});
 class Solution {
 public:
     int lengthOfLIS(vector<int>& nums) {
         vi rnk=getrank2(nums);
-        SegTree<int>T(rnk.size(),0,[](int x,int y){
-            return max(x,y);
-        });
+        T.set(0);
         for(int a:rnk){
             T.set(a,T(0,a-1)+1);
         }

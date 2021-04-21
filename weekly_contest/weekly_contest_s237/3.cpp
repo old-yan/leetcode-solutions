@@ -1,7 +1,7 @@
+#include "Heap.h"
 #include "utils.h"
 
 class Solution {
-    typedef pair<int,int> PII;
 public:
     //按时间进度模拟
     vector<int> getOrder(vector<vector<int>>& tasks) {
@@ -11,20 +11,26 @@ public:
         iota(ALL(idx),0);
         sort(ALL(idx),[&](int x,int y){return tasks[x][0]<tasks[y][0];});
         //建立最小堆，运行时间短/下标小的先出堆
-        priority_queue<PII,vector<PII>,greater<PII>>Q;
+        Heap<int>H([&](int x,int y){
+            if(tasks[x][1]!=tasks[y][1])return tasks[x][1]>tasks[y][1];
+            else return x>y;
+        });
         vi ans;
-        for(ll t=tasks[idx[0]][0],cursor=0;cursor<n||Q.size();){
-            while(cursor<n&&tasks[idx[cursor]][0]<=t){
-                Q.emplace(tasks[idx[cursor]][1],idx[cursor]);
-                cursor++;
+        ll cur=0,time=0;
+        while(true){
+            //马上就要接任务了，如果我目前没任务却还接不到任务，就手动快进
+            if(!H.size()&&cur<n&&tasks[idx[cur]][0]>time)time=tasks[idx[cur]][0];
+            //接任务
+            while(cur<n&&tasks[idx[cur]][0]<=time){
+                H.push(idx[cur++]);
             }
-            //一次循环处理一个任务
-            auto [last,i]=Q.top();
-            Q.pop();
+            //实在没任务就退
+            if(!H.size())break;
+            //有任务就选个最好的（持续时间最短/下标最小）
+            int i=H.top();
+            H.pop();
             ans.pb(i);
-            t+=last;
-            //为了避免青黄不接，如果现在接不到任务，那就让时间往后流一流
-            if(cursor<n&&Q.empty()&&tasks[idx[cursor]][0]>t)t=tasks[idx[cursor]][0];
+            time+=tasks[i][1];
         }
         return ans;
     }

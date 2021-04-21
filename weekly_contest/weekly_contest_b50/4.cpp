@@ -1,21 +1,26 @@
+#include "SegTree.h"
 #include "utils.h"
 
 //预处理一张长度3000的逆元表
-static vi invt=invTable(3000);
+vi invt=invTable(3000);
+//预处理一张长度3000的阶乘表
+vi ft=factorialTable(3000);
+//预处理一张长度3000的阶乘逆元表
+vi fit=[](){
+    vi f(3001);
+    for(int i=0;i<=3000;i++){
+        f[i]=inv(ft[i]);
+    }
+    return f;
+}();
 class Solution {
-    //统计剩余字符数量
-    ll cnt[26]={0};
-    //维护每个字符作为起始字符的排列数
-    ll cur[26];
     int n;
+    vi cnt=vi(26,0);
     //计算初始排列数
     ll init_comp(){
-        ll val=1;
-        FOR(j,1,n+1)val=val*j%MOD;
+        ll val=ft[n];
         REP(c,26){
-            FOR(j,1,cnt[c]+1){
-                val=val*invt[j]%MOD;
-            }
+            val=val*fit[cnt[c]]%MOD;
         }
         return val;
     }
@@ -25,22 +30,15 @@ public:
     int makeStringSorted(string s) {
         n=s.size();
         for(char c:s)cnt[c-'a']++;
-        ll val=init_comp();
-        //动态维护cur数组的方法比较复杂
-        REP(i,26){
-            if(cnt[i]){
-                cur[i]=val*invt[n]%MOD*cnt[i]%MOD;
-            }
-        }
+        ll cur=init_comp();
         ll ans=0;
+        static SegTree<int>T(26,[](int x,int y){return x+y;});
+        T.set(cnt);
         REP(j,n){
-            REP(i,26){
-                if(cnt[i]){
-                    if(i<s[j]-'a')ans+=cur[i];
-                    cur[i]=cur[i]*invt[n-j-1]%MOD*(cnt[s[j]-'a']-(i==s[j]-'a'))%MOD;
-                }
-            }
-            cnt[s[j]-'a']--;
+            cur=cur*invt[n-j]%MOD;
+            ans+=cur*T(0,s[j]-'a'-1);
+            T.step_back(s[j]-'a');
+            cur=cur*cnt[s[j]-'a']--%MOD;
         }
         return ans%MOD;
     }

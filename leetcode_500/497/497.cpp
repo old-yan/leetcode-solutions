@@ -1,11 +1,12 @@
+#include "SegTree.h"
 #include "utils.h"
 
+SegTree<int> T(100,[](int x,int y){return x+y;});
 class Solution {
-    SegTree<int> T;
     int totalPoints;
     vvi&rects;
 public:
-    Solution(vector<vector<int>>&_rects):T(_rects.size(),0,[](int x,int y){return x+y;}),totalPoints(0),rects(_rects) {
+    Solution(vector<vector<int>>&_rects):totalPoints(0),rects(_rects) {
         REP(i,rects.size()){
             auto&A=rects[i];
             int x1=A[0],y1=A[1],x2=A[2],y2=A[3];

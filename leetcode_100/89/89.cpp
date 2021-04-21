@@ -1,28 +1,10 @@
 #include "utils.h"
 
 class Solution {
-    vi ans;
-    void dfs(int i,int&val,bool curstate){
-        if(i<0){
-            ans.pb(val);
-        }
-        else{
-            if(curstate){
-                dfs(i-1,val,false);
-                val-=(1<<i);
-                dfs(i-1,val,true);
-            }
-            else{
-                dfs(i-1,val,false);
-                val+=(1<<i);
-                dfs(i-1,val,true);
-            }
-        }
-    }
 public:
     vector<int> grayCode(int n) {
-        int val=0;
-        dfs(n-1,val,false);
+        vi ans(1<<n);
+        REP(i,1<<n)ans[i]=i^(i>>1);
         return ans;
     }
 };
