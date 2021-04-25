@@ -34,7 +34,7 @@ struct LCA{
             }
             num=seq.size()-1;
         }();
-        function<void(int,int)>traverse=[&](int cur,int par){
+        inline function<void(int,int)>traverse=[&](int cur,int par){
             parent[cur][0]=par;
             for(int i=1;i<TREELEVEL;i++)parent[cur][i]=parent[parent[cur][i-1]][i-1];
             if(lc[cur])traverse(lc[cur],cur);

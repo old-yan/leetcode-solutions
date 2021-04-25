@@ -1,3 +1,4 @@
+#include "Trie.h"
 #include "utils.h"
 
 // 动态Trie树和静态Trie树效率基本差不多，一般来说动态最好理解不容易出错

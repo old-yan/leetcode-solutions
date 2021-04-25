@@ -1,23 +1,22 @@
 #include "Trie.h"
 #include "utils.h"
 
+StaticTrie T;
 class StreamChecker {
-    StaticTrie T;
     vector<char>v;
 public:
     StreamChecker(vector<string>& words) {
+        T.clear();
         for(string&s:words){
-            reverse(ALL(s));
-            T.insert(s);
+            T.insert(ALLR(s));
         }
     }
     bool query(char letter) {
         v.pb(letter);
         int cur=0;
         REPR(i,v.size()-1){
-            int nxt=T[cur][v[i]-'a'];
-            if(!nxt)return false;
-            cur=nxt;
+            cur=T[cur][v[i]-'a'];
+            if(!cur)return false;
             if(T[cur][26]>=0)return true;
         }
         return false;

@@ -1,14 +1,20 @@
+#include "Trie.h"
 #include "utils.h"
 
-//typedef DynamicTrie SOMETRIE;
-typedef StaticTrie SOMETRIE;
-//动态Trie树和静态Trie树，继承两者其一即可
+//继承静态Trie树
 //为什么必须要重写虚函数：因为模板里的Trie的search方法返回的是int类型
-
-class Trie:public SomeTrie{
+class Trie:public StaticTrie{
 public:
-    bool search(string word){
-        return SomeTrie::search(word)>=0;
+    bool search(const string&word){
+        return StaticTrie::search(word)>=0;
+    }
+    bool startsWith(const string&prefix){
+        int cur=0;
+        for(char c:prefix){
+            if(!data[cur][c-'a'])return false;
+            cur=data[cur][c-'a'];
+        }
+        return true;
     }
 };
 

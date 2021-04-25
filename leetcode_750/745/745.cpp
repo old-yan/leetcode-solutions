@@ -5,26 +5,16 @@ class mytrie:public StaticTrie{
     int res;
 public:
     mytrie():StaticTrie(){}
-    void insert(int cur,const string&word,int i,int _signal) {
-        int res=0;
-        if(i==word.size()){
-            if((*this)[cur][26]<0){
-                (*this)[cur][26]=_signal;
-                res=1;
-            }
-            else (*this)[cur][26]=max((*this)[cur][26],_signal);
+    void insert(const string&word,int val){
+        int cur=0;
+        for(int i=0;i<word.size();i++){
+            data[cur][27]=val;
+            data[cur][28]|=(1<<int(word.size()-i));
+            if(!data[cur][word[i]-'a'])Malloc(data[cur][word[i]-'a']);
+            cur=data[cur][word[i]-'a'];
         }
-        else{
-            if(!(*this)[cur][word[i]-'a']){
-                Malloc((*this)[cur][word[i]-'a']);
-            }
-            insert((*this)[cur][word[i]-'a'],word,i+1,_signal);
-        }
-        (*this)[cur][27]=max((*this)[cur][27],_signal);
-        (*this)[cur][28]|=(1<<int(word.size()-i));
-    }
-    void insert(const string&word,int _signal=1) {
-        insert(0,word,0,_signal);
+        data[cur][26]=data[cur][27]=val;
+        data[cur][28]=1;
     }
     void fun(int cur,string&prefix,int i,string&suffix,int j){
         if((*this)[cur][27]<=res)return;

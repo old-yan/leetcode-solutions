@@ -52,46 +52,56 @@
 // };
 
 
-StaticTrie T;
+class mytrie:public StaticTrie{
+public:
+    mytrie():StaticTrie(){}
+    void insert(const string&word,int signal){
+        int cur=0;
+        for(char c:word){
+            data[cur][27]++;
+            if(!data[cur][c-'a'])Malloc(data[cur][c-'a']);
+            cur=data[cur][c-'a'];
+        }
+        data[cur][26]=signal;
+        data[cur][27]++;
+    }
+};
+
+mytrie T;
 class Solution {
     vector<vector<char>>board;
     vector<string>words;
+    int m,n;
     bool used[12][12]={0};
     vector<string>ans;
-    int dfs(StaticTrie&T,int&cur,int i,int j){
+    int dfs(int&cur,int i,int j){
         int num_of_deleted=0;
-        int&next=T[cur][board[i][j]-'a'];
-        if(T[next][26]>=0){
-            ans.pb(words[T[next][26]]);
-            T[next][26]=-1;
-            num_of_deleted=1;
-            if(!--T[next][27]){
-                T.Free(next);
-            };
+        if(T[cur][26]>=0){
+            ans.pb(words[T[cur][26]]);
+            T[cur][26]=-1;
+            num_of_deleted++;
         }
         used[i][j]=true;
         REP(k,4){
             int ii=i+di[k],jj=j+dj[k];
-            if(ii>=0&&ii<board.size()&&jj>=0&&jj<board[0].size()&&!used[ii][jj]&&next&&T[next][board[ii][jj]-'a']){
-                num_of_deleted+=dfs(T,next,ii,jj);
+            if(VALID&&!used[ii][jj]&&T[cur][board[ii][jj]-'a']){
+                num_of_deleted+=dfs(T[cur][board[ii][jj]-'a'],ii,jj);
             }
         }
         used[i][j]=false;
-        if(!(T[cur][27]-=num_of_deleted)){
-            T.Free(cur);
-        }
+        if(!(T[cur][27]-=num_of_deleted))cur=0;
         return num_of_deleted;
     }
 public:
     vector<string> findWords(vector<vector<char>>&_board, vector<string>&_words) {
         board=_board;
         words=_words;
+        m=board.size(),n=board[0].size();
         T.clear();
-        int cur=0;
         REP(i,words.size())T.insert(words[i],i);
-        REP(i,board.size()){
-            REP(j,board[0].size()){
-                dfs(T,cur,i,j);
+        REP(i,m)REP(j,n){
+            if(T[0][board[i][j]-'a']){
+                if(!(T[0][27]-=dfs(T[0][board[i][j]-'a'],i,j)))break;
             }
         }
         return ans;

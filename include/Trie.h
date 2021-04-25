@@ -1,4 +1,5 @@
 #pragma once
+#include <iostream>
 #include <memory.h>
 #include <bitset>
 using namespace std;
@@ -65,71 +66,46 @@ class StaticTrie {
     #define TRIESIZE 10000
     #define TRIEN 30
 public:
-    int data[TRIESIZE+1][TRIEN]={0};
-    bitset<TRIESIZE+1>pool;
+    int data[TRIESIZE+1][TRIEN]={0},cnt;
     StaticTrie(){
         cout<<"attention TRIESIZE,<="<<TRIESIZE<<'\n';
-        data[0][26]=-1;
-        data[0][27]=0;
-        pool.set();
-        pool.reset(0);
+        clear();
     }
     void clear(){
-        memset(data,0,sizeof(data));
+        fill(data[0],data[1],0);
         data[0][26]=-1;
-        pool.set();
-        pool.reset(0);
+        cnt=1;
     }
     int* operator[](int i){return data[i];}
     void Malloc(int&idx){
-        idx=pool._Find_first();
+        idx=cnt++;
         memset(data[idx],0,TRIEN*sizeof(int));
         data[idx][26]=-1;
-        pool.reset(idx);
     }
-    void Free(int&idx){
-        pool.set(idx);
-        idx=0;
-    }
-    int insert(int cur,const string&word,int i,int _signal) {
-        int res=0;
-        if(i==word.size()){
-            if(data[cur][26]<0){
-                data[cur][26]=_signal;
-                res=1;
-            }
+    void insert(const string&word,int signal=0){
+        int cur=0;
+        for(char c:word){
+            if(!data[cur][c-'a'])Malloc(data[cur][c-'a']);
+            cur=data[cur][c-'a'];
         }
-        else{
-            if(!data[cur][word[i]-'a']){
-                Malloc(data[cur][word[i]-'a']);
-            }
-            res=insert(data[cur][word[i]-'a'],word,i+1,_signal);
-        }
-        data[cur][27]+=res;
-        return res;
+        data[cur][26]=signal;
     }
-    void insert(const string&word,int _signal=1) {
-        insert(0,word,0,_signal);
+    template<class iterator>
+    void insert(iterator begin,iterator end,int signal=0){
+        int cur=0;
+        for(auto it=begin;it<end;++it){
+            if(!data[cur][*it-'a'])Malloc(data[cur][*it-'a']);
+            cur=data[cur][*it-'a'];
+        }
+        data[cur][26]=signal;
     }
     int search(const string&word) {
         int cur=0;
-        for(int i=0;i<word.size();i++){
-            if(!data[cur][word[i]-'a']){
-                return -1;
-            }
-            cur=data[cur][word[i]-'a'];
+        for(char c:word){
+            if(!data[cur][c-'a'])return -1;
+            cur=data[cur][c-'a'];
         }
         return data[cur][26];
-    }
-    bool startsWith(const string&prefix) {
-        int cur=0;
-        for(int i=0;i<prefix.size();i++){
-            if(!data[cur][prefix[i]-'a']){
-                return false;
-            }
-            cur=data[cur][prefix[i]-'a'];
-        }
-        return true;
     }
     #undef TRIEN
     #undef TRIESIZE

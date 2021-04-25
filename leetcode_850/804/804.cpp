@@ -1,9 +1,27 @@
 #include "Trie.h"
 #include "utils.h"
 
-string s[26]={"ab","baaa","baba","baa","a","aaba","bba","aaaa","aa","abbb","bab","abaa","bb","ba","bbb","abba","bbab","aba","aaa","b","aab","aaab","abb","baab","babb","bbaa"};
+class mytrie:public StaticTrie{
+public:
+    int count;
+    mytrie():StaticTrie(),count(0){}
+    void clear(){
+        StaticTrie::clear();
+        count=0;
+    }
+    void insert(const string&word){
+        int cur=0;
+        for(char c:word){
+            if(!data[cur][c-'a'])Malloc(data[cur][c-'a']);
+            cur=data[cur][c-'a'];
+        }
+        if(data[cur][26]<0)count++;
+        data[cur][26]=0;
+    }
+};
 
-StaticTrie T;
+string s[26]={"ab","baaa","baba","baa","a","aaba","bba","aaaa","aa","abbb","bab","abaa","bb","ba","bbb","abba","bbab","aba","aaa","b","aab","aaab","abb","baab","babb","bbaa"};
+mytrie T;
 class Solution {
 public:
     int uniqueMorseRepresentations(vector<string>& words) {
@@ -15,7 +33,7 @@ public:
             }            
             T.insert(t);
         }
-        return T[0][27];
+        return T.count;
     }
 };
 

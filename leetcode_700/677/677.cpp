@@ -6,26 +6,27 @@
 class mytrie:public StaticTrie{
 public:
     mytrie():StaticTrie(){}
-    int insert(int cur,const string&word,int i,int val) {
-        int res=0;
-        if(i==word.size()){
-            if((*this)[cur][26]<0){
-                (*this)[cur][26]=1;
-            }
-            res=val-(*this)[cur][28];
-            (*this)[cur][28]+=res;
+    //下标27表示以其为根的所有结点总权重
+    //下标28表示本结点自己的权重
+    //公私分明
+    void insert(const string&s,int val){
+        static stack<int>S;
+        int cur=0;
+        for(char c:s){
+            S.push(cur);
+            if(!data[cur][c-'a'])Malloc(data[cur][c-'a']);
+            cur=data[cur][c-'a'];
         }
-        else{
-            if(!(*this)[cur][word[i]-'a']){
-                Malloc((*this)[cur][word[i]-'a']);
-            }
-            res=insert((*this)[cur][word[i]-'a'],word,i+1,val);
+        data[cur][26]=0;
+        int inc;
+        if(data[cur][26]>=0)inc=val-data[cur][28];
+        else inc=val;
+        data[cur][27]+=inc;
+        data[cur][28]=val;
+        while(S.size()){
+            data[S.top()][27]+=inc;
+            S.pop();
         }
-        (*this)[cur][29]+=res;
-        return res;
-    }
-    void insert(const string&word,int val) {
-        insert(0,word,0,val);
     }
 };
 
@@ -35,16 +36,17 @@ public:
     MapSum(){
         T.clear();
     }
-    void insert(string key, int val) {
+    void insert(const string&key, int val) {
         T.insert(key,val);
     }
-    int sum(string prefix) {
+    int sum(const string&prefix) {
         int cur=0;
         for(char c:prefix){
-            if(!T[cur][29])return 0;
-            if(!(cur=T[cur][c-'a']))return 0;
+            if(!T[cur][27])return 0;
+            cur=T[cur][c-'a'];
+            if(!cur)return 0;
         }
-        return T[cur][29];
+        return T[cur][27];
     }
 };
 
