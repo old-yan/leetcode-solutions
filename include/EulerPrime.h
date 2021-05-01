@@ -52,7 +52,10 @@ struct EulerPrime{
             }
         };
         if(n>r){
-            for(int i=0,j,end=sqrt(n);(j=v[i])&&j<=end;i++)if(n%j==0)fun(n,j);
+            for(int i=0,j,end=sqrt(n);(j=v[i])&&j<=end;i++)if(n%j==0){
+                fun(n,j);
+                end=sqrt(n);
+            }
             if(n>1)fun(n,n);
         }
         else{

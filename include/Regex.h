@@ -6,11 +6,11 @@ struct Regex{
     char z[10]={0};
     Regex(const char c[],int extend=1,int icase=2,int nosub=8){regcomp(&obj,c,0);}
     //~Regex(){regfree(&obj);}
-    bool match(const char c[],int n=1){
-        return !regexec(&obj,c,n,pm,0)&&!pm[0].rm_so&&!c[pm[0].rm_eo];
+    bool match(const char c[]){
+        return !regexec(&obj,c,1,pm,0)&&!pm[0].rm_so&&!c[pm[0].rm_eo];
     }
-    string search(const char c[],int n=1){
-        if(int code=regexec(&obj,c,n,pm,0)){
+    string search(const char c[]){
+        if(int code=regexec(&obj,c,1,pm,0)){
             regerror(code,&obj,z,20);
             return z;
         }

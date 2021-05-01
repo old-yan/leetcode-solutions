@@ -9,7 +9,7 @@ class Solution {
         if(high<low){
             if(cur<Min)return;
             string s=i2s(cur*cur);
-            if(isPolindromic(ALL(s))){
+            if(isPalindromic(ALL(s))){
                 ans++;
             }
         }

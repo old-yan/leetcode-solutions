@@ -20,7 +20,7 @@ public:
                 ans=temp;
             }
         }
-        if(!isPolindromic(ALL(n))){
+        if(!isPalindromic(ALL(n))){
             string temp=i2s(s2i(half));
             string temp2=temp.substr(0,n.size()/2);
             reverse(ALL(temp2));

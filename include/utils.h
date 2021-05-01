@@ -423,7 +423,7 @@ vi getnext(const string&needle){
 		if(!i)next[i]=j;
 		else{
 			while(j>=0&&needle[i-1]!=needle[j])j=next[j];
-			next[i]=++j>=0&&needle[i]==needle[j]?next[j]:j;
+			next[i]=needle[i]==needle[++j]?next[j]:j;
 		}
 	}
 	return next;
@@ -467,7 +467,7 @@ bool query_polindromic(vi&arm,int l,int r){
 
 // 判断是否对称
 template<class iterator>
-bool isPolindromic(iterator begin,iterator end){
+bool isPalindromic(iterator begin,iterator end){
 	while(begin<end){
 		if(*begin++!=*--end)return false;
 	}
