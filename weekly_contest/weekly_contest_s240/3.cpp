@@ -4,8 +4,8 @@ class Solution {
     int n;
     vi leftSmaller,rightSmaller;
     void getBorder(vi&nums){
-        //单调栈获取左右边界，也就是离自己最近的、比自己大的值
-        //leftBigger和rightSmaller的默认值是需要填的，因为即使没有比自己大的，遇到数组边界也需要停下来
+        //单调栈获取左右边界，也就是离自己最近的、比自己小的值
+        //leftSmaller和rightSmaller的默认值是需要填的，因为即使没有比自己小的，遇到数组边界也需要停下来
         leftSmaller.resize(n,-1);
         rightSmaller.resize(n,n);
         stack<int>S;
