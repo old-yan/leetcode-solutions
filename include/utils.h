@@ -259,12 +259,11 @@ ll combination(ll m, ll n, ll mod=1000000007){
 
 //n较大时，排列组合打表
 vvi combinationTable(int m,int n,int mod=1000000007){
-	vvi table(m,vi(n,0));
-	for(int j=1;j<n;j++){
-		for(int i=1;i<m;i++){
-			if(j==1)table[i][j]=i;
-			else table[i][j]=(table[i-1][j]+table[i-1][j-1])%mod;
-		}
+	vvi table(m+1,vi(n+1,0));
+	table[0][0]=1;
+	for(int i=1;i<=m;i++){
+		table[i][0]=1;
+		for(int j=1;j<=n;j++)table[i][j]=(table[i-1][j]+table[i-1][j-1])%mod;
 	}
 	return table;
 }

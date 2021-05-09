@@ -1,27 +1,31 @@
 //#include "DLTree.h"
 #include "utils.h"
 
-class DLTree{
+struct DLTree{
     function<int(int&,int&)>op;
-    #define DLTREESIZE 100000
+    #define DLTREESIZE 60000
     void inherite(int idx,int _inc){
         val[idx]=_inc;
         inc[idx]=_inc;
         lazy[idx]=true;
     }
-public:
-    int val[DLTREESIZE]={0},inc[DLTREESIZE]={0},lc[DLTREESIZE]={0},rc[DLTREESIZE]={0},p[DLTREESIZE]={0},sz[DLTREESIZE]={0},X,Y,cnt;
+    int val[DLTREESIZE]={0},inc[DLTREESIZE]={0},lc[DLTREESIZE]={0},rc[DLTREESIZE]={0},p[DLTREESIZE]={0},sz[DLTREESIZE]={0},X,Y,cnt,default_val,default_inc;
     bool lazy[DLTREESIZE]={0};
-    DLTree(int range,function<int(int&,int&)>_op):cnt(1),op(_op){
+    DLTree(int range,int _default_val,int _default_inc,function<int(int&,int&)>_op):cnt(1),default_val(_default_val),default_inc(_default_inc),op(_op){
+        cout<<"attention TREESIZE,<="<<DLTREESIZE<<'\n';
         for(X=4,Y=2;X<=range;X<<=1,Y++);
+        if(default_val)fill(val,val+DLTREESIZE,default_val);
+        if(default_inc)fill(inc,inc+DLTREESIZE,default_inc);
         sz[1]=X;
     }
     void clear(){
-        for(auto a:{val,inc,lc,rc,p,sz}){
+        fill(val,val+cnt+1,default_val);
+        fill(inc,inc+cnt+1,default_inc);
+        for(auto a:{lc,rc,p,sz}){
             memset(a,0,(cnt+1)*sizeof(int));
         }
         memset(lazy,0,(cnt+1)*sizeof(bool));
-        cnt=1;
+        cnt=1;sz[1]=X;
     }
     inline int Lc(int cur){
         if(!lc[cur]){
@@ -45,7 +49,7 @@ public:
             if(lazy[cur]){
                 inherite(Lc(cur),inc[cur]);
                 inherite(Rc(cur),inc[cur]);
-                lazy[cur]=false;inc[cur]=0;
+                lazy[cur]=false;inc[cur]=default_inc;
             }
         }
         return cur;
@@ -79,7 +83,7 @@ public:
     int operator()(int l,int r){
         l=max(l,0);
         r=min(r,X-1);
-        if(l>r)return 0;
+        if(l>r)return default_val;
         if(l==r)return (*this)[l];
         auto a=push_down(l),b=push_down(r);
         int res=op(val[a],val[b]);
@@ -91,10 +95,12 @@ public:
     }
 };
 
+DLTree T(1000000000,0,0,[](int x,int y){return x>y?x:y;});
 class MyCalendar {
-    DLTree T;
 public:
-    MyCalendar():T(1000000000,[](unsigned char x,unsigned char y){return x>y?x:y;}){}
+    MyCalendar(){
+        T.clear();
+    }
     bool book(int start, int end) {
         if(T(start,end-1))return false;
         T.step(start,end-1,1);

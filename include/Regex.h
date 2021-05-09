@@ -9,12 +9,12 @@ struct Regex{
     bool match(const char c[]){
         return !regexec(&obj,c,1,pm,0)&&!pm[0].rm_so&&!c[pm[0].rm_eo];
     }
-    string search(const char c[]){
+    pair<bool,string> search(const char c[]){
         if(int code=regexec(&obj,c,1,pm,0)){
             regerror(code,&obj,z,20);
-            return z;
+            return {false,z};
         }
-        else return string(c+pm[0].rm_so,c+pm[0].rm_eo);
+        else return {true,string(c+pm[0].rm_so,c+pm[0].rm_eo)};
     }
 };
 #else
@@ -28,10 +28,10 @@ struct Regex{
     bool match(const char c[]){
         return regex_match(c,obj);
     }
-    string search(const char *c){
+    pair<bool,string> search(const char *c){
         string tmp=c;
-        if(regex_search(tmp,res,obj))return res.str();
-        else return "";
+        if(regex_search(tmp,res,obj))return {true,res.str()};
+        else return {false,""};
     }
 };
 #endif
