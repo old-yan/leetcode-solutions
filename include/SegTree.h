@@ -52,14 +52,15 @@ struct SegTree{
         r=min(r,X-1);
         if(l>r)return default_val;
         if(l==r)return data[l+X];
-        T res=op(data[l+=X],data[r+=X]);
-        while(l/2!=r/2){
-            if(l%2==0)res=op(res,data[l+1]);
-            if(r%2)res=op(res,data[r-1]);
-            l>>=1;
-            r>>=1;
+        int cur;l+=X;r+=X;
+        T res=data[l];
+        for(cur=0;l>>(cur+1)!=r>>(cur+1);cur++){
+            if(!(l>>cur&1))res=op(res,data[l>>cur^1]);
         }
-        return res;
+        while(--cur>=0){
+            if(r>>cur&1)res=op(res,data[r>>cur^1]);
+        }
+        return op(res,data[r]);
     }
     void step(int i,T inc){
         for(i+=X;i;i>>=1)data[i]=op(data[i],inc);
@@ -93,7 +94,7 @@ struct SegTree{
 };
 
 //模板懒惰标记线段树，适用各种区间修改操作
-template<class T>
+template<class T,int cover=1>
 struct LazyTree{
     #define LAZYTREEDEPTH 8
     typedef function<T(T&,T&)> Operation;
@@ -102,9 +103,9 @@ struct LazyTree{
     }
     //重载inherite，描述继承增量时的结点形为
     void inherite(int i,T _inc){
-        data[i]=_inc;
-        inc[i]+=_inc;
-        lazy[i]+=true;
+        data[i]=cover?_inc:op(data[i],_inc);
+        inc[i]=cover?_inc:op(inc[i],_inc);
+        lazy[i]=true;
     }
     T data[1<<(LAZYTREEDEPTH+1)]={0},inc[1<<(LAZYTREEDEPTH+1)]={0},default_val{0},default_inc{0};
     bool lazy[1<<(LAZYTREEDEPTH+1)]={0};
@@ -191,14 +192,15 @@ struct LazyTree{
         if(l==r)return (*this)[l];
         push_down(l);
         push_down(r);
-        T res=op(data[l+=X],data[r+=X]);
-        while(l/2!=r/2){
-            if(l%2==0)res=op(res,data[l+1]);
-            if(r%2)res=op(res,data[r-1]);
-            l>>=1;
-            r>>=1;
+        int cur;l+=X;r+=X;
+        T res=data[l];
+        for(cur=0;l>>(cur+1)!=r>>(cur+1);cur++){
+            if(!(l>>cur&1))res=op(res,data[l>>cur^1]);
         }
-        return res;
+        while(--cur>=0){
+            if(r>>cur&1)res=op(res,data[r>>cur^1]);
+        }
+        return op(res,data[r]);
     }
     int find_nth(T n){
         if(n<data[1]){

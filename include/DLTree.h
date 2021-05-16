@@ -5,17 +5,18 @@ using namespace std;
 
 //动态开点+懒惰标记线段树
 //需要根据题意，输入op参数，灵活修改inherite函数
+template<class T,int cover=0,int bsize=0>
 struct DLTree{
-    function<int(int&,int&)>op;
-    #define DLTREESIZE 4000000
-    void inherite(int idx,int _inc){
-        val[idx]+=_inc;
-        inc[idx]+=_inc;
+    function<T(T&,T&)>op;
+    #define DLTREESIZE 500000
+    void inherite(int idx,T _inc){
+        val[idx]=cover?(bsize?_inc*sz[idx]:_inc):(bsize?val[idx]+_inc*sz[idx]:val[idx]+_inc);
+        inc[idx]=cover?_inc:inc[idx]+_inc;
         lazy[idx]=true;
     }
-    int val[DLTREESIZE]={0},inc[DLTREESIZE]={0},lc[DLTREESIZE]={0},rc[DLTREESIZE]={0},p[DLTREESIZE]={0},sz[DLTREESIZE]={0},X,Y,cnt,default_val,default_inc;
+    T val[DLTREESIZE]={0},inc[DLTREESIZE]={0},lc[DLTREESIZE]={0},rc[DLTREESIZE]={0},p[DLTREESIZE]={0},sz[DLTREESIZE]={0},X,Y,cnt,default_val,default_inc;
     bool lazy[DLTREESIZE]={0};
-    DLTree(int range,int _default_val,int _default_inc,function<int(int&,int&)>_op):cnt(1),default_val(_default_val),default_inc(_default_inc),op(_op){
+    DLTree(int range,T _default_val,T _default_inc,function<T(T&,T&)>_op):cnt(1),default_val(_default_val),default_inc(_default_inc),op(_op){
         cout<<"attention TREESIZE,<="<<DLTREESIZE<<'\n';
         for(X=4,Y=2;X<=range;X<<=1,Y++);
         if(default_val)fill(val,val+DLTREESIZE,default_val);
@@ -26,7 +27,7 @@ struct DLTree{
         fill(val,val+cnt+1,default_val);
         fill(inc,inc+cnt+1,default_inc);
         for(auto a:{lc,rc,p,sz}){
-            memset(a,0,(cnt+1)*sizeof(int));
+            memset(a,0,(cnt+1)*sizeof(T));
         }
         memset(lazy,0,(cnt+1)*sizeof(bool));
         cnt=1;sz[1]=X;
@@ -35,7 +36,7 @@ struct DLTree{
         if(!lc[cur]){
             lc[cur]=++cnt;
             p[cnt]=cur;
-            sz[cnt]=sz[cur]>>1;
+            if constexpr(bsize)sz[cnt]=sz[cur]>>1;
         }
         return lc[cur];
     }
@@ -43,7 +44,7 @@ struct DLTree{
         if(!rc[cur]){
             rc[cur]=++cnt;
             p[cnt]=cur;
-            sz[cnt]=sz[cur]>>1;
+            if constexpr(bsize)sz[cnt]=sz[cur]>>1;
         }
         return rc[cur];
     }
@@ -61,12 +62,12 @@ struct DLTree{
     void push_up(int i){
         val[i]=op(val[Lc(i)],val[Rc(i)]);
     }
-    void step(int idx,int value){
+    void step(int idx,T value){
         auto a=push_down(idx);
         inherite(a,value);
         for(;p[a];a=p[a])push_up(p[a]);
     }
-    void step(int l,int r,int value){
+    void step(int l,int r,T value){
         if(l==r)step(l,value);
         else{
             auto a=push_down(l),b=push_down(r);
@@ -81,16 +82,16 @@ struct DLTree{
             for(;p[a];a=p[a])push_up(p[a]);
         }
     }
-    int operator[](int idx){
+    T operator[](int idx){
         return val[push_down(idx)];
     }
-    int operator()(int l,int r){
+    T operator()(int l,int r){
         l=max(l,0);
         r=min(r,X-1);
         if(l>r)return default_val;
         if(l==r)return (*this)[l];
         auto a=push_down(l),b=push_down(r);
-        int res=op(val[a],val[b]);
+        T res=op(val[a],val[b]);
         for(;p[a]!=p[b];a=p[a],b=p[b]){
             if(a==lc[p[a]])res=op(res,val[Rc(p[a])]);
             if(b==rc[p[b]])res=op(res,val[Lc(p[b])]);

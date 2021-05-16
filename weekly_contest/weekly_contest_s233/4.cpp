@@ -3,8 +3,7 @@
 
 //二叉字典树按照每个数字二进制从高位到低位，对该数字进行保存，本题的树高度设为15就够用（1<<15==32768)
 //继承Trie头文件中的二叉字典树，进行修改
-class mybitrie:public BiTrie{
-public:
+struct mybitrie:public BiTrie<>{
     int low,high,a,res;
     mybitrie():BiTrie(){}
     void reset(int _low,int _high){

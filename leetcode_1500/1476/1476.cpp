@@ -1,4 +1,3 @@
-#include "SegTree.h"
 #include "utils.h"
 
 class SubrectangleQueries {

@@ -1,3 +1,4 @@
+#include "Trie.h"
 #include "utils.h"
 
 BiTrie T;
@@ -7,7 +8,7 @@ public:
         T.clear();
         int ans=0;
         REP(i,nums.size()){
-            chmax(ans,T.searchMax(nums[i]^0xffffffff));
+            chmax(ans,T.MaxXor(nums[i]^0x7fffffff));
             T.insert(nums[i]);
         }
         return ans;

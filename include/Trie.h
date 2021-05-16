@@ -112,28 +112,29 @@ public:
 };
 
 //二叉字典树
-class BiTrie {
-    #define TRIESIZE 10000
-    #define TRIEN 4
-public:
+template<int X=30>
+struct BiTrie{
+    //#define TRIESIZE 2000000
+    #define TRIESIZE 2000
+    #define TRIEN 3
     int data[TRIESIZE+1][TRIEN]={0},used;
     BiTrie():used(1){}
     void clear(){
-        memset(data,0,sizeof(data));
+        memset(data[0],0,used*TRIEN*sizeof(int));
         used=1;
     }
     void insert(int num){
         int cur=0;
-        for(int i=31;i>=0;i--){
+        for(int i=X;i>=0;i--){
             int&next=data[cur][num>>i&1];
             if(!next)next=used++;
             cur=next;
         }
     }
-    int searchMax(int num) {
+    int MaxXor(int num) {
         if(used==1)return 0;
         int cur=0,maxSame=0;
-        for(int i=31;i>=0;i--){
+        for(int i=X;i>=0;i--){
             maxSame<<=1;
             int next=data[cur][num>>i&1];
             if(next){
@@ -144,6 +145,4 @@ public:
         }
         return maxSame;
     }
-    #undef TRIEN
-    #undef TRIESIZE
 };
