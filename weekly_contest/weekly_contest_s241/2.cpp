@@ -13,7 +13,7 @@ public:
             }
             else{
                 odd_zero+=s[i]=='0';
-                odd_zero+=s[i]=='1';
+                odd_one+=s[i]=='1';
             }
         }
         int ans=INT_MAX;

@@ -18,7 +18,7 @@ public:
         M[nums2[index]]++;
     }
     //统计时，针对nums1的每一项，寻找nums2中的补数
-    //因为有哈希表，所以寻找步数很方便
+    //因为有哈希表，所以寻找补数很方便
     int count(int tot) {
         int res=0;
         for(int a:nums1){
