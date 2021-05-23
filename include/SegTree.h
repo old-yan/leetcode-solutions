@@ -66,17 +66,17 @@ struct SegTree{
         for(i+=X;i;i>>=1)data[i]=op(data[i],inc);
     }
     void step_forward(T i){
-        if(is_same<T,int>::value||is_same<T,long>::value){
+        if(is_same<T,int>::value||is_same<T,long long>::value){
             for(i+=X;i;i>>=1)data[i]++;
         }
     }
     void step_back(T i){
-        if(is_same<T,int>::value||is_same<T,long>::value){
+        if(is_same<T,int>::value||is_same<T,long long>::value){
             for(i+=X;i;i>>=1)data[i]--;
         }
     }
     int find_nth(T n){
-        if((is_same<T,int>::value||is_same<T,long>::value)&&n<data[1]){
+        if((is_same<T,int>::value||is_same<T,long long>::value)&&n<data[1]){
             int i=1;
             while(i<X){
                 if(data[i*2]>=n+1){

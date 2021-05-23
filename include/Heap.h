@@ -9,7 +9,7 @@ using namespace std;
 
 template<class T=int,int type=0>
 struct Heap{
-    #define HEAPSIZE 100
+    #define HEAPSIZE 100000
     typedef function<bool(const T&,const T&)> Operation;
     int Data[HEAPSIZE+1],Pos[HEAPSIZE+1]={0};
     unordered_map<T,int>M;
@@ -71,7 +71,7 @@ struct Heap{
 };
 template<class T>
 struct Heap<T,0>{
-    #define HEAPSIZE 100
+    #define HEAPSIZE 100000
     typedef function<bool(int&,int&)> Operation;
     int Data[HEAPSIZE+1],Pos[HEAPSIZE+1]={0},Size;
     Operation cmp;

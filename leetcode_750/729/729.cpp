@@ -1,7 +1,7 @@
 #include "DLTree.h"
 #include "utils.h"
 
-DLTree<int,1,0>T(1000000000,0,0,[](int x,int y){return x>y?x:y;});
+DLTree<int,1,0>T(1000000000,0,0,[](int x,int y){return x+y;});
 class MyCalendar {
 public:
     MyCalendar(){

@@ -8,7 +8,7 @@ using namespace std;
 template<class T,int cover=0,int bsize=0>
 struct DLTree{
     function<T(T&,T&)>op;
-    #define DLTREESIZE 500000
+    #define DLTREESIZE 4000000
     void inherite(int idx,T _inc){
         val[idx]=cover?(bsize?_inc*sz[idx]:_inc):(bsize?val[idx]+_inc*sz[idx]:val[idx]+_inc);
         inc[idx]=cover?_inc:inc[idx]+_inc;

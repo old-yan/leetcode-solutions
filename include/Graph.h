@@ -1,92 +1,108 @@
-#pragma once
-#include <algorithm>
-#include <queue>
-#include <iomanip>
+#include <iostream>
+#include <vector>
+#include <memory.h>
+#include <tuple>
 using namespace std;
-#define OLDYAN_GRAPH
 
-struct GraphNode{
-    int val;
-    vector<GraphNode*>neighbors;
-    GraphNode(int _val):val(_val){}
+struct DirectedGraph{
 };
-struct Graph {
-    int m;
-    vector<GraphNode*>vertices;
-    Graph():m(0){}
-    Graph(int _m):m(_m){
-        for(int i=0;i<m;i++)vertices.push_back(new GraphNode(i+1));
+struct UndirectedGraph{
+    #define VNUM 100000
+    #define ENUM 200000
+    int v,e;
+    int fi[VNUM];
+    int ne[ENUM],to[ENUM],dis[ENUM],ecnt;
+    int mindis[VNUM];
+    void reset(int v,int e){
+        memset(fi,0xff,sizeof(fi));
+        for(auto a:{ne,to,dis}){
+            memset(a,0xff,ENUM*sizeof(int));
+        }
+        ecnt=0;
     }
-    Graph(vector<vector<int>>adj_list):m(adj_list.size()){
-        for(int i=0;i<m;i++){
-            vertices.push_back(new GraphNode(i+1));
-        }
-        for(int i=0;i<m;i++){
-            for(int j:adj_list[i]){
-                vertices[i]->neighbors.push_back(vertices[j-1]);
-            }
-        }
+    void addEdge(int _from,int _to,int _dis){
+        tie(ne[ecnt],fi[_from],to[ecnt])={fi[_from],ecnt,_to};ecnt++;
+        tie(ne[ecnt],fi[_to],to[ecnt])={fi[_to],ecnt,_from};ecnt++;
     }
-    Graph(GraphNode*p){//限定连通图
-        m=0;
-        vertices.resize(100);
-        queue<GraphNode*>Q;
-        if(p){
-            Q.push(p);
-            vertices[p->val-1]=p;
-        }
+    void Dijkstra(int source){
+        memset(mindis,0x3f,sizeof(mindis));
+        priority_queue<pair<int,int>,vector<pair<int,int>>,greater<pair<int,int>>>Q;
+        mindis[source]=0;
+        Q.emplace(0,source);
         while(Q.size()){
-            auto a=Q.front();
+            auto [curd,cur]=Q.top();
             Q.pop();
-            m=max(m,a->val);
-            for(auto b:a->neighbors){
-                if(!vertices[b->val-1]){
-                    Q.push(b);
-                    vertices[b->val-1]=b;
+            if(curd!=mindis[cur])continue;
+            for(int _=fi[cur];~_;_=ne[_]){
+                int j=to[_],d=dis[_];
+                if(mindis[j]>curd+d){
+                    mindis[j]=curd+d;
+                    Q.emplace(mindis[j],j);
                 }
             }
         }
-        vertices.resize(m);
     }
 };
-ostream&operator<<(ostream&out,GraphNode*p){
-    Graph g(p);
-    if(!g.m){
-        out<<"empty graph\n";
-        return out;
+struct UndirectedGraph{
+    #define VNUM 500
+    #define ENUM 130000
+    int v,e;
+    int dis[VNUM][VNUM];
+    void reset(int _v){
+        v=_v;
+        memset(dis,0x3f,sizeof(dis));
     }
-    if(g.m>1)out<<g.m<<" graphnodes in the graph:\n";
-    else out<<"1 graphnode in the graph:\n";
-    for(int i=1;i<=g.m;i++){
-        out<<"node No."<<setw(2)<<i<<" : ";
-        sort(g.vertices[i-1]->neighbors.begin(),g.vertices[i-1]->neighbors.end(),[](GraphNode*x,GraphNode*y)->bool{return x->val<y->val;});
-        auto it=g.vertices[i-1]->neighbors.begin();
-        int cursor=1;
-        while(it!=g.vertices[i-1]->neighbors.end()){
-            while(cursor++<(*it)->val)out<<"   ";
-            out<<setw(3)<<(*it++)->val;
+    void addEdge(int _from,int _to,int _dis){
+        dis[_from][_to]=dis[_to][_from]=_dis;
+    }
+    void Floyd(){
+        for(int k=0;k<v;k++){
+            for(int i=0;i<v;i++){
+                for(int j=0;j<v;j++){
+                    dis[i][j]=min(dis[i][j],dis[i][k]+dis[k][j]);
+                }
+            }
         }
-        out<<endl;
     }
-    return out;
-}
-ostream&operator<<(ostream&out,Graph*g){
-    if(!g->m){
-        out<<"empty graph\n";
-        return out;
+};
+
+
+//已知二分图结点分布的情况下，建图求最大匹配
+struct BipartiteGraph{
+    #define VNUM 32
+    #define ENUM 256
+    int na=0,nb=0;
+    int pa[VNUM],pb[VNUM],fa[VNUM],fb[VNUM];
+    int ne[ENUM],to[ENUM],ecnt;
+    void reset(int _na,int _nb){
+        for(auto a:{pa,pb,fa,fb})memset(a,0xff,VNUM*sizeof(int));
+        for(auto a:{ne,to})memset(a,0xff,ENUM*sizeof(int));
+        tie(na,nb)={_na,_nb};
+        ecnt=0;
     }
-    if(g->m>1)out<<g->m<<" graphnodes in the graph:\n";
-    else out<<"1 graphnode in the graph:\n";
-    for(int i=1;i<=g->m;i++){
-        out<<"node No."<<setw(2)<<i<<" : ";
-        sort(g->vertices[i-1]->neighbors.begin(),g->vertices[i-1]->neighbors.end(),[](GraphNode*x,GraphNode*y)->bool{return x->val<y->val;});
-        auto it=g->vertices[i-1]->neighbors.begin();
-        int cursor=1;
-        while(it!=g->vertices[i-1]->neighbors.end()){
-            while(cursor++<(*it)->val)out<<"   ";
-            out<<setw(3)<<(*it++)->val;
+    void addEdge(int a,int b){
+        tie(ne[ecnt],fa[a],to[ecnt])={fa[a],ecnt,b};ecnt++;
+        //tie(ne[ecnt],fb[b],to[ecnt])={fb[b],ecnt,a};ecnt++;
+    }
+    int maxMatch(){
+        int cnt=0,from[VNUM],Q[VNUM];
+        for(int i=0;i<na;i++)if(pa[i]<0){
+            bool visita[VNUM]={0};
+            int h=0,t=0,cur=-1;
+            visita[i]=true,Q[t++]=i;
+            while(h<t&&cur<0){
+                auto p=Q[h++];
+                for(int _=fa[p];~_;_=ne[_]){
+                    int q=to[_];
+                    if(pb[q]<0){from[q]=p,cur=q,cnt++;break;}
+                    else if(!visita[pb[q]]){from[q]=p,visita[pb[q]]=true,Q[t++]=pb[q];}
+                }
+            }
+            while(~cur){
+                pb[cur]=from[cur];
+                swap(cur,pa[from[cur]]);
+            }
         }
-        out<<endl;
+        return cnt;
     }
-    return out;
-}
+};

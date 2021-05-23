@@ -114,8 +114,7 @@ public:
 //二叉字典树
 template<int X=30>
 struct BiTrie{
-    //#define TRIESIZE 2000000
-    #define TRIESIZE 2000
+    #define TRIESIZE 2000000
     #define TRIEN 3
     int data[TRIESIZE+1][TRIEN]={0},used;
     BiTrie():used(1){}

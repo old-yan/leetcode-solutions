@@ -1,4 +1,4 @@
-#include "Graph.h"
+#include "GraphNode.h"
 #include "utils.h"
 
 class Solution {
