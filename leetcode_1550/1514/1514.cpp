@@ -1,32 +1,17 @@
-#include "Heap.h"
+#include "Graph.h"
 #include "utils.h"
 
 class Solution {
-    vector<pair<int,double>>adj[10000];
 public:
     double maxProbability(int n, vector<vector<int>>& edges, vector<double>& succProb, int start, int end) {
+        static UndirectedGraph<double>udg;
+        udg.reset(n);
         REP(i,edges.size()){
-            int a=edges[i][0],b=edges[i][1];
-            double c=succProb[i];
-            adj[a].emplace_back(b,c);
-            adj[b].emplace_back(a,c);
+            udg.addEdge(edges[i][0],edges[i][1],-log(succProb[i]));
         }
-        double dp[n];
-        fill(dp,dp+n,0);
-        Heap<int>H([&](int x,int y){return dp[x]<dp[y];});
-        dp[start]=1;
-        H.push(start);
-        while(H.size()){
-            auto p=H.top();
-            H.pop();
-            if(p==end)break;
-            for(auto [a,dis]:adj[p]){
-                if(chmax(dp[a],dp[p]*dis)){
-                    H.push(a);
-                }
-            }
-        }
-        return dp[end];
+        double dist[n];
+        dijkstra(start,dist,udg);
+        return exp(-dist[end]);
     }
 };
 

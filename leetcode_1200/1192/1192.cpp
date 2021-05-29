@@ -1,17 +1,19 @@
-#include "Tarjan.h"
+#include "Graph.h"
 #include "utils.h"
 
+UndirectedGraph udg;
 class Solution {
 public:
     vector<vector<int>> criticalConnections(int n, vector<vector<int>>& connections) {
-        bool isb[connections.size()];
-        fill(isb,isb+connections.size(),false);
-        tarjanBridge tc(ALL(connections),isb);
-        tc.findBridge();
+        udg.reset(n);
+        for(auto&c:connections){
+            udg.addEdge(c[0],c[1]);
+        }
+        utj.solve(udg);
         vvi ans;
-        REP(i,connections.size()){
-            if(isb[i]){
-                ans.emplace_back(connections[i]);
+        for(auto&c:connections){
+            if(utj.isBridge(c[0],c[1])){
+                ans.emplace_back(c);
             }
         }
         return ans;

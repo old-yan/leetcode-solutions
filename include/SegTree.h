@@ -12,7 +12,7 @@ using namespace std;
 template<class T>
 struct SegTree{
     #define SEGTREEDEPTH 8
-    typedef function<T(T&,T&)> Operation;
+    typedef function<T(const T&,const T&)> Operation;
     T data[1<<(SEGTREEDEPTH+1)]={0},default_val{0};
     int X;
     Operation op;
@@ -94,16 +94,16 @@ struct SegTree{
 };
 
 //模板懒惰标记线段树，适用各种区间修改操作
-template<class T,int cover=1>
+template<class T,int cover=0,int bsize=0>
 struct LazyTree{
     #define LAZYTREEDEPTH 8
-    typedef function<T(T&,T&)> Operation;
+    typedef function<T(const T&,const T&)> Operation;
     inline int size(int i){
-        return __builtin_clz(i)+Y-31;
+        return 1<<(__builtin_clz(i)+Y-31);
     }
     //重载inherite，描述继承增量时的结点形为
     void inherite(int i,T _inc){
-        data[i]=cover?_inc:op(data[i],_inc);
+        data[i]=cover?(bsize?_inc*size(i):_inc):(bsize?op(data[i],_inc*size(i)):op(data[i],_inc));
         inc[i]=cover?_inc:op(inc[i],_inc);
         lazy[i]=true;
     }
@@ -226,426 +226,99 @@ struct LazyTree{
     }
 };
 
-// //最大值线段树
-// class zkwMaxTree{
-// public:
-//     int*data;
-//     int X;
-//     int default_val;
-//     zkwMaxTree(int n=100005,int _default_val=0){
-//         for(X=4;X<n;X<<=1);
-//         data=new int[X*2];
-//         default_val=_default_val;
-//         fill(data,data+X*2,default_val);
-//     }
-//     zkwMaxTree(vector<int>&nums,int _default_val=0){
-//         for(X=4;X<nums.size();X<<=1);
-//         data=new int[X*2];
-//         default_val=_default_val;
-//         fill(data,data+X*2,default_val);
-//         if(nums.size()){
-//             memcpy(data+X,&nums[0],nums.size()*sizeof(int));
-//         }
-//         for(int i=X-1;i;i--){
-//             data[i]=max(data[i*2],data[i*2+1]);
-//         }
-//     }
-//     void set(int i,int val){
-//         data[i+=X]=val;
-//         while((i>>=1)){
-//             if(data[i]!=max(data[i*2],data[i*2+1])){
-//                 data[i]=max(data[i*2],data[i*2+1]);
-//             }
-//             else break;
-//         }
-//     }
-//     int operator[](int i){
-//         return data[i+X];
-//     }
-//     int operator()(int l,int r){
-//         l=max(l,0);
-//         r=min(r,X-1);
-//         if(l>r)return default_val;
-//         int res=max(data[l+=X],data[r+=X]);
-//         if(l!=r){
-//             while(l/2!=r/2){
-//                 if(l%2==0)res=max(res,data[l+1]);
-//                 if(r%2)res=max(res,data[r-1]);
-//                 l>>=1;
-//                 r>>=1;
-//             }
-//         }
-//         return res;
-//     }
-// };
-
-// //带懒惰标记的最大值线段树，支持区间赋值
-// class LazyMaxTree{
-//     struct elem{
-//         int val;
-//         bool b;
-//         elem():val(0),b(false){}
-//         elem(int _default_val):val(_default_val),b(false){}
-//         elem(int _val,bool _b):val(_val),b(_b){}
-//     };
-// public:
-//     elem*data;
-//     int X,Y;
-//     int default_val;
-//     LazyMaxTree(int n=100005,int _default_val=0):default_val(_default_val){
-//         for(X=4;X<n;X<<=1);
-//         Y=__builtin_ctz(X);
-//         data=new elem[X*2];
-//         fill(data,data+X*2,elem(default_val));
-//     }
-//     void push_down(int i){
-//         for(int j=Y,k=1;j;k=(i&(1<<--j))?(k<<1)+1:k<<1){
-//             if(data[k].b){
-//                 data[k*2]=data[k*2+1]=data[k];
-//                 data[k].b=false;
-//             }
-//         }
-//     }
-//     void set(int i,int val){
-//         push_down(i);
-//         data[i+=X].val=val;
-//         while(i>>=1){
-//             data[i].val=max(data[i*2].val,data[i*2+1].val);
-//         }
-//     }
-//     void set(int l,int r,int val){
-//         if(l==r)set(l,val);
-//         else{
-//             push_down(l);
-//             push_down(r);
-//             data[l+=X].val=data[r+=X].val=val;
-//             while((l>>1)!=(r>>1)){
-//                 if(l%2==0)data[l+1]=elem(val,true);
-//                 if(r%2)data[r-1]=elem(val,true);
-//                 data[l>>1].val=max(data[l].val,data[l^1].val);
-//                 data[r>>1].val=max(data[r].val,data[r^1].val);
-//                 l>>=1;
-//                 r>>=1;
-//             }
-//             while(l>>=1){
-//                 data[l].val=max(data[l*2].val,data[l*2+1].val);
-//             }
-//         }
-//     }
-//     int operator[](int i){
-//         push_down(i);
-//         return data[i+X].val;
-//     }
-//     int operator()(int l,int r){
-//         l=max(l,0);
-//         r=min(r,X-1);
-//         if(l>r)return default_val;
-//         if(l==r)return (*this)[l];
-//         push_down(l);
-//         push_down(r);
-//         int res=max(data[l+=X].val,data[r+=X].val);
-//         while(l/2!=r/2){
-//             if(l%2==0)res=max(res,data[l+1].val);
-//             if(r%2)res=max(res,data[r-1].val);
-//             l>>=1;
-//             r>>=1;
-//         }
-//         return res;
-//     }
-// };
-
-// //最小值线段树
-// class zkwMinTree{
-// public:
-//     int*data;
-//     int X;
-//     int default_val;
-//     zkwMinTree(int n=100005,int _default_val=INT_MAX){
-//         for(X=4;X<n;X<<=1);
-//         data=new int[X*2];
-//         default_val=_default_val;
-//         fill(data,data+X*2,default_val);
-//     }
-//     zkwMinTree(vector<int>&nums,int _default_val=INT_MAX){
-//         for(X=4;X<nums.size();X<<=1);
-//         data=new int[X*2];
-//         default_val=_default_val;
-//         fill(data,data+X*2,default_val);
-//         if(nums.size()){
-//             memcpy(data+X,&nums[0],nums.size()*sizeof(int));
-//         }
-//         for(int i=X-1;i;i--){
-//             data[i]=min(data[i*2],data[i*2+1]);
-//         }
-//     }
-//     void set(int i,int val){
-//         data[i+=X]=val;
-//         while((i>>=1)){
-//             if(data[i]!=min(data[i*2],data[i*2+1])){
-//                 data[i]=min(data[i*2],data[i*2+1]);
-//             }
-//             else break;
-//         }
-//     }
-//     int operator[](int i){
-//         return data[i+X];
-//     }
-//     int operator()(int l,int r){
-//         l=max(l,0);
-//         r=min(r,X-1);
-//         if(l>r)return default_val;
-//         int res=min(data[l+=X],data[r+=X]);
-//         if(l!=r){
-//             while(l/2!=r/2){
-//                 if(l%2==0)res=min(res,data[l+1]);
-//                 if(r%2)res=min(res,data[r-1]);
-//                 l>>=1;
-//                 r>>=1;
-//             }
-//         }
-//         return res;
-//     }
-// };
-
-// //带懒惰标记的最小值线段树，支持区间赋值
-// class LazyMinTree{
-//     struct elem{
-//         int val;
-//         bool b;
-//         elem():val(0),b(false){}
-//         elem(int _default_val):val(_default_val),b(false){}
-//         elem(int _val,bool _b):val(_val),b(_b){}
-//     };
-// public:
-//     elem*data;
-//     int X,Y;
-//     int default_val;
-//     LazyMinTree(int n=100005,int _default_val=0):default_val(_default_val){
-//         for(X=4;X<n;X<<=1);
-//         Y=__builtin_ctz(X);
-//         data=new elem[X*2];
-//         fill(data,data+X*2,elem(default_val));
-//     }
-//     void push_down(int i){
-//         for(int j=Y,k=1;j;k=(i&(1<<--j))?(k<<1)+1:k<<1){
-//             if(data[k].b){
-//                 data[k*2]=data[k*2+1]=data[k];
-//                 data[k].b=false;
-//             }
-//         }
-//     }
-//     void set(int i,int val){
-//         push_down(i);
-//         data[i+=X].val=val;
-//         while(i>>=1){
-//             data[i].val=min(data[i*2].val,data[i*2+1].val);
-//         }
-//     }
-//     void set(int l,int r,int val){
-//         if(l==r)set(l,val);
-//         else{
-//             push_down(l);
-//             push_down(r);
-//             data[l+=X].val=data[r+=X].val=val;
-//             while((l>>1)!=(r>>1)){
-//                 if(l%2==0)data[l+1]=elem(val,true);
-//                 if(r%2)data[r-1]=elem(val,true);
-//                 data[l>>1].val=min(data[l].val,data[l^1].val);
-//                 data[r>>1].val=min(data[r].val,data[r^1].val);
-//                 l>>=1;
-//                 r>>=1;
-//             }
-//             while(l>>=1){
-//                 data[l].val=min(data[l*2].val,data[l*2+1].val);
-//             }
-//         }
-//     }
-//     int operator[](int i){
-//         push_down(i);
-//         return data[i+X].val;
-//     }
-//     int operator()(int l,int r){
-//         l=max(l,0);
-//         r=min(r,X-1);
-//         if(l>r)return default_val;
-//         if(l==r)return (*this)[l];
-//         push_down(l);
-//         push_down(r);
-//         int res=min(data[l+=X].val,data[r+=X].val);
-//         while(l/2!=r/2){
-//             if(l%2==0)res=min(res,data[l+1].val);
-//             if(r%2)res=min(res,data[r-1].val);
-//             l>>=1;
-//             r>>=1;
-//         }
-//         return res;
-//     }
-// };
-
-// //区间求和线段树
-// class zkwTree{
-// public:
-//     long*data;
-//     int X;
-//     int default_val;
-//     zkwTree(int n=100005,int _default_val=0):default_val(_default_val){
-//         for(X=4;X<n;X<<=1);
-//         data=new long[X*2];
-//         fill(data+X,data+X*2,_default_val);
-//         for(int i=X-1;i;i--){
-//             data[i]=data[i*2]+data[i*2+1];
-//         }
-//     }
-//     zkwTree(vector<int>&nums,int _default_val=0):default_val(_default_val){
-//         for(X=4;X<nums.size();X<<=1);
-//         data=new long[X*2];
-//         memset(data+X,0,X*sizeof(long));
-//         if(nums.size()){
-//             for(int i=0;i<nums.size();i++)data[X+i]=nums[i];
-//         }
-//         for(int i=X-1;i;i--){
-//             data[i]=data[i*2]+data[i*2+1];
-//         }
-//     }
-//     void reset(){
-//         for(int i=X*2,val=default_val;i>1;val<<=1){
-//             for(int j=i>>1;j--;)data[--i]=val;
-//         }
-//     }
-//     void set(int i,long val){
-//         int d=val-data[i+=X];
-//         while(i){
-//             data[i]+=d;
-//             i>>=1;
-//         }
-//     }
-//     void step(int i){
-//         i+=X;
-//         while(i){
-//             data[i]++;
-//             i>>=1;
-//         }
-//     }
-//     long operator[](int i){
-//         return data[i+X];
-//     }
-//     long operator()(int l,int r){
-//         l=max(l,0);
-//         r=min(r,X-1);
-//         if(l>r)return 0;
-//         if(l!=r){
-//             long res=data[l+=X]+data[r+=X];
-//             while(l/2!=r/2){
-//                 if(l%2==0)res+=data[l+1];
-//                 if(r%2)res+=data[r-1];
-//                 l>>=1;
-//                 r>>=1;
-//             }
-//             return res;
-//         }
-//         else return data[l+X];
-//     }
-//     int find_nth(long n){
-//         if(n>=data[1])return -1;
-//         int i=1;
-//         while(i<X){
-//             if(data[i*2]>=n+1){
-//                 i<<=1;
-//             }
-//             else{
-//                 n-=data[i*2];
-//                 i=i*2+1;
-//             }
-//         }
-//         return i-X;
-//     }
-// };
-
-// //带懒惰标记的求和线段树，支持区间赋值
-// class LazyCountTree{
-//     struct elem{
-//         int val;
-//         bool b;
-//         elem():val(0),b(false){}
-//         elem(int _default_val):val(_default_val),b(false){}
-//         elem(int _val,bool _b):val(_val),b(_b){}
-//     };
-// public:
-//     elem*data;
-//     int X,Y;
-//     int default_val;
-//     LazyCountTree(int n=100005,int _default_val=0):default_val(_default_val){
-//         for(X=4;X<n;X<<=1);
-//         Y=__builtin_ctz(X);
-//         data=new elem[X*2];
-//         for(int i=X*2,val=default_val;i>1;val<<=1){
-//             for(int j=i>>1;j--;)data[--i]=val;
-//         }
-//     }
-//     LazyCountTree(vector<int>&nums,int _default_val=0):default_val(_default_val){
-//         for(X=4;X<nums.size();X<<=1);
-//         Y=__builtin_ctz(X);
-//         data=new elem[X*2];
-//         for(int i=0;i<X;i++){
-//             data[X+i]=elem(i<nums.size()?nums[i]:default_val);
-//         }
-//         for(int i=X-1;i;){
-//             data[i]=elem(data[i*2].val+data[i*2+1].val);
-//         }
-//     }
-//     void push_down(int i){
-//         for(int j=Y,k=1;j;k=(i&(1<<--j))?(k<<1)+1:k<<1){
-//             if(data[k].b){
-//                 data[k*2]=data[k*2+1]=elem(data[k].val/2,true);
-//                 data[k].b=false;
-//             }
-//         }
-//     }
-//     void set(int i,int val){
-//         push_down(i);
-//         data[i+=X].val=val;
-//         while(i>>=1){
-//             data[i].val=data[i*2].val+data[i*2+1].val;
-//         }
-//     }
-//     void set(int l,int r,int val){
-//         if(l==r)set(l,val);
-//         else{
-//             push_down(l);
-//             push_down(r);
-//             data[l+=X].val=data[r+=X].val=val;
-//             while((l>>1)!=(r>>1)){
-//                 if(l%2==0)data[l+1]=elem(val,true);
-//                 if(r%2)data[r-1]=elem(val,true);
-//                 data[l>>1].val=data[l].val+data[l^1].val;
-//                 data[r>>1].val=data[r].val+data[r^1].val;
-//                 l>>=1;
-//                 r>>=1;
-//                 val<<=1;
-//             }
-//             while(l>>=1){
-//                 data[l].val=data[l*2].val+data[l*2+1].val;
-//             }
-//         }
-//     }
-//     int operator[](int i){
-//         push_down(i);
-//         return data[i+X].val;
-//     }
-//     int operator()(int l,int r){
-//         l=max(l,0);
-//         r=min(r,X-1);
-//         if(l>r)return default_val;
-//         if(l==r)return (*this)[l];
-//         push_down(l);
-//         push_down(r);
-//         int res=data[l+=X].val+data[r+=X].val;
-//         while(l/2!=r/2){
-//             if(l%2==0)res+=data[l+1].val;
-//             if(r%2)res+=data[r-1].val;
-//             l>>=1;
-//             r>>=1;
-//         }
-//         return res;
-//     }
-// };
+//动态开点+懒惰标记线段树
+//需要根据题意，输入op参数，灵活修改inherite函数
+template<class T,int cover=0,int bsize=0>
+struct DLTree{
+    function<T(T&,T&)>op;
+    #define DLTREESIZE 4000000
+    void inherite(int idx,T _inc){
+        val[idx]=cover?(bsize?_inc*sz[idx]:_inc):(bsize?val[idx]+_inc*sz[idx]:val[idx]+_inc);
+        inc[idx]=cover?_inc:inc[idx]+_inc;
+        lazy[idx]=true;
+    }
+    T val[DLTREESIZE]={0},inc[DLTREESIZE]={0},lc[DLTREESIZE]={0},rc[DLTREESIZE]={0},p[DLTREESIZE]={0},sz[DLTREESIZE]={0},X,Y,cnt,default_val,default_inc;
+    bool lazy[DLTREESIZE]={0};
+    DLTree(int range,T _default_val,T _default_inc,function<T(T&,T&)>_op):cnt(1),default_val(_default_val),default_inc(_default_inc),op(_op){
+        cout<<"attention TREESIZE,<="<<DLTREESIZE<<'\n';
+        for(X=4,Y=2;X<=range;X<<=1,Y++);
+        if(default_val)fill(val,val+DLTREESIZE,default_val);
+        if(default_inc)fill(inc,inc+DLTREESIZE,default_inc);
+        sz[1]=X;
+    }
+    void clear(){
+        fill(val,val+cnt+1,default_val);
+        fill(inc,inc+cnt+1,default_inc);
+        for(auto a:{lc,rc,p,sz}){
+            memset(a,0,(cnt+1)*sizeof(T));
+        }
+        memset(lazy,0,(cnt+1)*sizeof(bool));
+        cnt=1;sz[1]=X;
+    }
+    inline int Lc(int cur){
+        if(!lc[cur]){
+            lc[cur]=++cnt;
+            p[cnt]=cur;
+            if constexpr(bsize)sz[cnt]=sz[cur]>>1;
+        }
+        return lc[cur];
+    }
+    inline int Rc(int cur){
+        if(!rc[cur]){
+            rc[cur]=++cnt;
+            p[cnt]=cur;
+            if constexpr(bsize)sz[cnt]=sz[cur]>>1;
+        }
+        return rc[cur];
+    }
+    int push_down(int i){
+        int cur=1;
+        for(int j=Y;j--;cur=i>>j&1?Rc(cur):Lc(cur)){
+            if(lazy[cur]){
+                inherite(Lc(cur),inc[cur]);
+                inherite(Rc(cur),inc[cur]);
+                lazy[cur]=false;inc[cur]=default_inc;
+            }
+        }
+        return cur;
+    }
+    void push_up(int i){
+        val[i]=op(val[Lc(i)],val[Rc(i)]);
+    }
+    void step(int idx,T value){
+        auto a=push_down(idx);
+        inherite(a,value);
+        for(;p[a];a=p[a])push_up(p[a]);
+    }
+    void step(int l,int r,T value){
+        if(l==r)step(l,value);
+        else{
+            auto a=push_down(l),b=push_down(r);
+            inherite(a,value);
+            inherite(b,value);
+            for(;p[a]!=p[b];a=p[a],b=p[b]){
+                if(a==lc[p[a]])inherite(Rc(p[a]),value);
+                if(b==rc[p[b]])inherite(Lc(p[b]),value);
+                push_up(p[a]);
+                push_up(p[b]);
+            }
+            for(;p[a];a=p[a])push_up(p[a]);
+        }
+    }
+    T operator[](int idx){
+        return val[push_down(idx)];
+    }
+    T operator()(int l,int r){
+        l=max(l,0);
+        r=min(r,X-1);
+        if(l>r)return default_val;
+        if(l==r)return (*this)[l];
+        auto a=push_down(l),b=push_down(r);
+        T res=op(val[a],val[b]);
+        for(;p[a]!=p[b];a=p[a],b=p[b]){
+            if(a==lc[p[a]])res=op(res,val[Rc(p[a])]);
+            if(b==rc[p[b]])res=op(res,val[Lc(p[b])]);
+        }
+        return res;
+    }
+};

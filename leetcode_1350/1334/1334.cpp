@@ -1,37 +1,18 @@
-#include "Heap.h"
+#include "Graph.h"
 #include "utils.h"
 
+UndirectedGraph udg;
 class Solution {
-    vector<pair<int,int>>adj[100];
 public:
     int findTheCity(int n, vector<vector<int>>& edges, int distanceThreshold) {
-        for(auto&e:edges){
-            int i=e[0],j=e[1],k=e[2];
-            adj[i].emplace_back(j,k);
-            adj[j].emplace_back(i,k);
-        }
+        udg.reset(n);
+        for(auto&e:edges)udg.addEdge(e[0],e[1],e[2]);
         int ans=-1,ansnum=INT_MAX;
         REP(i,n){
             int dist[n];
-            memset(dist,0x3f,sizeof(dist));
-            auto comp=[&](int x,int y){return dist[x]>dist[y];};
-            Heap<int>H(comp);
-            dist[i]=0;
-            H.push(i);
-            int cnt=0;
-            while(H.size()){
-                auto cur=H.top();
-                int dis=dist[cur];
-                H.pop();
-                if(dis>distanceThreshold)break;
-                cnt++;
-                for(auto [a,d]:adj[cur]){
-                    if(chmin(dist[a],dis+d)){
-                        H.push(a);
-                    }
-                }
-            }
-            if(cnt<=ansnum){
+            dijkstra(i,dist,udg);
+            int cnt=accumulate(dist,dist+n,0,[&](int x,int y){return x+(y<=distanceThreshold);});
+            if(ansnum>=cnt){
                 ansnum=cnt;
                 ans=i;
             }

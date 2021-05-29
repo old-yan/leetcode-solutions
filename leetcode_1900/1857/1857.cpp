@@ -1,46 +1,30 @@
+#include "Graph.h"
 #include "utils.h"
 
 class Solution {
     struct node{
         int num[26]={0};
-    };
-    int n;
-    vi color,deg;
-    vi adj[100000];
-    node nn[100000];
+    }nn[100000];
 public:
     int largestPathValue(string colors, vector<vector<int>>& edges) {
-        n=colors.size();
-        REP(i,n)color[i]=colors[i]-'a';
-        deg.resize(n,0);
+        int n=colors.size();
+        dg.reset(n);
         for(auto&e:edges){
             int i=e[0],j=e[1];
-            adj[i].pb(j);
-            deg[j]++;
+            dg.addEdge(i,j);
         }
-        queue<int>Q;
-        REP(i,n)if(!deg[i]){
-            nn[i].num[color[i]]=1;
-            Q.push(i);
-        }
+        tp.solve(dg);
+        if(tp.seq.size()<n)return -1;
         int ans=0;
-        while(Q.size()){
-            auto p=Q.front();
-            Q.pop();
-            REP(i,26){
-                chmax(ans,nn[p].num[i]);
-            }
-            for(int a:adj[p]){
-                REP(i,26){
-                    chmax(nn[a].num[i],nn[p].num[i]+(i==color[a]));
-                }
-                if(!--deg[a]){
-                    Q.push(a);
-                }
+        for(int a:tp.seq){
+            nn[a].num[colors[a]-'a']++;
+            REP(i,26)chmax(ans,nn[a].num[i]);
+            for(int _=dg.fi[a];~_;_=dg.ne[_]){
+                int j=dg.to[_];
+                REP(i,26)chmax(nn[j].num[i],nn[a].num[i]);
             }
         }
-        if(count(ALL(deg),0)!=deg.size())return -1;
-        else return ans;
+        return ans;
     }
 };
 

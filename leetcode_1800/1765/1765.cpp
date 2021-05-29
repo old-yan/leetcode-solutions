@@ -1,24 +1,22 @@
+#include "Graph.h"
 #include "utils.h"
 
+UndirectedGraph udg;
 class Solution {
 public:
     vector<vector<int>> highestPeak(vector<vector<int>>& isWater) {
         int m=isWater.size(),n=isWater[0].size();
-        vvi ans(m,vi(n,0));
-        queue<tuple<int,int,int>>Q;
-        REP(i,m)REP(j,n)if(isWater[i][j])Q.emplace(i,j,0);
-        while(Q.size()){
-            auto [i,j,h]=Q.front();
-            Q.pop();
-            REP(k,4){
-                int ii=i+di[k],jj=j+dj[k];
-                if(!VALID)continue;
-                if(!isWater[ii][jj]&&!ans[ii][jj]){
-                    ans[ii][jj]=h+1;
-                    Q.emplace(ii,jj,h+1);
-                }
-            }
+        udg.reset(m*n);
+        REP(i,m)REP(j,n)REP(k,2){
+            int ii=i+di[k],jj=j+dj[k];
+            if(VALID)udg.addEdge(i*n+j,ii*n+jj);
         }
+        vi sources;
+        REP(i,m)REP(j,n)if(isWater[i][j])sources.emplace_back(i*n+j);
+        int dist[m*n];
+        BFS(sources,dist,udg);
+        vvi ans(m,vi(n));
+        REP(i,m)REP(j,n)ans[i][j]=dist[i*n+j];
         return ans;
     }
 };

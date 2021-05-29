@@ -8,7 +8,7 @@ using namespace std;
 
 //并查集
 class Union{
-    #define UNIONSIZE 100
+    #define UNIONSIZE 100000
 public:
     int find[UNIONSIZE],size[UNIONSIZE],n,group;
     Union(int _n):n(_n),group(_n){

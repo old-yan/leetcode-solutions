@@ -1,4 +1,3 @@
-#include "Tarjan.h"
 #include "utils.h"
 
 class Solution {

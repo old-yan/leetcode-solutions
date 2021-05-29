@@ -1,32 +1,18 @@
+#include "Graph.h"
 #include "utils.h"
 
 class Solution {
-    vi adj[100];
-    bitset<100>isChildren[100];
 public:
     vector<bool> checkIfPrerequisite(int n, vector<vector<int>>& prerequisites, vector<vector<int>>& queries) {
-        for(auto&pre:prerequisites){
-            adj[pre[0]].pb(pre[1]);
+        dg.reset(n);
+        for(auto&p:prerequisites){
+            dg.addEdge(p[0],p[1]);
         }
-        REP(i,n){
-            auto&visited=isChildren[i];
-            static queue<int>Q;
-            visited.set(i);
-            Q.push(i);
-            while(Q.size()){
-                auto p=Q.front();
-                Q.pop();
-                for(int a:adj[p]){
-                    if(!visited[a]){
-                        visited.set(a);
-                        Q.push(a);
-                    }
-                }
-            }
-        }
+        int dist[n][n];
+        REP(i,n)BFS(i,dist[i],dg);
         vector<bool>ans;
         for(auto&q:queries){
-            ans.pb(isChildren[q[0]][q[1]]);
+            ans.pb(dist[q[0]][q[1]]<0x3f3f3f3f);
         }
         return ans;
     }
