@@ -1,7 +1,7 @@
 #include "Graph.h"
 #include "utils.h"
 
-UndirectedGraph udg;
+UndirectedGraph<>udg;
 class Solution {
 public:
     int findTheCity(int n, vector<vector<int>>& edges, int distanceThreshold) {

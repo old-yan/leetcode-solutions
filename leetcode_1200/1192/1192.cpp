@@ -1,7 +1,7 @@
 #include "Graph.h"
 #include "utils.h"
 
-UndirectedGraph udg;
+UndirectedGraph<>udg;
 class Solution {
 public:
     vector<vector<int>> criticalConnections(int n, vector<vector<int>>& connections) {

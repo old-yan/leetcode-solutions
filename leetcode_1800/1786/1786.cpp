@@ -1,7 +1,7 @@
 #include "Graph.h"
 #include "utils.h"
 
-UndirectedGraph udg;
+UndirectedGraph<>udg;
 class Solution {
 public:
     int countRestrictedPaths(int n, vector<vector<int>>& edges) {

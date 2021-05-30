@@ -2,7 +2,7 @@
 #include "Graph.h"
 #include "utils.h"
 
-UndirectedGraph udg;
+UndirectedGraph<>udg;
 class Solution {
     int m,n,water=0;
     bool inone(vvi&grid){

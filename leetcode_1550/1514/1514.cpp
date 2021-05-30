@@ -1,10 +1,10 @@
 #include "Graph.h"
 #include "utils.h"
 
+UndirectedGraph<double>udg;
 class Solution {
 public:
     double maxProbability(int n, vector<vector<int>>& edges, vector<double>& succProb, int start, int end) {
-        static UndirectedGraph<double>udg;
         udg.reset(n);
         REP(i,edges.size()){
             udg.addEdge(edges[i][0],edges[i][1],-log(succProb[i]));

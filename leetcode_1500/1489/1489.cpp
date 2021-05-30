@@ -2,7 +2,7 @@
 #include "Graph.h"
 #include "utils.h"
 
-UndirectedGraph udg;
+UndirectedGraph<>udg;
 Union u(100);
 class Solution {
 public:

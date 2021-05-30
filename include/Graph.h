@@ -4,6 +4,7 @@
 #include <tuple>
 #include <functional>
 #include <queue>
+#include <limits>
 using namespace std;
 
 #define VNUM 100000
@@ -11,7 +12,7 @@ using namespace std;
 template<class T=int>struct UndirectedGraph{
     int n,fi[VNUM];
     int ne[ENUM*2],from[ENUM*2],to[ENUM*2],ecnt;
-    T w[ENUM*2];
+    T w[ENUM*2],inf=numeric_limits<T>::max();
     void reset(int _v){
         n=_v,ecnt=0,memset(fi,0xff,n*sizeof(int));
     }
@@ -23,7 +24,7 @@ template<class T=int>struct UndirectedGraph{
 template<class T=int>struct DirectedGraph{
     int n,fi[VNUM],indeg[VNUM];
     int ne[ENUM],from[ENUM],to[ENUM],ecnt;
-    T w[ENUM];
+    T w[ENUM],inf=numeric_limits<T>::max();
     void reset(int _v){
         n=_v,ecnt=0,memset(fi,0xff,n*sizeof(int)),memset(indeg,0,n*sizeof(int));
     }
@@ -34,7 +35,7 @@ template<class T=int>struct DirectedGraph{
 template<class T=int>struct FlowNetwork{
     int n,fi[VNUM];
     int ne[ENUM*2],from[ENUM*2],to[ENUM*2],ecnt;
-    T w[ENUM*2];
+    T w[ENUM*2],inf=numeric_limits<T>::max();
     void reset(int _v){
         n=_v,ecnt=0,memset(fi,0xff,n*sizeof(int));
     }
@@ -44,7 +45,7 @@ template<class T=int>struct FlowNetwork{
     }
 };
 template<class T,class Graph>void dijkstra(int source,T dist[],const Graph&A){
-    memset(dist,0x3f,A.n*sizeof(T));
+    fill(dist,dist+A.n,A.inf);
     typedef pair<T,int> pti;static priority_queue<pti,vector<pti>,greater<pti>>Q;
     Q.emplace(dist[source]=0,source);
     while(Q.size()){
@@ -57,7 +58,7 @@ template<class T,class Graph>void dijkstra(int source,T dist[],const Graph&A){
     }
 }
 template<class T,class Graph>void spfa(int source,T dist[],const Graph&A){
-    memset(dist,0x3f,A.n*sizeof(T));
+    fill(dist,dist+A.n,A.inf);
     static deque<int>Q;
     static bool inque[VNUM];
     memset(inque,0,A.n*sizeof(bool));
@@ -75,7 +76,7 @@ template<class T,class Graph>void spfa(int source,T dist[],const Graph&A){
     }
 }
 template<class V,class T,class Graph>void BFS(V source,T dist[],const Graph&A){
-    memset(dist,0x3f,A.n*sizeof(T));
+    fill(dist,dist+A.n,A.inf);
     static queue<pair<T,int>>Q;
     if constexpr(is_same<V,int>::value)Q.emplace(dist[source]=0,source);
     else for(auto a:source)Q.emplace(dist[a]=0,a);
@@ -89,7 +90,7 @@ template<class V,class T,class Graph>void BFS(V source,T dist[],const Graph&A){
     }
 }
 template<class T,class Graph>void floyd(vector<vector<T>>&dist,const Graph&A){
-    for(auto&_:dist)fill(_.begin(),_.end(),0x3f3f3f3f);
+    for(auto&_:dist)fill(_.begin(),_.end(),A.inf);
     for(int i=0;i<A.ecnt;i++)dist[A.from[i]][A.to[i]]=A.w[i];
     for(int k=0;k<A.n;k++)for(int i=0;i<A.n;i++)for(int j=0;j<A.n;j++)dist[i][j]=min(dist[i][j],dist[i][k]+dist[k][j]);
 }
@@ -99,7 +100,7 @@ template<class T>T EK(int source,int target,FlowNetwork<T>&A){
     while(true){
         memset(flow,0,A.n*sizeof(T));
         int h=0,t=0;
-        flow[source]=0x3f3f3f3f,Q[t++]=source;
+        flow[source]=A.inf,Q[t++]=source;
         while(h<t){
             auto p=Q[h++];
             for(int _=A.fi[p];~_;_=A.ne[_])
@@ -148,7 +149,7 @@ template<class T>T ISAP(int source,int target,FlowNetwork<T>&A){
     memset(num,0,(depth[cur[t-1]]+1)*sizeof(int));
     for(int i=0;i<A.n;i++)if(depth[i]>=0)num[depth[i]]++;
     memcpy(cur,A.fi,A.n*sizeof(int));
-    flow[source]=0x3f3f3f3f;
+    flow[source]=A.inf;
     for(int x=source;depth[source]<A.n;){
         if(x==target){
             for(T f=flow[target];x!=source;x=A.from[trace[x]])

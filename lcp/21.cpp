@@ -1,7 +1,7 @@
 #include "Graph.h"
 #include "utils.h"
 
-UndirectedGraph udg;
+UndirectedGraph<>udg;
 class Solution {
     void init(vvi&edges,int&startA,int&startB){
         for(auto&e:edges)e[0]--,e[1]--;
