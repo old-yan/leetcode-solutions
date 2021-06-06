@@ -20,7 +20,7 @@ using namespace std;
 typedef long long ll;
 typedef vector<int> vi;
 typedef vector<vector<int>> vvi;
-const double EPS=1e-7;
+const double EPS=1e-8;
 const double PI=acos(-1);
 const ll MOD=1000000007;
 #define REP(i, n) for (ll i = 0; i < n; i++)
@@ -132,8 +132,8 @@ NestedInteger makenestedinteger(const string&s){
 #endif
 
 // 图问题，二维矩阵问题
-const int di[] = { 0,-1,0,1 };
-const int dj[] = { 1,0,-1,0 };
+const int di[] = { 0,-1,0,1,0 };
+const int dj[] = { 1,0,-1,0,0 };
 
 // 数字转字符串，指定进制
 string i2s(ll x,int radix=10){

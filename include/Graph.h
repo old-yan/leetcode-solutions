@@ -12,7 +12,7 @@ using namespace std;
 template<class T=int>struct UndirectedGraph{
     int n,fi[VNUM];
     int ne[ENUM*2],from[ENUM*2],to[ENUM*2],ecnt;
-    T w[ENUM*2],inf=numeric_limits<T>::max();
+    T w[ENUM*2],inf=numeric_limits<T>::max()/2;
     void reset(int _v){
         n=_v,ecnt=0,memset(fi,0xff,n*sizeof(int));
     }
@@ -24,7 +24,7 @@ template<class T=int>struct UndirectedGraph{
 template<class T=int>struct DirectedGraph{
     int n,fi[VNUM],indeg[VNUM];
     int ne[ENUM],from[ENUM],to[ENUM],ecnt;
-    T w[ENUM],inf=numeric_limits<T>::max();
+    T w[ENUM],inf=numeric_limits<T>::max()/2;
     void reset(int _v){
         n=_v,ecnt=0,memset(fi,0xff,n*sizeof(int)),memset(indeg,0,n*sizeof(int));
     }
@@ -35,7 +35,7 @@ template<class T=int>struct DirectedGraph{
 template<class T=int>struct FlowNetwork{
     int n,fi[VNUM];
     int ne[ENUM*2],from[ENUM*2],to[ENUM*2],ecnt;
-    T w[ENUM*2],inf=numeric_limits<T>::max();
+    T w[ENUM*2],inf=numeric_limits<T>::max()/2;
     void reset(int _v){
         n=_v,ecnt=0,memset(fi,0xff,n*sizeof(int));
     }
@@ -70,7 +70,7 @@ template<class T,class Graph>void spfa(int source,T dist[],const Graph&A){
             int j=A.to[_];T d=A.w[_];
             if(dist[j]>curd+d){
                 dist[j]=curd+d;
-                if(!inque[j])Q.emplace_back(j),inque[j]=true,keep();
+                if(!inque[j])Q.emplace_front(j),inque[j]=true,keep();
             }
         }
     }
