@@ -2,7 +2,7 @@
 
 class Solution {
 public:
-    //直接模拟的时间复杂度，比赛时没算，估计是可以过的。比赛后算了一下最大时间复杂度，虽然是k的6次方，但是常数比较小，最终是在千万量级
+    //直接模拟的时间复杂度，比赛时没算，估计是可以过的。比赛后算了一下最大时间复杂度，虽然是k的5次方，但是常数比较小，最终是在千万量级
     int largestMagicSquare(vector<vector<int>>& grid) {
         int m=grid.size(),n=grid[0].size();
         //r1,r2为最上行，最下行的行号
