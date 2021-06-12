@@ -163,13 +163,11 @@ ll s2i(const string&s,int radix=10){
 
 //字符串切割
 vector<string> split(const string&s,char c=' '){
-	int i=0;
 	vector<string>res;
-	for(int j;i<s.size();i=j+1){
-		if((j=s.find_first_of(c,i))<0)break;
-		res.emplace_back(&s[i],&s[j]);
+	for(int i=s.find_first_not_of(c),j;i>=0&&i<s.size();i=s.find_first_not_of(c,j)){
+		j=s.find_first_of(c,i);
+		res.emplace_back(&s[i],j>=0?&s[j]:&s[s.size()]);
 	}
-	if(i<s.size())res.emplace_back(s.substr(i));
 	return res;
 }
 
