@@ -23,7 +23,11 @@ int main()
     cout<<boolalpha;
     Solution sol;
 
-    
+    vvi ranges=makevvi("[[1,2],[3,4],[5,6]]");
+    int left=2;
+    int right=5;
+    auto ans=sol.isCovered(ranges,left,right);
+    DBG(ans);
 
     system("pause");
     return 0;
