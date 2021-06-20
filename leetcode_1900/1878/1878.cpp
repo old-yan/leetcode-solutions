@@ -1,15 +1,12 @@
+#include "Sum.h"
 #include "utils.h"
 
+Sumer2d<int,12>S;
 class Solution {
 public:
     vector<int> getBiggestThree(vector<vector<int>>& grid) {
         int m=grid.size(),n=grid[0].size();
-        int presum[m+1][n+2][2];
-        memset(presum,0,sizeof(presum));
-        REP(i,m)REP(j,n){
-            presum[i+1][j+1][0]=presum[i][j+2][0]+grid[i][j];
-            presum[i+1][j+1][1]=presum[i][j][1]+grid[i][j];
-        }
+        S.build(grid);
         auto check=[&](int i,int j){
             return i>=0&&i<m&&j>=0&&j<n;
         };
@@ -24,7 +21,7 @@ public:
                     int li=i-k+1,lj=j-k+1;
                     int ri=i-k+1,rj=j+k-1;
                     if(!check(upi,upj)||!check(li,lj)||!check(ri,rj))break;
-                    int all=presum[i+1][j+1][0]-presum[ri][rj+2][0]+presum[i+1][j+1][1]-presum[li][lj][1]+presum[ri+1][rj+1][1]-presum[upi][upj][1]+presum[li+1][lj+1][0]-presum[upi][upj+2][0]-grid[i][j]-grid[upi][upj]-grid[li][lj]-grid[ri][rj];
+                    int all=S.query_dif(li+1,lj+1,i,j)+S.query_dif(upi,upj,ri-1,rj-1)+S.query_sum(ri,rj,i-1,j+1)+S.query_sum(upi+1,upj-1,li,lj);
                     res.pb(all);
                 }
             }

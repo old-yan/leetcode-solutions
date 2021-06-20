@@ -2,7 +2,6 @@
 
 class Solution {
 public:
-    //简单贪心，把所有符合条件的三元组，结合到一块看看是不是target
     bool mergeTriplets(vector<vector<int>>& triplets, vector<int>& target) {
         int a=0,b=0,c=0;
         for(auto&t:triplets){
@@ -21,9 +20,9 @@ int main()
     cout<<boolalpha;
     Solution sol;
 
-    vvi tripltes=makevvi("[[2,5,3],[1,8,4],[1,7,5]]");
+    vvi triplets=makevvi("[[2,5,3],[1,8,4],[1,7,5]]");
     vi target{2,7,5};
-    auto ans=sol.mergeTriplets(tripltes,target);
+    auto ans=sol.mergeTriplets(triplets,target);
     DBG(ans);
 
     system("pause");
