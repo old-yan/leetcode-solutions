@@ -8,7 +8,7 @@ using namespace std;
 #define OLDYAN_HEAP
 
 template<class T=int,int type=0>
-struct Heap{
+struct BiHeap{
     #define HEAPSIZE 100000
     typedef function<bool(const T&,const T&)> Operation;
     int Data[HEAPSIZE+1],Pos[HEAPSIZE+1]={0};
@@ -16,7 +16,7 @@ struct Heap{
     vector<T>v;
     bitset<HEAPSIZE+1>pool;
     Operation cmp;
-    Heap(Operation _cmp):cmp(_cmp){
+    BiHeap(Operation _cmp):cmp(_cmp){
         cout<<"attention HEAPSIZE,<="<<HEAPSIZE<<'\n';
         v.resize(HEAPSIZE+1);
         pool.set();
@@ -70,12 +70,12 @@ struct Heap{
     }
 };
 template<class T>
-struct Heap<T,0>{
+struct BiHeap<T,0>{
     #define HEAPSIZE 100000
     typedef function<bool(int&,int&)> Operation;
     int Data[HEAPSIZE+1],Pos[HEAPSIZE+1]={0},Size;
     Operation cmp;
-    Heap(Operation _cmp):cmp(_cmp),Size(0){
+    BiHeap(Operation _cmp):cmp(_cmp),Size(0){
         cout<<"attention HEAPSIZE,<="<<HEAPSIZE<<'\n';
     }
     void push(int val){

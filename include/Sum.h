@@ -5,7 +5,8 @@ using namespace std;
 template<class T=int>
 struct Sumer{
     #define SUMERLEN 100000
-    T A[SUMERLEN+1]={0},len;
+    T A[SUMERLEN+1]={0};
+    int len;
     template<class iterator>
     void build(iterator begin, iterator end){
         len=end-begin;
@@ -14,7 +15,7 @@ struct Sumer{
     }
     T query(int left, int right){
         if(left>(right=min(right,len-1)))return 0;
-        return A[right]-A[left-1];
+        return A[right+1]-A[left];
     }
 };
 
