@@ -40,7 +40,7 @@ public:
     }
     void sink(const T&val){
         if(!idmap.count(val))return;
-        int id=pos[idmap[val]];
+        int id=idmap[val];
         for(int cur=pos[id],son;(son=cur<<1)<=idmap.size();cur=son){
             if(son+1<=idmap.size()&&comp(datamap[heap[son]],datamap[heap[son+1]]))son++;
             if(!comp(val,datamap[heap[son]]))break;
@@ -57,6 +57,15 @@ public:
         heap[1]=heap[idmap.size()+1];
         pos[heap[1]]=1;
         sink(datamap[heap[1]]);
+    }
+    bool erase(const T&val){
+        if(!idmap.count(val))return false;
+        int p=pos[idmap[val]];idmap.erase(val);
+        int last=heap[idmap.size()+1];
+        pos[last]=p,heap[p]=last;
+        if(p>1&&comp(datamap[heap[p>>1]],datamap[last]))push(datamap[last]);
+        else sink(datamap[last]);
+        return true;
     }
     int size(){
         return idmap.size();
