@@ -6,7 +6,7 @@ class Solution {
 public:
     int maxFreq(string &s, int maxLetters, int minSize, int maxSize) {
         int n=s.size();
-        SuffixArray sa(s);
+        SuffixArray<>sa(s);
         sa.getHeight();
         int ans=0;
         Union u(n);

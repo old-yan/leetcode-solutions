@@ -4,7 +4,7 @@
 class Solution {
 public:
     string longestDupSubstring(string s) {
-        SuffixArray sa(s);
+        SuffixArray<> sa(s);
         sa.getHeight();
         int ans=max_element(sa.height,sa.height+s.size())-sa.height;
         return s.substr(sa.sa[ans],sa.height[ans]);

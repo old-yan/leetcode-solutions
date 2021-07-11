@@ -4,7 +4,7 @@
 class Solution {
 public:
     string largestMerge(string word1, string word2) {
-        SuffixArray sa(word1+"#"+word2);
+        SuffixArray<>sa(word1+"#"+word2);
         string ans;
         for(int i=0,j=0;i<word1.size()||j<word2.size();){
             if(i==word1.size()){

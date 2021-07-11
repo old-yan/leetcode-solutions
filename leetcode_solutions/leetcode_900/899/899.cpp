@@ -5,7 +5,7 @@ class Solution {
 public:
     string orderlyQueue(string S, int K) {
         if(K==1){
-            SuffixArray SA(S+S);
+            SuffixArray<>SA(S+S);
             auto it=min_element(SA.rk,SA.rk+S.size())-SA.rk;
             return S.substr(it)+S.substr(0,it);
         }
