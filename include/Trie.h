@@ -130,6 +130,17 @@ struct BiTrie{
             cur=next;
         }
     }
+    void erase(int num){
+        function<void(int&,int)>_erase=[&](int&cur,int i){
+            if(!cur)return;
+            if(i==0)cur=0;
+            else{
+                _erase(data[cur][num>>(i-1)&1],i-1);
+                if(!data[cur][0]&&!data[cur][1])cur=0;
+            }
+        };
+        _erase(data[0][num>>X&1],X);
+    }
     int MaxXor(int num) {
         if(used==1)return 0;
         int cur=0,maxSame=0;
