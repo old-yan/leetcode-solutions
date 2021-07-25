@@ -1,37 +1,80 @@
-#include "Trie.h"
 #include "utils.h"
 
-BiTrie<17>T;
 class Solution {
-    vi sons[100000];
-    vi ans;
-    vi toans[100000];
-    void dfs(int cur,vvi&queries){
-        T.insert(cur);
-        for(int q:toans[cur])
-            ans[q]=T.MaxXor(0xffffffff^queries[q][1]);
-        for(int a:sons[cur])
-            dfs(a,queries);
-        T.erase(cur);
+    struct node{
+        string content;
+        node*parent;
+        map<string,node*>sons;
+        int son_num=0;
+        vector<int>feature;
+        int hash_id;
+        node(node*_parent,const string&_content=""):parent(_parent),content(_content){}
+        node* new_son(const string&s){
+            if(sons.count(s))return sons[s];
+            else{
+                son_num++;
+                return sons[s]=new node(this,s);
+            }
+        }
+    };
+    queue<node*>Q;
+    //给每一个string一个独特的数字id
+    unordered_map<string,int>stringid;
+    //给每一个子树序列一个独特的数字id
+    map<vector<int>,int>hash_id;
+    //对每个子树的哈希出现次数进行统计
+    map<int,int>hash_count;
+    //找出所有叶子
+    void find_leaf(node*cur){
+        if(cur->sons.empty())Q.push(cur);
+        else for(auto&&[_,son]:cur->sons)find_leaf(son);
+    }
+    //遍历生成答案
+    void dfs(node*cur,vector<vector<string>>&ans,vector<string>&path){
+        if(cur->sons.empty()||hash_count[cur->hash_id]==1){
+            if(path.size())ans.push_back(path);
+            for(auto&&[_,son]:cur->sons){
+                path.push_back(son->content);
+                dfs(son,ans,path);
+                path.pop_back();
+            }
+        }
     }
 public:
-    // 这道题，对于每个结点，要在该结点到根的路径上找答案
-    // 想到了什么？想到了从根到叶的路径的题目！没错，在对树进行遍历的时候，只要进结点push，出结点pop，就可以动态维护路径
-    // 这道题有一点变化，那就是答案不是路径，而是与路径上的数字的最大异或值，那么只要把路径上的数字加到字典树里就可以查询答案了
-    vector<int> maxGeneticDifference(vector<int>& parents, vector<vector<int>>& queries) {
-        T.clear();
-        //建树，找根
-        int root;
-        for(int i=0;i<parents.size();i++){
-            if(parents[i]>=0)sons[parents[i]].push_back(i);
-            else root=i;
+    //本题可以参考力扣 652 树的哈希
+    vector<vector<string>> deleteDuplicateFolder(vector<vector<string>>& paths) {
+        node*root=new node(nullptr);
+        //建树
+        for(auto&p:paths){
+            node*cur=root;
+            for(auto&s:p){
+                if(!stringid.count(s))stringid[s]=stringid.size();
+                cur=cur->new_son(s);
+            }
         }
-        //在每个结点的位置，回答针对这个结点的query，为了知道要回答哪些query，所以先生成toans数组
-        ans.resize(queries.size());
-        for(int i=0;i<queries.size();i++)
-            toans[queries[i][0]].push_back(i);
-        //在dfs的同时，对字典树进行维护，利用字典树回答问题
-        dfs(root,queries);
+        //找出叶子
+        find_leaf(root);
+        //从叶到根进行拓扑遍历，每当遍历到一个结点时保证其子树已被遍历
+        //通过所有子树的哈希值，铺成一排就可以当成该结点为根的树的特征值
+        while(Q.size()){
+            auto p=Q.front();
+            Q.pop();
+            for(auto&&[_,son]:p->sons){
+                p->feature.push_back(son->hash_id);
+                p->feature.push_back(stringid[son->content]);
+            }
+            if(hash_id.count(p->feature))p->hash_id=hash_id[p->feature];
+            else p->hash_id=hash_id[p->feature]=hash_id.size();
+            hash_count[p->hash_id]++;
+            if(p->parent){
+                p->parent->son_num--;
+                if(!p->parent->son_num)Q.push(p->parent);
+            }
+        }
+        //dfs获取答案
+        vector<vector<string>>ans;
+        vector<string>path;
+        dfs(root,ans,path);
         return ans;
     }
 };
@@ -41,10 +84,16 @@ int main()
     cout<<boolalpha;
     Solution sol;
 
-    vi parents{-1,0,1,1};
-    vvi queries=makevvi("[[0,2],[3,2],[2,5]]");
-    auto ans=sol.maxGeneticDifference(parents,queries);
-    DBGV(ans);
+    vector<vector<string>>paths{
+        {"a"},
+        {"c"},
+        {"d"},
+        {"a","b"},
+        {"c","b"},
+        {"d","a"}
+    };
+    auto ans=sol.deleteDuplicateFolder(paths);
+    DBGVV(ans);
 
     system("pause");
     return 0;
