@@ -475,7 +475,7 @@ bool isPalindromic(iterator begin,iterator end){
 
 //判断从cur到next再到query的拐弯方向
 //左拐返回2，右拐返回4，不变线的话前进返回1，后退小步返回-1，后退大步返回3
-//对cur与next重合、query与cur重合、query与next重合的情况无定义
+//对cur与next重合的情况无定义
 template<class T>
 int getDirection(T*cur,T*next,T*query){
 	T x1=*next-*cur;
@@ -487,7 +487,7 @@ int getDirection(T*cur,T*next,T*query){
 	else if(res<0)return 4;
 	res=x1*x2+y1*y2;
 	if(res>0)return 1;
-	else if(abs(x2)<abs(x1)||abs(y2)<abs(y1))return -1;
+	else if(abs(x2)<=abs(x1)&&abs(y2)<=abs(y1))return -1;
 	else return 3;
 }
 
