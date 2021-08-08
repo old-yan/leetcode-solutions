@@ -29,8 +29,6 @@ struct SegTree{
         for(int i=X-1;i;i--){
             data[i]=op(data[i*2],data[i*2+1]);
         }
-        int a=5;
-        a++;
     }
     void set(T val){
         fill(data+X,data+X*2,val);
