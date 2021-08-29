@@ -10,8 +10,8 @@ template<int range>
 struct EulerPrime{
     bool b[range+1]={0};
     int r,v[range]={0},lv,minf[range+1];
-    int pf[50],pcnt[50],plen;//处理质因数专用数组
-    int factors[1000],flen;//处理因数专用数组
+    long long pf[50],pcnt[50],plen;//处理质因数专用数组
+    long long factors[1000],flen;//处理因数专用数组
     EulerPrime():r(range),lv(0){
         b[0]=b[1]=true;
         minf[0]=minf[1]=0;
@@ -25,10 +25,10 @@ struct EulerPrime{
         }
     }
     //isPrime判断是否为质数
-    bool isPrime(int n){
+    bool isPrime(long long n){
         if(n<2)return false;
         if(n<=r)return !b[n];
-        for(int i=0,j;(j=v[i])&&j*j<=n;i++)if(n%j==0)return false;
+        for(long long i=0,j;(j=v[i])&&j*j<=n;i++)if(n%j==0)return false;
         return true;
     }
     //getPrimeFactors分解质因数，dup参数表示是否存储重复的质因数
@@ -36,7 +36,7 @@ struct EulerPrime{
     template<int dup>
     void getPrimeFactors(long long n){
         plen=0;
-        auto fun=[&](long long&n,int j){
+        auto fun=[&](long long&n,long long j){
             if constexpr(dup){
                 int cnt=0;
                 while(n%j==0){
@@ -52,7 +52,7 @@ struct EulerPrime{
             }
         };
         if(n>r){
-            for(int i=0,j,end=sqrt(n);(j=v[i])&&j<=end;i++)if(n%j==0){
+            for(long long i=0,j,end=sqrt(n);(j=v[i])&&j<=end;i++)if(n%j==0){
                 fun(n,j);
                 end=sqrt(n);
             }
@@ -65,7 +65,7 @@ struct EulerPrime{
     void dfs(int cur,long long curp){
         if(cur==plen)factors[flen++]=curp;
         else{
-            for(int i=pcnt[cur],j=pf[cur];i>=0;i--,curp*=j)dfs(cur+1,curp);
+            for(long long i=pcnt[cur],j=pf[cur];i>=0;i--,curp*=j)dfs(cur+1,curp);
         }
     }
     //getFactors获取所有的因数
