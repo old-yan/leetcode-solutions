@@ -30,8 +30,8 @@ int main()
     cout<<boolalpha;
     Solution sol;
 
-    string binary="101";
-    auto ans=sol.numberOfUniqueGoodSubsequences(binary);
+    vi nums{10,5,9,3,15};
+    auto ans=sol.gcdSort(nums);
     DBG(ans);
 
     system("pause");
