@@ -2,17 +2,22 @@
 #include "Union.h"
 
 Union u(100001);
+bitset<100001>appear;
 class Solution {
 public:
     //很经典的一道题：无限次数交换，只要两个元素之间能通过并查集搭上关系，那么它们一定可以随便交换
     bool gcdSort(vector<int>& nums) {
         u.reset();
+        appear.reset();
+        for(int a:nums)appear.set(a);
         //枚举所有可能的gcd
         for(int gcd=2;gcd<=100000;gcd++){
             //对每个gcd，枚举包含它的数字，这些数字一定可以被gcd整除
-            for(int num=gcd*2;num<=100000;num+=gcd){
+            int pre=-1;
+            for(int num=gcd;num<=100000;num+=gcd)if(appear[num]){
                 //把这些数字都联通
-                u.unite(num,num-gcd);
+                if(pre>0)u.unite(pre,num);
+                pre=num;
             }
         }
         vi sorted=nums;
