@@ -1,7 +1,5 @@
 #include "utils.h"
 
-#define dbg(a,n) cout<<#a<<": ";for(int _=0;_<n;_++)cout<<a[_]<<' ';cout<<'\n';
-
 using ll=long long;
 class Solution {
     int closest(vector<int>&v1,vector<int>&v2,ll half){
